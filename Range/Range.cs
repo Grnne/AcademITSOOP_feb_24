@@ -10,10 +10,14 @@ public class Range
 
     }
 
-    public double GetLength()
+    public Range(double from, double to)
     {
-        return 0;
+        From = from;
+        To = to;
     }
+
+
+    public double GetLength(double From, double To) => From - To;
 
     public bool IsInside()
     {
