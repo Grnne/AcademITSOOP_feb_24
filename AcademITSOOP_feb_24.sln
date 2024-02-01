@@ -5,6 +5,10 @@ VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademITSOOP_feb_24", "AcademITSOOP_feb_24\AcademITSOOP_feb_24.csproj", "{BC0ADB4D-A2C3-48A6-9891-FE7CDECB02DC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Range", "Range", "{40BFB593-D3BA-4C7D-B22E-A6F9D9499A3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Range", "Range\Range.csproj", "{D213A8CE-B294-4F4C-9B06-83659CB43551}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +19,16 @@ Global
 		{BC0ADB4D-A2C3-48A6-9891-FE7CDECB02DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC0ADB4D-A2C3-48A6-9891-FE7CDECB02DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC0ADB4D-A2C3-48A6-9891-FE7CDECB02DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D213A8CE-B294-4F4C-9B06-83659CB43551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D213A8CE-B294-4F4C-9B06-83659CB43551}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D213A8CE-B294-4F4C-9B06-83659CB43551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D213A8CE-B294-4F4C-9B06-83659CB43551}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D213A8CE-B294-4F4C-9B06-83659CB43551} = {40BFB593-D3BA-4C7D-B22E-A6F9D9499A3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E467D0E-D4C5-4A57-9B2A-F8C583B10247}
