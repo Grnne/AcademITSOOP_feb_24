@@ -19,4 +19,20 @@ public class Range
     {
         return true;
     }
+
+    public Range Intersect()
+    {
+        return new Range();
+    }
+
+    public Range[] Sum()
+    {
+        return new Range[0];
+    }
+
+    public Range[] GetDifference()
+    {
+        return new Range[0];
+    }
+
 }
