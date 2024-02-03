@@ -16,27 +16,54 @@ public class Range
         To = to;
     }
 
+    public double GetLength() => To - From;
 
-    public double GetLength(double From, double To) => From - To;
+    public bool IsInside(double number) => number >= From && number <= To;
 
-    public bool IsInside()
+    public Range? IsIntersect(Range range)
     {
-        return true;
+        if (To <= range.From)
+        {
+            return null;
+        }
+
+        return new Range(range.From, To);
     }
 
-    public Range Intersect()
+    public Range[] GetSum(Range range)
     {
-        return new Range();
+        if (IsIntersect(range) == null)
+        {
+            Range[] result = [new Range(From, To), range];
+            return result;
+        }
+
+        range.From = From;
+
+        if (range.To < To)
+        {
+            range.To = To;
+        }
+
+        return [range];
     }
 
-    public Range[] Sum()
+    public Range[] GetDifference(Range range)
     {
-        return new Range[0];
-    }
+        if (IsIntersect(range) == null)
+        {
+            Range[] result = [new Range(From, To), range];
+            return result;
+        }
 
-    public Range[] GetDifference()
-    {
-        return new Range[0];
-    }
+        range.To = range.From;
+        range.From = From;
 
+        if (range.To == range.From)
+        {
+            return new Range[0];
+        }
+
+        return [range];
+    }
 }
