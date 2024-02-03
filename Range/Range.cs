@@ -1,4 +1,4 @@
-﻿namespace Range;
+﻿namespace RangeTask;
 
 public class Range
 {

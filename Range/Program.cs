@@ -1,8 +1,7 @@
-﻿namespace Range;
+﻿namespace RangeTask;
 
 internal class Program
 {
-    //TODO Переделать с учетом неожиданного отрезка который закрывает второй отрезок
     static void Main(string[] args)
     {
 
