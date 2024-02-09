@@ -17,4 +17,8 @@ internal class Circle : IShape
 
     public double GetPerimeter() => 2 * Radius * Math.PI;
 
+    public override string ToString()
+    {
+        return $"Это круг. Площадь: {GetArea():F2}; Длина окружности: {GetPerimeter():F2}; Диаметр: {GetWidth():F2}; Радиус: {Radius:F2};";
+    }
 }

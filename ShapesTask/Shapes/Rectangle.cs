@@ -18,4 +18,9 @@ internal class Rectangle : IShape
     public double GetArea() => Width * Height;
 
     public double GetPerimeter() => Height * 2 + Width * 2;
+
+    public override string ToString()
+    {
+        return $"Это Прямоугольник. Площадь: {GetArea():F2}; Периметр: {GetPerimeter():F2}; Ширина: {GetWidth():F2}; Высота: {GetHeight():F2};";
+    }
 }

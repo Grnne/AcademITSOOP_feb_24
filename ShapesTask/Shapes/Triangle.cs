@@ -1,6 +1,6 @@
 ﻿namespace ShapesTask;
 
-internal class Triangle : IShape 
+internal class Triangle : IShape
 {
     public double X1 { get; set; }
     public double Y1 { get; set; }
@@ -32,5 +32,11 @@ internal class Triangle : IShape
         double side3 = Math.Sqrt((X2 - X3) * (X2 - X3) + (Y2 - Y3) * (Y2 - Y3));
 
         return side1 + side2 + side3;
+    }
+
+    public override string ToString()
+    {
+        return $"Это треугольник. Координаты вершин: {X1:F2} {Y1:F2}; {X2:F2} {Y2:F2}; {X3:F2} {Y3:F2}; Площадь: " +
+            $"{GetArea():F2}; Периметр: {GetPerimeter():F2}; Ширина: {GetWidth():F2}; Высота: {GetHeight():F2};";
     }
 }
