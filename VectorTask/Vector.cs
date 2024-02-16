@@ -1,7 +1,4 @@
-﻿using System.Numerics;
-using System.Runtime.Intrinsics;
-
-namespace VectorTask;
+﻿namespace VectorTask;
 
 public class Vector
 {
@@ -35,10 +32,38 @@ public class Vector
         }
     }
 
+    public override string ToString() => string.Join(", ", VectorComponents);
 
+    public override bool Equals(object? obj)
+    {
+        return base.Equals(obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 
     public int GetSize() => VectorComponents.Length;
 
-    public override string ToString() => string.Join(", ", VectorComponents);
+    public int Union()
+    { }
 
+    public int Residual()
+    { }
+
+    public int MultiplyByScalar()
+    { }
+
+    public int Reverse()
+    { }
+
+    public int GetLength()
+    { }
+
+    public int GetComponent()
+    { }
+
+    public void SetComponent()
+    { }
 }
