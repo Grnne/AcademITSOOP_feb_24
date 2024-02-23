@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace MatrixTask;
 
-namespace CsvTask;
-internal class CsvParser
+public class Matrix
 {
 }
