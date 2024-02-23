@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MatrixTask;
-internal class Matrix
+namespace CsvTask;
+internal class CsvParser
 {
 }
