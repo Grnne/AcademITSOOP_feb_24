@@ -5,11 +5,11 @@ internal class Program
     static void Main(string[] args)
     {
 
-        Range range0 = new(1, 10);
-        Range range1 = new(11, 1000);
-        Range range2 = new(5, 12);
-        Range range3 = new();
-        Range[] range4 = new Range[0];
+        RangeTask range0 = new(1, 10);
+        RangeTask range1 = new(11, 1000);
+        RangeTask range2 = new(5, 12);
+        RangeTask range3 = new();
+        RangeTask[] range4 = new RangeTask[0];
 
         Console.WriteLine($"Длина диапазона: {range0.GetLength()}");
         Console.WriteLine($"Находится ли число внутри диапазона: {range0.IsInside(5)}");
@@ -21,7 +21,7 @@ internal class Program
         range4 = range0.GetSum(range1);
         Console.WriteLine("Результат объединения двух диапазонов, если их можно объединить, или два диапазона, если нельзя.");
 
-        foreach (Range range in range4)
+        foreach (RangeTask range in range4)
         {
             Console.WriteLine($"{range.From}, {range.To}");
         }
@@ -29,7 +29,7 @@ internal class Program
         range4 = range0.GetDifference(range2);
         Console.WriteLine("Результат разности двух диапазонов, если их можно вычесть, или два диапазона, если нельзя.");
 
-        foreach (Range range in range4)
+        foreach (RangeTask range in range4)
         {
             Console.WriteLine($"{range.From}, {range.To}");
         }

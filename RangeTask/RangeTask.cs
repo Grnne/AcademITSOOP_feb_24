@@ -1,12 +1,12 @@
 ﻿namespace RangeTask;
 
-public class Range
+public class RangeTask
 {
     public double From { get; set; }
 
     public double To { get; set; }
 
-    public Range(double from, double to)
+    public RangeTask(double from, double to)
     {
         From = from;
         To = to;
@@ -16,21 +16,21 @@ public class Range
 
     public bool IsInside(double number) => number >= From && number <= To;
 
-    public Range? IsIntersect(Range range)
+    public RangeTask? IsIntersect(RangeTask range)
     {
         if (To <= range.From)
         {
             return null;
         }
 
-        return new Range(range.From, To);
+        return new RangeTask(range.From, To);
     }
 
-    public Range[] GetSum(Range range)
+    public RangeTask[] GetSum(RangeTask range)
     {
         if (IsIntersect(range) == null)
         {
-            Range[] result = [new Range(From, To), range];
+            RangeTask[] result = [new RangeTask(From, To), range];
             return result;
         }
 
@@ -44,11 +44,11 @@ public class Range
         return [range];
     }
 
-    public Range[] GetDifference(Range range)
+    public RangeTask[] GetDifference(RangeTask range)
     {
         if (IsIntersect(range) == null)
         {
-            Range[] result = [new Range(From, To), range];
+            RangeTask[] result = [new RangeTask(From, To), range];
             return result;
         }
 
@@ -57,7 +57,7 @@ public class Range
 
         if (range.To == range.From)
         {
-            return new Range[0];
+            return new RangeTask[0];
         }
 
         return [range];
