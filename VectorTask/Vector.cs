@@ -32,7 +32,20 @@ public class Vector
         }
     }
 
+    public override string ToString() => string.Join(", ", VectorComponents);
+
+    public override bool Equals(object? obj)
+    {
+        return base.Equals(obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+
     public int GetSize() => VectorComponents.Length;
 
     public override string ToString() => string.Join(", ", VectorComponents);
+
 }
