@@ -46,24 +46,6 @@ public class Vector
 
     public int GetSize() => VectorComponents.Length;
 
-    public int Union()
-    { }
+    public override string ToString() => string.Join(", ", VectorComponents);
 
-    public int Residual()
-    { }
-
-    public int MultiplyByScalar()
-    { }
-
-    public int Reverse()
-    { }
-
-    public int GetLength()
-    { }
-
-    public int GetComponent()
-    { }
-
-    public void SetComponent()
-    { }
 }
