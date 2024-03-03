@@ -17,7 +17,7 @@ public class Vector
 
     public Vector(double[] vectorComponents)
     {
-        VectorComponents = new double[VectorComponents.Length];
+        VectorComponents = new double[vectorComponents.Length];
         vectorComponents.CopyTo(VectorComponents, 0);
     }
 
@@ -31,6 +31,15 @@ public class Vector
             VectorComponents[i] = 0;
         }
     }
+
+    public static void Add(Vector vector1, Vector vector2)
+    { }
+
+    public static void Subtract(Vector vector1, Vector vector2)
+    { }
+
+    public static void MultiplyScalar(Vector vector1, Vector vector2)
+    { }
 
     public override string ToString() => string.Join(", ", VectorComponents);
 
@@ -46,23 +55,23 @@ public class Vector
 
     public int GetSize() => VectorComponents.Length;
 
-    public int Union()
-    { }
+    //public int Add()
+    //{ }
 
-    public int Residual()
-    { }
+    //public int Subtract()
+    //{ }
 
-    public int MultiplyByScalar()
-    { }
+    //public int MultiplyByScalar()
+    //{ }
 
-    public int Reverse()
-    { }
+    //public int Reverse()
+    //{ }
 
-    public int GetLength()
-    { }
+    //public int GetLength()
+    //{ }
 
-    public int GetComponent()
-    { }
+    //public int GetComponent()
+    //{ }
 
     public void SetComponent()
     { }

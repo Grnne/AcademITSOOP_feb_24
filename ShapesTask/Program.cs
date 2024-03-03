@@ -18,5 +18,7 @@ internal class Program
         Console.WriteLine("Характеристики фигуры с вторым по величине периметром");
         elementIndex = shapes.Count() - 2;
         Console.WriteLine(shapes.ElementAt(elementIndex));
+
+
     }
 }

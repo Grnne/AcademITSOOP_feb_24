@@ -8,8 +8,9 @@ internal class Program
         Vector vector2 = new Vector(vector1);
         vector2.VectorComponents = new double[] { 1, 2, 3, 4, 5 };
         Vector vector3 = new Vector(vector2.VectorComponents, 10);
-        
+        double[] testArray = [1, 2, 3];
+        Vector vector4 = new Vector(testArray);
 
-        Console.WriteLine(vector3);
+        Console.WriteLine(vector1);
     }
 }
