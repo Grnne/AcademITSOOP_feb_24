@@ -8,14 +8,14 @@ internal class Program
 
         Matrix matrix2 = new Matrix(matrix1);
 
-        matrix2.Rows[0].VectorComponents[0] = 1;
+        matrix2.Rows[0].Components[0] = 1;
 
-        Console.WriteLine(matrix1.Rows[0].VectorComponents[0]);
+        Console.WriteLine(matrix1.Rows[0].Components[0]);
 
         double[,] doubleArray = new double[2, 5] { { 1, 2, 3, 4, 5 }, { 1, 2, 3, 4, 5 } };
         Matrix matrix3 = new Matrix(doubleArray);
 
-        Console.WriteLine(matrix3.Rows[1].VectorComponents[1]);
+        Console.WriteLine(matrix3.Rows[1].Components[1]);
 
     }
 
