@@ -4,34 +4,36 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        Range range1 = new Range(1, 10);
 
-        RangeTask range0 = new(1, 10);
-        RangeTask range1 = new(11, 1000);
-        RangeTask range2 = new(5, 12);
-        RangeTask range3 = new();
-        RangeTask[] range4 = new RangeTask[0];
+        Console.WriteLine($"Длина диапазона: {range1.GetLength()}");
+        Console.WriteLine($"Находится ли число внутри диапазона: {range1.IsInside(5)}");
 
-        Console.WriteLine($"Длина диапазона: {range0.GetLength()}");
-        Console.WriteLine($"Находится ли число внутри диапазона: {range0.IsInside(5)}");
+        Range range2 = new Range(5, 15);
 
-        range3 = range0.IsIntersect(range2);
-        Console.WriteLine($"Интервал пересечения диапазонов {range3.From}, {range3.To}");
-        // Ругается на налл и падает, если метод IsIntersect вернул налл.
+        Console.WriteLine($"Интервал пересечения диапазонов: {range1.GetIntersection(range2)}");
+        Console.WriteLine();
 
-        range4 = range0.GetSum(range1);
-        Console.WriteLine("Результат объединения двух диапазонов, если их можно объединить, или два диапазона, если нельзя.");
+        Console.Write("Результат объединения двух диапазонов, если их можно объединить: ");
+        Range[] ranges = range2.GetUnion(range1);
+        Console.WriteLine("[" + string.Join<Range>(", ", ranges) + "]");
 
-        foreach (RangeTask range in range4)
-        {
-            Console.WriteLine($"{range.From}, {range.To}");
-        }
+        ranges = range2.GetUnion(new Range(20, 30));
+        Console.WriteLine($"и два диапазона, если нельзя: [{string.Join<Range>(", ", ranges)}]");
+        Console.WriteLine();
 
-        range4 = range0.GetDifference(range2);
-        Console.WriteLine("Результат разности двух диапазонов, если их можно вычесть, или два диапазона, если нельзя.");
 
-        foreach (RangeTask range in range4)
-        {
-            Console.WriteLine($"{range.From}, {range.To}");
-        }
+        Console.WriteLine("Результаты разности двух диапазонов, если они:");
+        ranges = range2.GetDifference(new Range(0, 3));
+        Console.WriteLine($"не пересекаются: [{string.Join<Range>(", ", ranges)}]");
+
+        ranges = range2.GetDifference(new Range(0, 50));
+        Console.WriteLine($"второй полностью перекрывает первый: [{string.Join<Range>(", ", ranges)}]");
+
+        ranges = range2.GetDifference(new Range(8, 10));
+        Console.WriteLine($"второй лежит внутри первого: [{string.Join<Range>(", ", ranges)}]");
+
+        ranges = range2.GetDifference(new Range(0, 8));
+        Console.WriteLine($"второй частично перекрывает первый: [{string.Join<Range>(", ", ranges)}]");
     }
 }
