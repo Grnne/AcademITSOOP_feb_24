@@ -1,6 +1,6 @@
-﻿namespace ShapesTask;
+﻿namespace ShapesTask.Shapes;
 
-internal class Circle : IShape
+public class Circle : IShape
 {
     public double Radius { get; set; }
 
@@ -19,6 +19,33 @@ internal class Circle : IShape
 
     public override string ToString()
     {
-        return $"Это круг. Площадь: {GetArea():F2}; Длина окружности: {GetPerimeter():F2}; Диаметр: {GetWidth():F2}; Радиус: {Radius:F2};";
+        return $"Круг. Диаметр: {GetWidth():F2}; Радиус: {Radius:F2}; Площадь: {GetArea():F2}; Длина окружности: {GetPerimeter():F2};";
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(obj, this))
+        {
+            return true;
+        }
+
+        if (obj is null || obj.GetType() != GetType())
+        {
+            return false;
+        }
+
+        Circle circle = (Circle)obj;
+
+        return Radius == circle.Radius;
+    }
+
+    public override int GetHashCode()
+    {
+        int prime = 7;
+        int hash = 1;
+
+        hash = prime * hash + Radius.GetHashCode();
+
+        return hash;
     }
 }
