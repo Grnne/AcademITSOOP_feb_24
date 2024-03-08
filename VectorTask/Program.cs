@@ -25,8 +25,8 @@ internal class Program
         Vector vector4 = new Vector(vector3);
         Console.WriteLine(vector4.Equals(vector3));
 
-        Vector vector6 =  Vector.Add(vector3, vector4);
+        Vector vector6 = Vector.Add(vector3, vector4);
         Console.WriteLine(vector6);
-        Console.WriteLine(Vector.MultiplyScalar(vector1,vector2));
+        Console.WriteLine(Vector.ScalarProduct(vector1, vector2));
     }
 }

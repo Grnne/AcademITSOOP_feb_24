@@ -61,7 +61,7 @@ public class Vector
         return result;
     }
 
-    public static double MultiplyScalar(Vector vector1, Vector vector2)
+    public static double ScalarProduct(Vector vector1, Vector vector2)
     {
         double result = 0;
 

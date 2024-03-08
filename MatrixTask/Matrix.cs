@@ -8,6 +8,11 @@ public class Matrix
 
     public Matrix(int rowsAmount, int columnsAmount)
     {
+        if (rowsAmount <= 0 || columnsAmount <= 0)
+        {
+            throw new ArgumentOutOfRangeException("Must be more then zero matrix elements.");
+        }
+
         Rows = new Vector[rowsAmount];
 
         for (int i = 0; i < rowsAmount; i++)
@@ -20,73 +25,136 @@ public class Matrix
     {
         Rows = new Vector[incomingMatrix.Rows.Length];
 
-        for (int i = 0; i < incomingMatrix.Rows.Length; i++)
+        for (int i = 0; i < Rows.Length; i++)
         {
             Rows[i] = new Vector(incomingMatrix.Rows[i]);
         }
     }
 
-    public Matrix(double[,] incomingMatrix)
+    public Matrix(double[,] incomingArray)
     {
-        Rows = new Vector[incomingMatrix.GetLength(0)];
-
-        for (int i = 0; i < incomingMatrix.GetLength(0); i++)
+        if (incomingArray.Length == 0)
         {
-            Rows[i] = new Vector(Enumerable.Range(0, incomingMatrix.GetLength(0)).Select(x => incomingMatrix[x, i]).ToArray());
+            throw new ArgumentOutOfRangeException("Must be more then zero matrix elements.");
+        }
+
+        Rows = new Vector[incomingArray.GetLength(0)];
+
+        for (int i = 0; i < Rows.Length; i++)
+        {
+            Rows[i] = new Vector(Enumerable.Range(0, incomingArray.GetLength(1)).
+                Select(x => incomingArray[i, x]).
+                ToArray());
         }
     }
 
-    public Matrix(Vector[] incomingMatrix)
+    public Matrix(Vector[] incomingArray)
     {
-        Rows = new Vector[incomingMatrix.Length];
-
-        for (int i = 0; i < incomingMatrix.Length; i++)
+        if (incomingArray.Length == 0)
         {
-            Rows[i] = new Vector(incomingMatrix[i]);
+            throw new ArgumentOutOfRangeException("Must be more then zero matrix elements.");
+        }
+
+        Rows = new Vector[incomingArray.Length];
+
+        for (int i = 0; i < Rows.Length; i++)
+        {
+            Rows[i] = new Vector(incomingArray[i]);
         }
     }
 
-    public static void Add(Matrix matrix1, Matrix matrix2)
-    { }
+    //public static void Add(Matrix matrix1, Matrix matrix2)
+    //{ }
 
-    public static void Subtract(Matrix matrix1, Matrix matrix2)
-    { }
+    //public static void Subtract(Matrix matrix1, Matrix matrix2)
+    //{ }
 
-    public static void Multiply(Matrix matrix1, Matrix matrix2)
-    { }
+    //public static void Multiply(Matrix matrix1, Matrix matrix2)
+    //{ }
+
+    public (int, int) GetSize() => (Rows[0].GetSize(), Rows.Length);
+
+    public Vector GetVectorRow(int index) => new Vector(Rows[index]);
+
+    public Vector SetVectorRow(int index, Vector vector) => Rows[index] = new Vector(vector);
 
 
-    public (int,int) GetSize()
-    { return (0, 0); }
+    public Vector GetVectorColumn(int index)
+    {
+        Vector result = new Vector(Rows.Length);
 
-    public Vector GetVectorRow()
-    { return new Vector(0); }
+        for (int i = 0; i < Rows.Length; i++)
+        {
+            result.SetComponent(i, Rows[i].GetComponent(index));
+        }
 
-    public Vector SetVectorRow()
-    { return new Vector(0); }
+        return result;
+    }
 
-    public Vector GetVectorColumn()
-    { return new Vector(0); }
+    public void Add(Matrix matrix)
+    {
+        if (GetSize() == matrix.GetSize())
+        {
+            throw new ArgumentException("Matrices must be of the same dimension!");
+        }
+
+        for (int i = 0; i < Rows.Length; i++)
+        {
+            Rows[i].Add(matrix.Rows[i]);
+        }
+    }
+
+    public void Subtract(Matrix matrix)
+    {
+        if (GetSize() == matrix.GetSize())
+        {
+            throw new ArgumentException("Matrices must be of the same dimension!");
+        }
+
+        for (int i = 0; i < Rows.Length; i++)
+        {
+            Rows[i].Subtract(matrix.Rows[i]);
+        }
+    }
+
+    public void MultiplyByScalar(double scalar)
+    {
+        for (int i = 0; i < Rows.Length; i++)
+        {
+            Rows[i].MultiplyByScalar(scalar);
+        }
+    }
+
+    public Vector MultiplyByVector(Vector vector)
+    {
+        Vector result = new Vector(Rows.Length);
+
+        for (int i = 0; i < Rows.Length; i++)
+        {
+            result.SetComponent(i, Vector.ScalarProduct(vector, Rows[i]));
+        }
+
+        return result;
+    }
 
     public void Transpose()
-    { }
+    {
+        Vector[] vectors = new Vector[Rows.Length];
 
-    public void MultiplyByScalar() //Возможно ScalarMultiply
-    { }
+        for (int i = 0; i < Rows.Length; i++)
+        {
+            vectors[i] = GetVectorColumn(i);
+        }
+
+        Rows = vectors;
+    }
 
     public double GetDeterminant()
-    { 
+    {
         return 0;
     }
 
-    public void Add()
-    { }
+    public override string ToString() => "{" + string.Join(", ", (IEnumerable<Vector>)Rows) + "}";
 
-    public void Subtract()
-    { }
 
-    public override string ToString()
-    {
-        return base.ToString();
-    }
 }
