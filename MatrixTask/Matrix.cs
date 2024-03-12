@@ -10,7 +10,7 @@ public class Matrix
     {
         if (rowsAmount <= 0 || columnsAmount <= 0)
         {
-            throw new ArgumentOutOfRangeException("Must be more then zero matrix elements.");
+            throw new ArgumentOutOfRangeException("Must be more then zero matrix elements.", nameof(rowsAmount));
         }
 
         Rows = new Vector[rowsAmount];
@@ -131,7 +131,7 @@ public class Matrix
 
         for (int i = 0; i < Rows.Length; i++)
         {
-            result.SetComponent(i, Vector.ScalarProduct(vector, Rows[i]));
+            result.SetComponent(i, Vector.GetScalarProduct(vector, Rows[i]));
         }
 
         return result;
