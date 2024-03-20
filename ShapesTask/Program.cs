@@ -22,16 +22,14 @@ internal class Program
 
         Console.WriteLine();
 
-        shapes.Sort(new ShapesAreaComparer());
+        shapes.Sort(new ShapeAreaComparer());
         Console.WriteLine("Характеристики фигуры с наибольшей площадью");
-        int elementIndex = shapes.Count - 1;
-        Console.WriteLine(shapes[elementIndex]);
+        Console.WriteLine(shapes[^1]);
 
         Console.WriteLine();
 
-        shapes.Sort(new ShapesPerimeterComparer());
+        shapes.Sort(new ShapePerimeterComparer());
         Console.WriteLine("Характеристики фигуры с вторым по величине периметром");
-        elementIndex = shapes.Count - 2;
-        Console.WriteLine(shapes[elementIndex]);
+        Console.WriteLine(shapes[^2]);
     }
 }

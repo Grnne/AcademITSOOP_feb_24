@@ -39,7 +39,7 @@ public class Triangle : IShape
         return side1Length + side2Length + side3Length;
     }
 
-    public double GetSideLength(double x1, double y1, double x2, double y2) =>
+    private static double GetSideLength(double x1, double y1, double x2, double y2) =>
             Math.Sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 
     public override string ToString()
