@@ -199,49 +199,49 @@ public class Matrix
         rows = vectors;
     }
 
-    //public double GetDeterminant()
-    //{
-    //    if (Rows.Length == 1)
-    //    {
-    //        return Rows[0].GetComponent(0);
-    //    }
+    public double GetDeterminant()
+    {
+        if (rows.Length == 1)
+        {
+            return rows[0].GetComponent(0);
+        }
 
-    //    if (Rows.Length == 2)
-    //    {
-    //        return Rows[0].GetComponent(0) * Rows[1].GetComponent(1) - Rows[1].GetComponent(0) * Rows[0].GetComponent(1);
-    //    }
+        if (rows.Length == 2)
+        {
+            return rows[0].GetComponent(0) * rows[1].GetComponent(1) - rows[1].GetComponent(0) * rows[0].GetComponent(1);
+        }
 
-    //    double determinant = 0;
+        double determinant = 0;
 
-    //    for (int i = 0; i < Rows.Length; i++)
-    //    {
-    //        Matrix minor = GetMinor(i);
-    //        determinant += Math.Pow(-1, i) * Rows[0].GetComponent(i) * minor.GetDeterminant();
-    //    }
+        for (int i = 0; i < rows.Length; i++)
+        {
+            Matrix minor = GetMinor(i);
+            determinant += Math.Pow(-1, i) * rows[0].GetComponent(i) * minor.GetDeterminant();
+        }
 
-    //    return determinant;
-    //}
+        return determinant;
+    }
 
-    //private Matrix GetMinor(int position)
-    //{
-    //    Matrix minor = new Matrix(Rows.Length - 1, Rows.Length - 1);
+    private Matrix GetMinor(int position)
+    {
+        Matrix minor = new Matrix(rows.Length - 1, rows.Length - 1);
 
 
-    //    for (int i = 1; i < minor.Rows.Length; i++)
-    //    {
-    //        for (int j = 0; j < position; j++)
-    //        {
-    //            minor.Rows[i - 1].SetComponent(j, Rows[i].GetComponent(j));
-    //        }
+        for (int i = 1; i < minor.rows.Length; i++)
+        {
+            for (int j = 0; j < position; j++)
+            {
+                minor.rows[i - 1].SetComponent(j, rows[i].GetComponent(j));
+            }
 
-    //        for (int j = position + 1; j < Rows.Length; j++)
-    //        {
-    //            minor.Rows[i - 1].SetComponent(j - 1, Rows[i].GetComponent(j));
-    //        }
-    //    }
+            for (int j = position + 1; j < rows.Length; j++)
+            {
+                minor.rows[i - 1].SetComponent(j - 1, rows[i].GetComponent(j));
+            }
+        }
 
-    //    return minor;
-    //}
+        return minor;
+    }
 
     public override string ToString()
     {

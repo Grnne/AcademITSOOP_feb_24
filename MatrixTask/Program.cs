@@ -6,6 +6,8 @@ internal class Program
 {
 
 // TODO Доделать проклятый определитель.
+  
+
     
     static void Main(string[] args)
     {

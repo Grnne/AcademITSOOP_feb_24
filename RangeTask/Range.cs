@@ -45,7 +45,7 @@ public class Range
 
         if (From >= range.From && To <= range.To)
         {
-            return new Range[0];
+            return Array.Empty<Range>();
         }
 
         if (From < range.From && To > range.To)
