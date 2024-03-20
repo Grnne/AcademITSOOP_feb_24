@@ -4,6 +4,9 @@ namespace ArrayListTask;
 
 public class ArrayList<T> : IList<T>
 {
+    
+    
+    
     public T this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public int Count => throw new NotImplementedException();

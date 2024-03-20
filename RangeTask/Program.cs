@@ -22,7 +22,6 @@ internal class Program
         Console.WriteLine($"и два диапазона, если нельзя: [{string.Join<Range>(", ", ranges)}]");
         Console.WriteLine();
 
-
         Console.WriteLine("Результаты разности двух диапазонов, если они:");
         ranges = range2.GetDifference(new Range(0, 3));
         Console.WriteLine($"не пересекаются: [{string.Join<Range>(", ", ranges)}]");
