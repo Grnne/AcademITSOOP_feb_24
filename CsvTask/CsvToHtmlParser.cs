@@ -1,106 +1,135 @@
 ﻿namespace CsvTask;
 
-internal class CsvToHtmlParser
+public static class CsvToHtmlParser
 {
-    static void Main(string[] args)
+    public static void ParseCsvToHtml(string input, string output)
     {
-        string path = "..\\..\\..\\"; 
-
-        using StreamReader streamReader = new(path + "input.csv");
-
-        string currentLine;
-        string cell = string.Empty;
-        bool isInsideQuotes = false;
-
-        using StreamWriter streamWriter = new StreamWriter(path + "output.html");
-
-        SetHeadTags(streamWriter);
-
-        while ((currentLine = streamReader.ReadLine()) != null)
+        try
         {
-            streamWriter.WriteLine("<tr>");
-            cell = string.Empty;
 
-            for (int i = 0; i < currentLine.Length; i++)
+            //if (i == currentLine.Length - 1)
+            //{
+            //    cell += currentLine[i] + "<br/>";
+            //    i = -1;
+            //    Console.WriteLine(currentLine);
+            //    currentLine = streamReader.ReadLine();
+
+            //    while (currentLine.Length == 0)
+            //    {
+
+            //        cell += "<br/>";
+            //        currentLine = streamReader.ReadLine();
+            //    }
+
+            //    continue;
+            //}
+
+
+
+            using StreamReader streamReader = new(input);
+
+            string cell = string.Empty;
+            bool isInsideQuotes = false;
+
+            using StreamWriter streamWriter = new(output);
+
+            WriteHeadTags(streamWriter);
+
+            string currentLine;
+
+            while ((currentLine = streamReader.ReadLine()) != null)
             {
-                if (currentLine[i] == '"' && !isInsideQuotes)
-                {
-                    isInsideQuotes = true;
-                    continue;
-                }
+                streamWriter.WriteLine("<tr>");
+                cell = string.Empty;
 
-                if (isInsideQuotes)
+                for (int i = 0; i < currentLine!.Length; i++)
                 {
-                    if (i + 1 < currentLine.Length && currentLine[i + 1] == '"' && currentLine[i] == '"')
+                    if (currentLine[i] == '"' && !isInsideQuotes)
                     {
-                        cell += '"';
-                        i++;
+                        isInsideQuotes = true;
                         continue;
                     }
 
-                    if (currentLine[i] == '"')
+                    if (isInsideQuotes)
                     {
-                        isInsideQuotes = false;
-                        continue;
-                    }
 
-                    if (i == currentLine.Length - 1)
-                    {
-                        cell += currentLine[i]+"</br>";
-                        i = -1;
-                        currentLine = streamReader.ReadLine();
-                        
-                        continue;
-                    }
+                        if (i + 1 < currentLine.Length && currentLine[i + 1] == '"' && currentLine[i] == '"')
+                        {
+                            streamWriter.Write('"');
+                            i++;
+                            continue;
+                        }
 
-                    cell += GetHtmlSymbolCodes(currentLine[i]);
-                }
-                else
-                {
-                    if (currentLine[i] == ',')
-                    {
-                        streamWriter.WriteLine("    <td>" + cell + "</td>");
-                        cell = "";
+                        if (currentLine[i] == '"')
+                        {
+                            isInsideQuotes = false;
+                            continue;
+                        }
+
+                        if (i == currentLine.Length - 1)
+                        {
+                            cell += currentLine[i] + "<br/>";
+                            i = -1;
+                            currentLine = streamReader.ReadLine();
+
+                            continue;
+                        }
+
+                        cell += ConvertCharToHtmlEntity(currentLine[i]);
                     }
                     else
                     {
-                        cell += GetHtmlSymbolCodes(currentLine[i]);
+                        if (currentLine[i] == ',')
+                        {
+                            streamWriter.WriteLine("\t<td>" + cell + "</td>");
+                            cell = "";
+                        }
+                        else
+                        {
+                            cell += ConvertCharToHtmlEntity(currentLine[i]);
+                        }
                     }
                 }
+
+                streamWriter.WriteLine("\t<td>" + cell + "</td>");
+                streamWriter.WriteLine("</tr>");
             }
 
-            streamWriter.WriteLine("    <td>" + cell + "</td>");
-            streamWriter.WriteLine("</tr>");
+            WriteBottomTags(streamWriter);
         }
-
-        SetBottomTags(streamWriter);
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("File not found, enter input and output file paths, input must be .csv and output - .html");
+        }
     }
-    
-    public static void SetHeadTags(StreamWriter streamWriter)
+
+    public static void WriteHeadTags(StreamWriter streamWriter)
     {
         streamWriter.WriteLine("<!DOCTYPE HTML>");
         streamWriter.WriteLine("<html>");
         streamWriter.WriteLine("<head>");
-        streamWriter.WriteLine("    <title></title>");
-        streamWriter.WriteLine("    <meta charset=\"utf-8\">");
+        streamWriter.WriteLine("\t<title>Даже не знаю, что тут нужно писать</title>");
+        streamWriter.WriteLine("\t<meta charset=\"utf-8\">");
         streamWriter.WriteLine("</head>");
         streamWriter.WriteLine("<body>");
         streamWriter.WriteLine("<table border=\"2\">");
     }
 
-    public static void SetBottomTags(StreamWriter streamWriter)
+    public static void WriteBottomTags(StreamWriter streamWriter)
     {
-
         streamWriter.WriteLine("</table>");
         streamWriter.WriteLine("</body>");
         streamWriter.Write("</html>");
     }
 
-    public static string GetHtmlSymbolCodes(char literal) => literal switch
+    public static string ConvertCharToHtmlEntity(char character) => character switch
     {
         '<' => "&lt;",
         '>' => "&gt;",
         '&' => "&amp;",
-        _ => string.Concat(literal)
+        _ => character.ToString()
     };
 }
+
+
+

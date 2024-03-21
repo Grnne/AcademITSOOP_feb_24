@@ -10,7 +10,7 @@ public class Vector
     {
         if (size <= 0)
         {
-            throw new ArgumentOutOfRangeException($"Must be more then zero components. Components amount = {size}", nameof(size));
+            throw new ArgumentOutOfRangeException(nameof(size), $"Must be more than zero components. Components amount = {size}");
         }
 
         components = new double[size];
@@ -22,7 +22,7 @@ public class Vector
     {
         if (components.Length == 0)
         {
-            throw new ArgumentOutOfRangeException($"Must be more then zero components. Components amount = {components.Length}", nameof(components.Length));
+            throw new ArgumentOutOfRangeException(nameof(components.Length), $"Must be more than zero components. Components amount = {components.Length}");
         }
 
         this.components = new double[components.Length];
@@ -33,7 +33,7 @@ public class Vector
     {
         if (size <= 0)
         {
-            throw new ArgumentOutOfRangeException($"Must be more then zero components. Components amount = {size}", nameof(size));
+            throw new ArgumentOutOfRangeException(nameof(size), $"Must be more than zero components. Components amount = {size}");
         }
 
         components = new double[size];
