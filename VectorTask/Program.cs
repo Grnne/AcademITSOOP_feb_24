@@ -11,8 +11,8 @@ internal class Program
         Console.WriteLine();
 
         Console.Write("Поменяем второй компонент вектора на 3 и выведем его, а после весь вектор: ");
-        vector1.SetComponent(2, 3);
-        Console.Write(vector1.GetComponent(2) + ", ");
+        vector1[2] = 3;
+        Console.Write(vector1[2] + ", ");
         Console.WriteLine(vector1);
         Console.WriteLine();
 
@@ -32,8 +32,8 @@ internal class Program
         Console.WriteLine();
 
         Console.WriteLine("Инициализируем вектор через конструктор с указанием длины и массивом и поменяем последний член на 2");
-        Vector vector3 = new Vector(15, doubles);
-        vector3.SetComponent(14, 2);
+        Vector vector3 = new Vector(12, doubles);
+        vector3[11] = 2;
         Console.WriteLine(vector3);
         Console.WriteLine();
 
