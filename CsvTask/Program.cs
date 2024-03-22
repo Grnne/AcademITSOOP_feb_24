@@ -14,9 +14,10 @@ internal class Program
 
         string input = args[0];
         string output = args[1];
+
         try
         {
-            CsvToHtmlParser.ParseCsvToHtml(input, output); 
+            CsvToHtmlParser.ParseCsvToHtml(input, output);
         }
         catch (FileNotFoundException)
         {
