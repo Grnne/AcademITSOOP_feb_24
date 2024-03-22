@@ -1,6 +1,6 @@
 ﻿namespace CsvTask;
 
-// TODO убрать целл, добавить метод для кавычки в конце строки
+// TODO метод для обработки пустой строки и кавычки в конце, возможно кейс
 internal class Program
 {
     static void Main(string[] args)
