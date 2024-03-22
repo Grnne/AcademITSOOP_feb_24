@@ -4,103 +4,94 @@ public static class CsvToHtmlParser
 {
     public static void ParseCsvToHtml(string input, string output)
     {
-        try
+        using StreamReader streamReader = new(input);
+        using StreamWriter streamWriter = new(output);
+
+        WriteHeadTags(streamWriter);
+
+        string currentLine;
+        bool isInsideQuotes = false;
+
+        while ((currentLine = streamReader.ReadLine()) != null)
         {
+            streamWriter.WriteLine("<tr>");
+            streamWriter.Write("\t<td>");
 
-            //if (i == currentLine.Length - 1)
-            //{
-            //    cell += currentLine[i] + "<br/>";
-            //    i = -1;
-            //    Console.WriteLine(currentLine);
-            //    currentLine = streamReader.ReadLine();
-
-            //    while (currentLine.Length == 0)
-            //    {
-
-            //        cell += "<br/>";
-            //        currentLine = streamReader.ReadLine();
-            //    }
-
-            //    continue;
-            //}
-
-
-
-            using StreamReader streamReader = new(input);
-
-            string cell = string.Empty;
-            bool isInsideQuotes = false;
-
-            using StreamWriter streamWriter = new(output);
-
-            WriteHeadTags(streamWriter);
-
-            string currentLine;
-
-            while ((currentLine = streamReader.ReadLine()) != null)
+            for (int i = 0; i < currentLine.Length; i++)
             {
-                streamWriter.WriteLine("<tr>");
-                cell = string.Empty;
-
-                for (int i = 0; i < currentLine!.Length; i++)
+                if (currentLine[i] == '"' && !isInsideQuotes)
                 {
-                    if (currentLine[i] == '"' && !isInsideQuotes)
+                    isInsideQuotes = true;
+
+                    if (i == currentLine.Length - 1)
                     {
-                        isInsideQuotes = true;
+                        streamWriter.Write("<br/>");
+                        i = -1;
+                        currentLine = streamReader.ReadLine();
+
+                        while (currentLine.Length == 0)
+                        {
+                            streamWriter.Write("<br/>");
+                            currentLine = streamReader.ReadLine();
+                        }
+                    }
+
+                    continue;
+                }
+
+                if (isInsideQuotes)
+                {
+                    if (i + 1 < currentLine.Length && currentLine[i + 1] == '"' && currentLine[i] == '"')
+                    {
+                        streamWriter.Write('"');
+                        i++;
                         continue;
                     }
 
-                    if (isInsideQuotes)
+                    if (currentLine[i] == '"')
                     {
+                        isInsideQuotes = false;
+                        continue;
+                    }
 
-                        if (i + 1 < currentLine.Length && currentLine[i + 1] == '"' && currentLine[i] == '"')
-                        {
-                            streamWriter.Write('"');
-                            i++;
-                            continue;
-                        }
+                    if (i == currentLine.Length - 1)
+                    {
+                        streamWriter.Write(currentLine[i] + "<br/>");
+                        i = -1;
+                        currentLine = streamReader.ReadLine();
 
-                        if (currentLine[i] == '"')
+                        while (currentLine.Length == 0)
                         {
-                            isInsideQuotes = false;
-                            continue;
-                        }
-
-                        if (i == currentLine.Length - 1)
-                        {
-                            cell += currentLine[i] + "<br/>";
-                            i = -1;
+                            streamWriter.Write("<br/>");
                             currentLine = streamReader.ReadLine();
-
-                            continue;
                         }
 
-                        cell += ConvertCharToHtmlEntity(currentLine[i]);
+                        continue;
+                    }
+
+                    WriteCharAsHtmlEntity(currentLine[i], streamWriter);
+                }
+                else
+                {
+                    if (currentLine[i] == ',')
+                    {
+                        streamWriter.WriteLine("</td>");
+                        streamWriter.Write("\t<td>");
                     }
                     else
                     {
-                        if (currentLine[i] == ',')
-                        {
-                            streamWriter.WriteLine("\t<td>" + cell + "</td>");
-                            cell = "";
-                        }
-                        else
-                        {
-                            cell += ConvertCharToHtmlEntity(currentLine[i]);
-                        }
+                        WriteCharAsHtmlEntity(currentLine[i], streamWriter);
                     }
                 }
-
-                streamWriter.WriteLine("\t<td>" + cell + "</td>");
-                streamWriter.WriteLine("</tr>");
             }
 
-            WriteBottomTags(streamWriter);
+            streamWriter.WriteLine("</td>");
+            streamWriter.WriteLine("</tr>");
         }
-        catch (FileNotFoundException)
-        {
-            Console.WriteLine("File not found, enter input and output file paths, input must be .csv and output - .html");
-        }
+
+        WriteBottomTags(streamWriter);
+        Console.WriteLine("Parsing is done");
+        Console.ReadKey();
     }
 
     public static void WriteHeadTags(StreamWriter streamWriter)
@@ -111,7 +102,7 @@ public static class CsvToHtmlParser
         streamWriter.WriteLine("\t<title>Даже не знаю, что тут нужно писать</title>");
         streamWriter.WriteLine("\t<meta charset=\"utf-8\">");
         streamWriter.WriteLine("</head>");
-        streamWriter.WriteLine("<body>");
+        streamWriter.WriteLine("<body style=\"background-color:lightslategray\">");
         streamWriter.WriteLine("<table border=\"2\">");
     }
 
@@ -122,14 +113,23 @@ public static class CsvToHtmlParser
         streamWriter.Write("</html>");
     }
 
-    public static string ConvertCharToHtmlEntity(char character) => character switch
+    // Хотелось бы сюда погрузить дублирующийся код, но я имя не могу придумать
+    public static void CheckLineEnd(int i, StreamWriter streamWriter, string currentLine) 
     {
-        '<' => "&lt;",
-        '>' => "&gt;",
-        '&' => "&amp;",
-        _ => character.ToString()
-    };
+
+    }
+
+    // А тут поди прямо в кейсе можно писать в стрим? без вывода переменной
+    public static void WriteCharAsHtmlEntity(char character, StreamWriter streamWriter)
+    {
+        string str = character switch
+        {
+            '<' => "&lt;",
+            '>' => "&gt;",
+            '&' => "&amp;",
+            _ => character.ToString()
+        };
+
+        streamWriter.Write(str);
+    }
 }
-
-
-

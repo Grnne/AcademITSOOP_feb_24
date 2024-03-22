@@ -11,10 +11,16 @@ internal class Program
             Console.ReadKey();
             return;
         }
-        
+
         string input = args[0];
         string output = args[1];
-
-        CsvToHtmlParser.ParseCsvToHtml(input, output);
+        try
+        {
+            CsvToHtmlParser.ParseCsvToHtml(input, output); 
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("File not found. Enter input and output file paths, input must be .csv and output - .html");
+        }
     }
 }
