@@ -4,6 +4,6 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Dictionary<int,string> dic = new Dictionary<int,string>();
     }
 }

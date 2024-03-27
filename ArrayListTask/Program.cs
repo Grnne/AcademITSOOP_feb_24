@@ -6,7 +6,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        //List<string> list = new List<string>(); // Для сравнения методов c листом
+        List<string> list = new List<string>(); // Для сравнения методов c листом
         Console.WriteLine("Создадим наш лист, добавим элемент и посмотрим его длину");
 
         ArrayList<int> myList1 = new() { 0, 1, 2, 3, 4, 5, 6, 7, 8 };

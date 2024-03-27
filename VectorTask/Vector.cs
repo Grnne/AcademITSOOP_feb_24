@@ -24,6 +24,17 @@ public class Vector
 
     public Vector(Vector vector) => _components = (double[])vector._components.Clone();
 
+    public Vector(int size, Vector vector)
+    {
+        if (size <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(size), $"Size must be more than zero. Size: {size}");
+        }
+
+        _components = new double[size];
+        _components = (double[])vector._components.Clone();
+    }
+
     public Vector(double[] components)
     {
         if (components.Length == 0)
@@ -125,7 +136,7 @@ public class Vector
         stringBuilder.Append('{');
         int length = _components.Length - 1;
 
-        for (int i = 0; i < length - 1; i++)
+        for (int i = 0; i < length; i++)
         {
             stringBuilder.Append(_components[i]);
             stringBuilder.Append(", ");
