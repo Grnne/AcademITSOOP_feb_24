@@ -62,8 +62,9 @@ public class Triangle : IShape
 
         Triangle triangle = (Triangle)obj;
 
-        return X1 == triangle.X1 && Y1 == triangle.Y1 && X2 == triangle.X2
-            && Y2 == triangle.Y2 && X3 == triangle.X3 && Y3 == triangle.Y3;
+        return X1 == triangle.X1 && Y1 == triangle.Y1
+            && X2 == triangle.X2 && Y2 == triangle.Y2
+            && X3 == triangle.X3 && Y3 == triangle.Y3;
     }
 
     public override int GetHashCode()

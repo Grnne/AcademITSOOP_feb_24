@@ -4,9 +4,9 @@ public class Square : IShape
 {
     public double SideLength { get; set; }
 
-    public Square(double height)
+    public Square(double sideLength)
     {
-        SideLength = height;
+        SideLength = sideLength;
     }
 
     public double GetWidth() => SideLength;

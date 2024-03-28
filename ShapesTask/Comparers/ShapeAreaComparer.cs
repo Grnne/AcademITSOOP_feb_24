@@ -8,12 +8,12 @@ public class ShapeAreaComparer : IComparer<IShape>
     {
         if (shape1 is null)
         {
-            throw new ArgumentNullException("Shapes must be not null", nameof(shape1));
+            throw new ArgumentNullException(nameof(shape1), "Shapes must be not null");
         }
 
         if (shape2 is null)
         {
-            throw new ArgumentNullException("Shapes must be not null", nameof(shape2));
+            throw new ArgumentNullException(nameof(shape2), "Shapes must be not null");
         }
 
         return shape1.GetArea().CompareTo(shape2.GetArea());
