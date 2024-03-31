@@ -82,6 +82,7 @@ public class ArrayList<T> : IList<T>
         {
             throw new ArgumentOutOfRangeException(nameof(capacity), $"Capacity must be more than zero, capacity: {capacity}!");
         }
+
         if (capacity == 0)
         {
             _items = s_emptyArray;
@@ -195,7 +196,7 @@ public class ArrayList<T> : IList<T>
             return;
         }
 
-        Array.Clear(_items, 0, _items.Length);
+        Array.Cl ear(_items, 0, _items.Length);
         _size = 0;
         _version++;
     }

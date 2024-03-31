@@ -1,55 +1,66 @@
-﻿namespace ListTask;
+﻿using System.Collections;
 
-public class SinglyLinkedList<T>
+namespace ListTask;
+
+public class SinglyLinkedList<T> : IEnumerable<T>
 {
-    public Node<T>? Head { get; set; }
+    private Node<T>? _head;
 
-    public int Count { get; set; } = 0;
+    public int Count { get; private set; }
+
+    public T this[int index]
+    {
+        get
+        {
+            if (_head is null)
+            {
+                throw new NullReferenceException("Element is null");
+            }
+
+            return GetNode(index)!.Item;
+        }
+        
+        set
+        {
+            // А как мне в индексаторе вернуть прошлое значение?
+            Node<T> node = GetNode(index)!;
+            //T? oldItem = node.Item;
+            node.Item = value;
+
+            //return oldItem;
+        }
+    }
 
     public T GetFirst()
     {
-        if (Head is null)
+        if (_head is null)
         {
-            throw new NullReferenceException("Element is null");
+            throw new InvalidOperationException("List is empty");
         }
 
-        return Head.Item;
+        return _head.Item;
     }
 
-    public T? GetValueAt(int index)
+    public void AddFirst(T item)
     {
-        return GetElementAt(index)!.Item;
-    }
-
-    public T? SetValueAt(int index, T value)
-    {
-        Node<T> node = GetElementAt(index)!;
-        T? oldValue = node.Item;
-        node.Item = value;
-
-        return oldValue;
-    }
-
-    public void AddFirst(Node<T> item)
-    {
-        Count++;
-
-        if (Head is null)
+        if (_head is null)
         {
-            Head = item;
+            _head =  new Node<T>(item);
         }
         else
         {
-            item.Next = Head;
-            Head = item;
+            _head.Next = _head;
+            _head = new Node<T>(item);
         }
+
+        Count++;
     }
 
-    public void AddAt(int index, Node<T> item)
+    public void Add(int index, T item)
     {
-        if (index > Count || index < 0)
+        if (index < 0 || index > Count)
         {
-            throw new ArgumentOutOfRangeException($"Index {index} is out of range.");
+            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range.");
         }
 
         if (index == 0)
@@ -58,22 +69,22 @@ public class SinglyLinkedList<T>
         }
         else
         {
-            Node<T> prev = GetElementAt(index - 1)!;
-            item.Next = prev.Next;
-            prev.Next = item;
+            Node<T> prev = GetNode(index - 1)!;
+            node.Next = prev.Next;
+            prev.Next = new Node<T>(item);
             Count++;
         }
     }
 
     public T RemoveFirst()
     {
-        if (Head is null)
+        if (_head is null)
         {
-            throw new NullReferenceException("Element is null");
+            throw new InvalidOperationException("List is empty");
         }
 
-        T result = Head.Item;
-        Head = Head.Next;
+        T result = _head.Item;
+        _head = _head.Next;
         Count--;
 
         return result;
@@ -87,7 +98,7 @@ public class SinglyLinkedList<T>
         }
         else
         {
-            Node<T> previousNode = GetElementAt(index - 1)!;
+            Node<T> previousNode = GetNode(index - 1)!;
             T result = previousNode.Next.Item;
             previousNode.Next = previousNode.Next.Next;
             Count--;
@@ -96,16 +107,17 @@ public class SinglyLinkedList<T>
         }
     }
 
-    public bool Remove(T value)
+    public bool Remove(T item)
     {
-        Node<T> node = Head!;
+        Node<T> node = _head!;
 
         for (int i = 0; i < Count; i++)
         {
-            if (node.Item.Equals(value))
+            if (node.Item.Equals(item))
             {
                 RemoveAt(i);
                 return true;
+                Count--;
             }
         }
 
@@ -121,15 +133,15 @@ public class SinglyLinkedList<T>
 
         if (Count == 2)
         {
-            Head.Next.Next = Head;
-            Head = Head.Next;
+            _head.Next.Next = _head;
+            _head = _head.Next;
 
             return;
         }
 
-        Node<T> node = Head.Next;
+        Node<T> node = _head.Next;
         Node<T> next;
-        Node<T> prev = Head;
+        Node<T> prev = _head;
 
         for (int i = 0; i < Count - 1; i++)
         {
@@ -139,19 +151,19 @@ public class SinglyLinkedList<T>
             node = next; // переход на следующую ноду
         }
 
-        Head = prev;
+        _head = prev;
     }
 
     public SinglyLinkedList<T> Copy()
     {
         SinglyLinkedList<T> copy = new SinglyLinkedList<T>();
-        Node<T> node = Head;
+        Node<T> node = _head;
         int i = 0;
 
 
         while (node != null)
         {
-            copy.AddAt(i, new Node<T>(node.Item));
+            copy.ADD(i, new Node<T>(node.Item));
             i++;
             node = node.Next;
         }
@@ -159,20 +171,54 @@ public class SinglyLinkedList<T>
         return copy;
     }
 
-    public Node<T>? GetElementAt(int index)
+    private Node<T> GetNode(int index)
     {
-        if (index > Count || index < 0)
+        if (index < 0 || index > Count)
         {
-            throw new ArgumentOutOfRangeException($"Index {index} is out of range.");
+            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range.");
         }
 
-        Node<T> node = Head!;
+        Node<T>? node = _head;
 
         for (int i = 0; i < index; i++)
         {
-            node = node.Next!;
+            node = node.Next;
         }
 
-        return node!;
+        return node;
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        var currentNode = _head;
+
+        while (currentNode != null)
+        {
+            yield return currentNode.Item;
+
+            currentNode = currentNode.Next;
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    public override string ToString()
+    {
+        string result = string.Empty;
+
+        if (_head is null)
+        {
+            return "null";
+        }
+        
+        foreach (T node in this)
+        {
+            result += _head.Item;
+        }
+
+        return result;
     }
 }
