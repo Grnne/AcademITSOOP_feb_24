@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrashCan", "TrashCan\TrashC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrayListHome", "ArrayListHome\ArrayListHome.csproj", "{EBB0C50A-C404-4CA8-8A6D-A4B50B81B37B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaTask", "LambdaTask\LambdaTask.csproj", "{8CD93E74-C55E-4AE0-BE5F-68FC7FC3AFEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{EBB0C50A-C404-4CA8-8A6D-A4B50B81B37B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBB0C50A-C404-4CA8-8A6D-A4B50B81B37B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBB0C50A-C404-4CA8-8A6D-A4B50B81B37B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CD93E74-C55E-4AE0-BE5F-68FC7FC3AFEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CD93E74-C55E-4AE0-BE5F-68FC7FC3AFEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CD93E74-C55E-4AE0-BE5F-68FC7FC3AFEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CD93E74-C55E-4AE0-BE5F-68FC7FC3AFEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

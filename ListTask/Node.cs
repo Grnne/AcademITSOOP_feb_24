@@ -1,6 +1,6 @@
 ﻿namespace ListTask;
 
- public class Node<T>
+ internal class Node<T>
 {
     public T Item { get; set; }
 
