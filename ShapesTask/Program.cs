@@ -8,11 +8,12 @@ internal class Program
     static void Main(string[] args)
     {
         List<IShape> shapes = new()
-        { new Circle(10),
-          new Rectangle(10, 10),
-          new Square(10),
-          new Triangle(0, 0, 0, 1, 1, 0),
-          new Square(5)
+        {
+            new Circle(10),
+            new Rectangle(10, 10),
+            new Square(10),
+            new Triangle(0, 0, 0, 1, 1, 0),
+            new Square(5)
         };
 
         foreach (IShape shape in shapes)
