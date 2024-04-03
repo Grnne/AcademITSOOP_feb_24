@@ -62,7 +62,7 @@ internal class Program
         Console.WriteLine();
         Console.Write("Нажмите любую клавишу, чтобы отобразить ряд Фибоначчи: ");
         Console.ReadKey();
-        
+
         foreach (var number in GetFibbonacciNumbers())
         {
             Console.WriteLine(number);

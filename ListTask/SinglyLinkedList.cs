@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Text;
 
 namespace ListTask;
 
@@ -12,14 +14,11 @@ public class SinglyLinkedList<T> : IEnumerable<T>
     {
         get
         {
-            if (_head is null)
-            {
-                throw new NullReferenceException("Element is null");
-            }
+            CheckIsListEmpty();
 
             return GetNode(index)!.Item;
         }
-        
+
         set
         {
             // А как мне в индексаторе вернуть прошлое значение?
@@ -33,92 +32,93 @@ public class SinglyLinkedList<T> : IEnumerable<T>
 
     public T GetFirst()
     {
-        if (_head is null)
-        {
-            throw new InvalidOperationException("List is empty");
-        }
+        CheckIsListEmpty();
 
-        return _head.Item;
+        return _head!.Item;
     }
 
     public void AddFirst(T item)
     {
-        if (_head is null)
-        {
-            _head =  new Node<T>(item);
-        }
-        else
-        {
-            _head.Next = _head;
-            _head = new Node<T>(item);
-        }
-
+        _head = new Node<T>(item, _head!);
         Count++;
+    }
+
+    public void Add(T item) // Добавил, чтоб получалось инициализировать список через new() {1, 3, 34}
+    {
+        Add(Count, item);
     }
 
     public void Add(int index, T item)
     {
-        if (index < 0 || index > Count)
-        {
-            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range.");
-        }
+        ValidateIndex(index);
 
         if (index == 0)
         {
             AddFirst(item);
+
+            return;
         }
-        else
-        {
-            Node<T> prev = GetNode(index - 1)!;
-            node.Next = prev.Next;
-            prev.Next = new Node<T>(item);
-            Count++;
-        }
+
+        Node<T> previousNode = GetNode(index - 1);
+        previousNode.Next = new Node<T>(item, previousNode.Next!);
+        Count++;
     }
 
     public T RemoveFirst()
     {
-        if (_head is null)
-        {
-            throw new InvalidOperationException("List is empty");
-        }
+        CheckIsListEmpty();
 
-        T result = _head.Item;
+        T deletedItem = _head!.Item;
         _head = _head.Next;
         Count--;
 
-        return result;
+        return deletedItem;
     }
 
     public T RemoveAt(int index)
     {
+        ValidateIndex(index);
+
         if (index == 0)
         {
             return RemoveFirst();
         }
-        else
-        {
-            Node<T> previousNode = GetNode(index - 1)!;
-            T result = previousNode.Next.Item;
-            previousNode.Next = previousNode.Next.Next;
-            Count--;
 
-            return result;
-        }
+        Node<T> previousNode = GetNode(index - 1)!;
+        T deletedItem = previousNode.Next!.Item;
+        previousNode.Next = previousNode.Next.Next;
+        Count--;
+
+        return deletedItem;
+
     }
 
     public bool Remove(T item)
     {
-        Node<T> node = _head!;
-
-        for (int i = 0; i < Count; i++)
+        if (_head == null)
         {
-            if (node.Item.Equals(item))
+            return false;
+        }
+
+        if (Equals(_head.Item, item))
+        {
+            RemoveFirst();
+
+            return true;
+        }
+
+        Node<T>? previousNode = _head;
+
+        while (previousNode.Next != null)
+        {
+            if (Equals(previousNode.Next.Item, item))
             {
-                RemoveAt(i);
-                return true;
+                previousNode.Next = previousNode.Next.Next;
                 Count--;
+                return true;
             }
+
+            previousNode = previousNode.Next;
         }
 
         return false;
@@ -126,63 +126,75 @@ public class SinglyLinkedList<T> : IEnumerable<T>
 
     public void Reverse()
     {
-        if (Count == 1)
+        if (Count <= 1)
         {
             return;
         }
 
-        if (Count == 2)
-        {
-            _head.Next.Next = _head;
-            _head = _head.Next;
+        Node<T> currentNode = _head!;
+        Node<T>? previousNode = null;
 
-            return;
+        for (int i = 0; i < Count; i++)
+        {
+            Node<T>? nextNode = currentNode.Next;
+            currentNode.Next = previousNode;
+
+            previousNode = currentNode;
+            currentNode = nextNode!;
         }
 
-        Node<T> node = _head.Next;
-        Node<T> next;
-        Node<T> prev = _head;
-
-        for (int i = 0; i < Count - 1; i++)
-        {
-            next = node.Next; // следующая нода
-            node.Next = prev; // меняем ссылку у текущей ноды
-            prev = node; // предыдущая нода становится текущей
-            node = next; // переход на следующую ноду
-        }
-
-        _head = prev;
+        _head = previousNode;
     }
 
     public SinglyLinkedList<T> Copy()
     {
-        SinglyLinkedList<T> copy = new SinglyLinkedList<T>();
-        Node<T> node = _head;
-        int i = 0;
+        SinglyLinkedList<T> copy = new();
 
-
-        while (node != null)
+        if (_head is null)
         {
-            copy.ADD(i, new Node<T>(node.Item));
-            i++;
-            node = node.Next;
+            return copy;
+        }
+
+        copy._head = new Node<T>(_head.Item);
+        copy.Count = Count;
+
+        Node<T> currentNode = copy._head;
+        Node<T> sourceNode = _head.Next!;
+
+        while (sourceNode is not null)
+        {
+            currentNode.Next = new Node<T>(sourceNode.Item);
+
+            currentNode = currentNode.Next;
+            sourceNode = sourceNode.Next!;
         }
 
         return copy;
     }
 
-    private Node<T> GetNode(int index)
+    private void ValidateIndex(int index)
     {
         if (index < 0 || index > Count)
         {
             throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range.");
         }
+    }
 
+    private void CheckIsListEmpty()
+    {
+        if (_head is null)
+        {
+            throw new InvalidOperationException("List is empty");
+        }
+    }
+
+    private Node<T> GetNode(int index)
+    {
         Node<T>? node = _head;
 
         for (int i = 0; i < index; i++)
         {
-            node = node.Next;
+            node = node!.Next;
         }
 
         return node;
@@ -207,18 +219,23 @@ public class SinglyLinkedList<T> : IEnumerable<T>
 
     public override string ToString()
     {
-        string result = string.Empty;
-
         if (_head is null)
         {
             return "null";
         }
-        
-        foreach (T node in this)
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.Append('[');
+
+        foreach (T item in this)
         {
-            result += _head.Item;
+            stringBuilder.Append(item + ", ");
         }
 
-        return result;
+        stringBuilder.Remove(stringBuilder.Length - 2, 2);
+        stringBuilder.Append(']');
+
+        return stringBuilder.ToString();
     }
 }

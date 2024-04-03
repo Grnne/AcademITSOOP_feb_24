@@ -33,7 +33,7 @@ internal class MyBinarySearchTree<T>
 
     }
 
-    public T Search()
+    public T Search(T item)
     {
         return _root.Item;
     }
@@ -45,7 +45,22 @@ internal class MyBinarySearchTree<T>
 
     public void BreadthFirstSearch(T item)
     {
+        if (_root == null)
+        {
+            return;
+        }
 
+        Queue<Node<T>> queue = new();
+        Node<T> currentNode = _root;
+
+        while (queue.Count > 0)
+        {
+            currentNode = currentNode.Left;
+            queue.Enqueue(currentNode);
+
+            currentNode = currentNode.Right;
+            queue.Enqueue(currentNode);
+        }
     }
 
     public void DepthFirstSearchRecursive(T item)
