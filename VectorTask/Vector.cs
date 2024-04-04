@@ -12,12 +12,11 @@ public class Vector
         set => _components[index] = value;
     }
 
+    public int Size => _components.Length;
+
     public Vector(int size)
     {
-        if (size <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(size), $"Size must be more than zero. Size: {size}");
-        }
+        ValidateSize(size);
 
         _components = new double[size];
     }
@@ -26,10 +25,7 @@ public class Vector
 
     public Vector(int size, Vector vector)
     {
-        if (size <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(size), $"Size must be more than zero. Size: {size}");
-        }
+        ValidateSize(size);
 
         _components = new double[size];
         _components = (double[])vector._components.Clone();
@@ -37,10 +33,7 @@ public class Vector
 
     public Vector(double[] components)
     {
-        if (components.Length == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(components.Length), $"Size must be more than zero. Size: {components.Length}");
-        }
+        ValidateSize(components.Length);
 
         _components = new double[components.Length];
         components.CopyTo(_components, 0);
@@ -48,18 +41,15 @@ public class Vector
 
     public Vector(int size, double[] components)
     {
-        if (size <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(size), $"Size must be more than zero. Size: {size}");
-        }
+        ValidateSize(size);
 
         if (size < components.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(components.Length), $"Array size must be greater than or equal to argument: Array size: {components.Length}, argument: {size}");
+            throw new ArgumentOutOfRangeException(nameof(components), $"Size argument must be greater than or equal to array size. Size: {components.Length}, array size: {size}");
         }
 
         _components = new double[size];
-        components.CopyTo(_components, 0);
+        Array.Copy(components, _components, Math.Min(size, components.Length));
     }
 
     public static Vector GetSum(Vector vector1, Vector vector2)
@@ -88,8 +78,6 @@ public class Vector
 
         return result;
     }
-
-    public int GetSize() => _components.Length;
 
     public void Add(Vector vector)
     {
@@ -130,16 +118,23 @@ public class Vector
         MultiplyByScalar(-1);
     }
 
+    private static void ValidateSize(int size)
+    {
+        if (size <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(size), $"Size must be greater than zero. Size: {size}");
+        }
+    }
+
     public override string ToString()
     {
         StringBuilder stringBuilder = new();
         stringBuilder.Append('{');
-        int length = _components.Length - 1;
+        int size = _components.Length - 1;
 
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < size; i++)
         {
-            stringBuilder.Append(_components[i]);
-            stringBuilder.Append(", ");
+            stringBuilder.Append(_components[i] + ", ");
         }
 
         stringBuilder.Append(_components[^1]);
@@ -147,7 +142,6 @@ public class Vector
 
         return stringBuilder.ToString();
     }
-
 
     public override bool Equals(object? obj)
     {
@@ -181,7 +175,7 @@ public class Vector
 
     public override int GetHashCode()
     {
-        int prime = 7;
+        int prime = 21;
         int hash = 1;
 
         foreach (double component in _components)

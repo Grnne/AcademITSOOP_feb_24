@@ -7,7 +7,7 @@ internal class Program
         Console.WriteLine("Немного примеров работы класса вектор:");
         Console.Write("Создадим новый пустой вектор размером 10 и проверим его размер: ");
         Vector vector1 = new Vector(10);
-        Console.WriteLine(vector1.GetSize());
+        Console.WriteLine(vector1.Size);
         Console.WriteLine();
 
         Console.Write("Поменяем второй компонент вектора на 3 и выведем его, а после весь вектор: ");
