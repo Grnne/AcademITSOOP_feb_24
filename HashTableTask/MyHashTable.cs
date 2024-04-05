@@ -140,19 +140,9 @@ internal class MyHashTable<T> : ICollection<T>
     {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.Append("[");
-
-        foreach (T item in this)
-        {
-            stringBuilder.Append(item + ", ");
-        }
-
-        if (stringBuilder.Length > 1)
-        {
-            stringBuilder.Remove(stringBuilder.Length - 2, 2); 
-        }
-
-        stringBuilder.Append("]");
+        stringBuilder.Append('[');
+        stringBuilder.AppendJoin(", ", this);
+        stringBuilder.Append(']');
 
         return stringBuilder.ToString();
     }

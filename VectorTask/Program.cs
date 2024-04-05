@@ -10,9 +10,9 @@ internal class Program
         Console.WriteLine(vector1.Size);
         Console.WriteLine();
 
-        Console.Write("Поменяем второй компонент вектора на 3 и выведем его, а после весь вектор: ");
+        Console.Write("Поменяем третий компонент вектора на 3 и выведем его, а после весь вектор: ");
         vector1[2] = 3;
-        Console.Write(vector1[2] + ", ");
+        Console.Write(vector1[2] + "; ");
         Console.WriteLine(vector1);
         Console.WriteLine();
 

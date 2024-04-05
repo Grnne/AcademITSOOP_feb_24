@@ -130,14 +130,7 @@ public class Vector
     {
         StringBuilder stringBuilder = new();
         stringBuilder.Append('{');
-        int size = _components.Length - 1;
-
-        for (int i = 0; i < size; i++)
-        {
-            stringBuilder.Append(_components[i] + ", ");
-        }
-
-        stringBuilder.Append(_components[^1]);
+        stringBuilder.AppendJoin(", ", _components);
         stringBuilder.Append('}');
 
         return stringBuilder.ToString();
