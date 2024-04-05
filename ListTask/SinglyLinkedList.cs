@@ -226,13 +226,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.Append('[');
-
-        foreach (T item in this)
-        {
-            stringBuilder.Append(item + ", ");
-        }
-
-        stringBuilder.Remove(stringBuilder.Length - 2, 2);
+        stringBuilder.AppendJoin(", ", this);
         stringBuilder.Append(']');
 
         return stringBuilder.ToString();
