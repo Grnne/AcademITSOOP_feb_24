@@ -22,7 +22,7 @@ public class Rectangle : IShape
 
     public override string ToString()
     {
-        return $"Прямоугольник. Ширина: {GetWidth():F2}; Высота: {GetHeight():F2}; Площадь: {GetArea():F2}; Периметр: {GetPerimeter():F2};";
+        return $"Прямоугольник. Ширина: {GetWidth():F2}; Высота: {GetHeight():F2}; Площадь: {GetArea():F2}; Периметр: {GetPerimeter():F2}";
     }
 
     public override bool Equals(object? obj)

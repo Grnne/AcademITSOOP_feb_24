@@ -6,7 +6,7 @@ internal class Program
     {
         string path = "..\\..\\..\\input.txt";
 
-        List<string> list = ParseToList(path);
+        List<string> list = GetLinesFromFileToList(path);
 
         foreach (var item in list)
         {
@@ -24,7 +24,7 @@ internal class Program
         Console.WriteLine("Got distinct numbers from list. " + string.Join(", ", ints));
     }
 
-    public static List<string> ParseToList(string path)
+    public static List<string> GetLinesFromFileToList(string path)
     {
         List<string> list = new();
 

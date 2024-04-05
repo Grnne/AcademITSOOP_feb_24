@@ -45,7 +45,7 @@ public class Triangle : IShape
     public override string ToString()
     {
         return $"Треугольник. Координаты вершин: ({X1:F2}; {Y1:F2}), ({X2:F2}; {Y2:F2}), ({X3:F2}; {Y3:F2}); Ширина: " +
-            $"{GetWidth():F2}; Высота: {GetHeight():F2}; Площадь: {GetArea():F2}; Периметр: {GetPerimeter():F2};";
+            $"{GetWidth():F2}; Высота: {GetHeight():F2}; Площадь: {GetArea():F2}; Периметр: {GetPerimeter():F2}";
     }
 
     public override bool Equals(object? obj)

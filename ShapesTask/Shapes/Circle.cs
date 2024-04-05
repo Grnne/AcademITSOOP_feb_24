@@ -19,7 +19,7 @@ public class Circle : IShape
 
     public override string ToString()
     {
-        return $"Круг. Диаметр: {GetWidth():F2}; Радиус: {Radius:F2}; Площадь: {GetArea():F2}; Длина окружности: {GetPerimeter():F2};";
+        return $"Круг. Диаметр: {GetWidth():F2}; Радиус: {Radius:F2}; Площадь: {GetArea():F2}; Длина окружности: {GetPerimeter():F2}";
     }
 
     public override bool Equals(object? obj)

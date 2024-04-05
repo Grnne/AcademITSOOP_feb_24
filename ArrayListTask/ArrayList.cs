@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Text;
 
 namespace ArrayListTask;
 
@@ -6,26 +7,21 @@ public class ArrayList<T> : IList<T>
 {
     private const int DefaultCapacity = 6;
 
-#pragma warning disable CA1825 // не совсем понял зачем оно
-    private static readonly T[] s_emptyArray = new T[0];
-#pragma warning restore CA1825
+    private T[] _items;
 
-    private T[] _items = new T[DefaultCapacity];
+    public int Count { get; private set; }
 
-    private int _size;
-
-    public int Count => _size;
-
-    private int _version = 0;
+    private int _version;
 
     public int Capacity
     {
         get => _items.Length;
+
         set
         {
-            if (value < _size)
+            if (value < Count)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), $"Capacity is less than the current array size. Capacity: {value} Size: {_size - 1}");
+                throw new ArgumentOutOfRangeException(nameof(value), $"Capacity is less than the current items count. Capacity: {value} Count: {Count}");
             }
 
             if (value == _items.Length)
@@ -39,10 +35,8 @@ public class ArrayList<T> : IList<T>
             }
             else
             {
-                _items = s_emptyArray;
+                _items = Array.Empty<T>();
             }
-
-
         }
     }
 
@@ -52,28 +46,22 @@ public class ArrayList<T> : IList<T>
     {
         get
         {
-            if ((index < 0) || (index >= _size))
-            {
-                throw new IndexOutOfRangeException($"Index is out of range. Must be in range from 0 to {_size - 1}");
-            }
+            CheckIndex(index);
 
             return _items[index];
         }
 
         set
         {
-            if ((index < 0) || (index >= _size))
-            {
-                throw new IndexOutOfRangeException($"Index is out of range. Must be in range from 0 to {_size - 1}");
-            }
-
+            CheckIndex(index);
             _items[index] = value;
+            Count++;
         }
     }
 
     public ArrayList()
     {
-        _items = s_emptyArray;
+        _items = new T[DefaultCapacity];
     }
 
     public ArrayList(int capacity)
@@ -85,7 +73,7 @@ public class ArrayList<T> : IList<T>
 
         if (capacity == 0)
         {
-            _items = s_emptyArray;
+            _items = Array.Empty<T>();
         }
         else
         {
@@ -95,34 +83,31 @@ public class ArrayList<T> : IList<T>
 
     public void Add(T item)
     {
-        Insert(_size, item);
+        Insert(Count, item);
     }
 
     public void Insert(int index, T item)
     {
-        if (index < 0 || index > _size)
+        CheckIndex(index);
+
+        if (Count == _items.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"Index is out of range. Must be in range from 0 to {_size - 1}");
+            IncreaseCapacity();
         }
 
-        if (_size == _items.Length)
+        if (index < Count)
         {
-            Grow(_size + 1);
-        }
-
-        if (index < _size)
-        {
-            Array.Copy(_items, index, _items, index + 1, _size - index);
+            Array.Copy(_items, index, _items, index + 1, Count - index);
         }
 
         _items[index] = item;
-        _size++;
+        Count++;
         _version++;
     }
 
     public int IndexOf(T item)
     {
-        for (int i = 0; i < _size; i++)
+        for (int i = 0; i < Count; i++)
         {
             if (Equals(_items[i], item))
             {
@@ -135,12 +120,7 @@ public class ArrayList<T> : IList<T>
 
     public bool Contains(T item)
     {
-        if (IndexOf(item) >= 0)
-        {
-            return true;
-        }
-
-        return false;
+        return IndexOf(item) >= 0;
     }
 
     public void CopyTo(T[] array, int arrayIndex)
@@ -150,12 +130,14 @@ public class ArrayList<T> : IList<T>
             throw new ArgumentNullException(nameof(array), "Destination array cant be null.");
         }
 
-        if (array.Length < _size + arrayIndex)
+        if (array.Length < Count + arrayIndex)
         {
-            throw new ArgumentOutOfRangeException(nameof(array), "Destination array must be greater then source array + index.");
+            // В документации The exception that is thrown when one of the arguments provided to a method is not valid.
+            // Вроде бы подходит, ну и такую же ошибку может лист выдать из базовой библиотеки.
+            throw new ArgumentException($"Destination array was not long enough. Destination array length: {array.Length}, source length + destination index = {Count + arrayIndex}", nameof(array));
         }
 
-        Array.Copy(_items, 0, array, arrayIndex, _items.Length);
+        Array.Copy(_items, 0, array, arrayIndex, Count);
     }
 
     public bool Remove(T item)
@@ -174,18 +156,15 @@ public class ArrayList<T> : IList<T>
 
     public void RemoveAt(int index)
     {
-        if (index < 0 || index > _size)
+        CheckIndex(index);
+        Count--;
+
+        if (index < Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"Index is out of range. Must be in range from 0 to {_size - 1}");
+            Array.Copy(_items, index + 1, _items, index, Count - index);
         }
 
-        if (index < _size - 1)
-        {
-            Array.Copy(_items, index + 1, _items, index, _size - index - 1);
-        }
-
-        _items[_size - 1] = default;
-        _size--;
+        _items[Count] = default!;
         _version++;
     }
 
@@ -196,8 +175,8 @@ public class ArrayList<T> : IList<T>
             return;
         }
 
-        Array.Cl ear(_items, 0, _items.Length);
-        _size = 0;
+        Array.Clear(_items, 0, Count);
+        Count = 0;
         _version++;
     }
 
@@ -205,11 +184,11 @@ public class ArrayList<T> : IList<T>
     {
         int version = _version;
 
-        for (int i = 0; i < _size; ++i)
+        for (int i = 0; i < Count; ++i)
         {
             if (version != _version)
             {
-                throw new InvalidOperationException("Collection were modified");
+                throw new InvalidOperationException("Collection was modified");
             }
 
             yield return _items[i];
@@ -221,28 +200,40 @@ public class ArrayList<T> : IList<T>
         return GetEnumerator();
     }
 
-    private void Grow(int capacity)
+    private void CheckIndex(int index)
+    {
+        if (index < 0 || index > Count)
+        {
+            if (index < 0 || index >= Count)
+            {
+                throw new ArgumentOutOfRangeException($"Argument is out of range. Must be in range from 0 to {Count - 1}. Index: {index}");
+            }
+        }
+    }
+
+    private void IncreaseCapacity()
     {
         int newCapacity = _items.Length == 0 ? DefaultCapacity : 2 * _items.Length;
-
-        if (newCapacity < capacity)
-        {
-            newCapacity = capacity;
-        }
 
         Capacity = newCapacity;
     }
 
     public void TrimExcess()
     {
-        if (_size < Capacity * 0.9)
+        if (Count < Capacity * 0.9)
         {
-            Capacity = _size;
+            Capacity = Count;
         }
     }
 
     public override string ToString()
     {
-        return "[" + string.Join(", ", _items) + "]"; // Спросить почему и как исправить
+        StringBuilder stringBuilder = new();
+
+        stringBuilder.Append('[');
+        stringBuilder.AppendJoin(", ", this);
+        stringBuilder.Append(']');
+
+        return stringBuilder.ToString();
     }
 }

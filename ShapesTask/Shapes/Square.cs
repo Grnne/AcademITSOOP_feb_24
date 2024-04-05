@@ -19,7 +19,7 @@ public class Square : IShape
 
     public override string ToString()
     {
-        return $"Квадрат. Длина стороны: {SideLength:F2}; Площадь: {GetArea():F2}; Периметр: {GetPerimeter():F2};";
+        return $"Квадрат. Длина стороны: {SideLength:F2}; Площадь: {GetArea():F2}; Периметр: {GetPerimeter():F2}";
     }
 
     public override bool Equals(object? obj)
