@@ -32,8 +32,9 @@ internal class Program
         RemoveEvenNumbers(numbers);
         Console.WriteLine("Removed even numbers from list. " + string.Join(", ", numbers) + Environment.NewLine);
 
-        numbers = GetDistinctItems(numbers);
-        Console.WriteLine("Got distinct numbers from list. " + string.Join(", ", numbers));
+        List<int> numbers2 = new() { 3, 3, 3, 3, 3, 3, 34, 4, 4, 5, 6, 6, 6, 6 };
+        numbers2 = GetDistinctItems(numbers2);
+        Console.WriteLine("Got distinct numbers from list. " + string.Join(", ", numbers2));
     }
 
     public static List<string> GetLinesFromFileToList(string path)
