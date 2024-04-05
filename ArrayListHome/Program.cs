@@ -28,7 +28,6 @@ internal class Program
         Console.WriteLine();
 
         List<int> numbers = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 9, 9, 9 };
-
         RemoveEvenNumbers(numbers);
         Console.WriteLine("Removed even numbers from list. " + string.Join(", ", numbers) + Environment.NewLine);
 
