@@ -6,30 +6,40 @@ internal class Program
     {
         string path = "..\\..\\..\\input.txt";
 
-        List<string> list = GetLinesFromFileToList(path);
-
-        foreach (var item in list)
+        try
         {
-            Console.WriteLine(item);
+            List<string> list = GetLinesFromFileToList(path);
+
+            foreach (string line in list)
+            {
+                Console.WriteLine(line);
+            }
+
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("File not found");
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Something gone wrong");
         }
 
         Console.WriteLine();
 
-        List<int> ints = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 9, 9, 9 };
+        List<int> numbers = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 9, 9, 9 };
 
-        RemoveEvenNumbers(ints);
-        Console.WriteLine("Removed even numbers from list. " + string.Join(", ", ints) + Environment.NewLine);
+        RemoveEvenNumbers(numbers);
+        Console.WriteLine("Removed even numbers from list. " + string.Join(", ", numbers) + Environment.NewLine);
 
-        ints = GetDistinctNumbers(ints);
-        Console.WriteLine("Got distinct numbers from list. " + string.Join(", ", ints));
+        numbers = GetDistinctItems(numbers);
+        Console.WriteLine("Got distinct numbers from list. " + string.Join(", ", numbers));
     }
 
     public static List<string> GetLinesFromFileToList(string path)
     {
-        List<string> list = new();
-
         using StreamReader streamReader = new(path);
-
+        List<string> list = new();
         string currentLine;
 
         while ((currentLine = streamReader.ReadLine()) != null)
@@ -40,29 +50,29 @@ internal class Program
         return list;
     }
 
-    public static void RemoveEvenNumbers(List<int> list)
+    public static void RemoveEvenNumbers(List<int> numbers)
     {
-        for (int i = list.Count - 1; i >= 0; i--)
+        for (int i = numbers.Count - 1; i >= 0; i--)
         {
-            if (list[i] % 2 == 0)
+            if (numbers[i] % 2 == 0)
             {
-                list.RemoveAt(i);
+                numbers.RemoveAt(i);
             }
         }
     }
 
-    public static List<int> GetDistinctNumbers(List<int> list)
+    public static List<T> GetDistinctItems<T>(List<T> items)
     {
-        List<int> result = new();
+        List<T> distinctItems = new(items.Count);
 
-        foreach (int i in list)
+        foreach (T number in items)
         {
-            if (!result.Contains(i))
+            if (!distinctItems.Contains(number))
             {
-                result.Add(i);
+                distinctItems.Add(number);
             }
         }
 
-        return result;
+        return distinctItems;
     }
 }
