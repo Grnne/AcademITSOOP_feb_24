@@ -1,18 +1,16 @@
-﻿using System.Xml.Linq;
+﻿namespace TreeTask;
 
-namespace TreeTask;
-
-internal class MyBinarySearchTree<T>
+internal class BinarySearchTree<T>
 {
     private Node<T>? _root;
 
     public int Count { get; private set; }
 
-    public MyBinarySearchTree()
+    public BinarySearchTree()
     {
     }
 
-    public MyBinarySearchTree(T item)
+    public BinarySearchTree(T item)
     {
         _root = new Node<T>(item);
         Count++;
@@ -55,11 +53,19 @@ internal class MyBinarySearchTree<T>
 
         while (queue.Count > 0)
         {
-            currentNode = currentNode.Left;
-            queue.Enqueue(currentNode);
+            queue.Dequeue();
 
-            currentNode = currentNode.Right;
-            queue.Enqueue(currentNode);
+            if (currentNode.Left is not null)
+            {
+                currentNode = currentNode.Left;
+                queue.Enqueue(currentNode);
+            }
+
+            if (currentNode.Left is not null)
+            {
+                currentNode = currentNode.Right;
+                queue.Enqueue(currentNode);
+            }
         }
     }
 

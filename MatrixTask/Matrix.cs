@@ -9,11 +9,11 @@ public class Matrix
 
     public int RowsAmount => _rows.Length;
 
-    public int ColumnsAmount => _rows[0].GetSize();
+    public int ColumnsAmount => _rows[0].Size;
 
     public Matrix(int rowsAmount, int columnsAmount)
     {
-        ValidateInputDataParameters(rowsAmount, columnsAmount);
+        ValidateMatrixSize(rowsAmount, columnsAmount);
 
         _rows = new Vector[rowsAmount];
 
@@ -25,7 +25,7 @@ public class Matrix
 
     public Matrix(Matrix matrix)
     {
-        _rows = new Vector[matrix.ColumnsAmount];
+        _rows = new Vector[matrix.RowsAmount];
 
         for (int i = 0; i < RowsAmount; i++)
         {
@@ -38,20 +38,20 @@ public class Matrix
         int rowsAmount = array.GetLength(0);
         int columnsAmount = array.GetLength(1);
 
-        ValidateInputDataParameters(rowsAmount, columnsAmount);
+        ValidateMatrixSize(rowsAmount, columnsAmount);
 
-        _rows = new Vector[array.GetLength(0)];
+        _rows = new Vector[rowsAmount];
 
         for (int i = 0; i < rowsAmount; i++)
         {
-            Vector newRow = new(rowsAmount);
+            Vector row = new(columnsAmount);
 
             for (int j = 0; j < columnsAmount; j++)
             {
-                newRow[j] = array[i, j];
+                row[j] = array[i, j];
             }
 
-            _rows[i] = newRow;
+            _rows[i] = row;
         }
     }
 
@@ -59,24 +59,22 @@ public class Matrix
     {
         if (vectors.Length == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(vectors.Length), $"Array rows amount must be >= 0, current amount: {vectors.Length}");
+            throw new ArgumentOutOfRangeException(nameof(vectors), $"Matrix rows amount must be >= 0, current amount: {vectors.Length}");
         }
 
         int maxColumnsAmount = 0;
 
-        foreach (var vector in vectors)
+        foreach (Vector vector in vectors)
         {
-            if (vector.GetSize() > maxColumnsAmount)
-            {
-                maxColumnsAmount = vector.GetSize();
-            }
+            maxColumnsAmount = Math.Max(vector.Size, maxColumnsAmount);
         }
 
         _rows = new Vector[vectors.Length];
 
         for (int i = 0; i < RowsAmount; i++)
         {
-            _rows[i] = new Vector(maxColumnsAmount, vectors[i]);
+            _rows[i] = new Vector(maxColumnsAmount);
+            _rows[i].Add(vectors[i]);
         }
     }
 
@@ -104,8 +102,7 @@ public class Matrix
     {
         if (matrix1.ColumnsAmount != matrix2.RowsAmount)
         {
-            throw new ArgumentException($"The number of columns in the first matrix must be equal to the number of rows in the second matrix.{Environment.NewLine}" +
-                $"First matrix columns, second matrix rows amount: {matrix1.ColumnsAmount}; {matrix2.RowsAmount}");
+            throw new ArgumentException($"The columns amount in the first matrix: {matrix1.ColumnsAmount} must be equal to the rows amount: {matrix2.RowsAmount} in the second matrix.");
         }
 
         int resultRowsAmount = matrix1.RowsAmount;
@@ -130,30 +127,30 @@ public class Matrix
         return new Vector(_rows[index]);
     }
 
-    public Vector SetRow(int index, Vector vector)
+    public void SetRow(int index, Vector vector)
     {
         ValidateIndex(index, RowsAmount);
 
-        if (vector.GetSize() > ColumnsAmount)
+        if (vector.Size != ColumnsAmount)
         {
-            throw new ArgumentOutOfRangeException(nameof(vector.GetSize), $"Vector size must be equal to matrix column amount, current size: {vector.GetSize}");
+            throw new ArgumentOutOfRangeException(nameof(vector), $"Vector size: {vector.Size} must be equal to matrix columns amount: {ColumnsAmount}");
         }
 
-        return _rows[index] = new Vector(vector);
+        _rows[index] = new Vector(vector);
     }
 
     public Vector GetColumn(int index)
     {
-        ValidateIndex(index, ColumnsAmount);
+        ValidateIndex(index, RowsAmount);
 
-        Vector result = new(ColumnsAmount);
+        Vector column = new(RowsAmount);
 
-        for (int i = 0; i < ColumnsAmount; i++)
+        for (int i = 0; i < RowsAmount; i++)
         {
-            result[i] = _rows[i][index];
+            column[i] = _rows[i][index];
         }
 
-        return result;
+        return column;
     }
 
     public void Add(Matrix matrix)
@@ -178,39 +175,35 @@ public class Matrix
 
     public void MultiplyByScalar(double scalar)
     {
-        foreach (Vector vector in _rows)      // А это нормально, что я через итератор изменяю коллекцию?
+        foreach (Vector row in _rows)
         {
-            vector.MultiplyByScalar(scalar);
+            row.MultiplyByScalar(scalar);
         }
     }
 
     public Vector MultiplyByVector(Vector vector)
     {
-        int columnsAmount = ColumnsAmount;
-
-        if (columnsAmount != vector.GetSize())
+        if (ColumnsAmount != vector.Size)
         {
-            throw new ArgumentException($"Matrix row and vector must be of the same size. " +
-                $"Current vector size: {vector.GetSize()}, current row size {columnsAmount}", nameof(columnsAmount));
+            throw new ArgumentException("Matrix row and vector must be of the same size. " +
+                $"Current vector size: {vector.Size}, current row size {ColumnsAmount}", nameof(vector));
         }
 
-        Vector result = new(columnsAmount);
+        Vector resultVector = new(RowsAmount);
 
-        for (int i = 0; i < columnsAmount; i++)
+        for (int i = 0; i < RowsAmount; i++)
         {
-            result[i] = Vector.GetScalarProduct(vector, _rows[i]);
+            resultVector[i] = Vector.GetScalarProduct(_rows[i], vector);
         }
 
-        return result;
+        return resultVector;
     }
 
     public void Transpose()
     {
-        ValidateInputDataParameters(this);
-
         Vector[] newRows = new Vector[ColumnsAmount];
 
-        for (int i = 0; i < _rows.Length; i++)
+        for (int i = 0; i < ColumnsAmount; i++)
         {
             newRows[i] = GetColumn(i);
         }
@@ -218,11 +211,11 @@ public class Matrix
         _rows = newRows;
     }
 
-    public double GetDeterminant()
+    public double GetDeterminant()  
     {
         if (RowsAmount != ColumnsAmount)
         {
-            throw new ArgumentException($"Matrix must be square. Current rows and columns amount: {RowsAmount}; {ColumnsAmount}");
+            throw new InvalidOperationException($"Matrix must be square. Current rows amount: {RowsAmount}; columns amount: {ColumnsAmount}");
         }
 
         if (_rows.Length == 1)
@@ -246,55 +239,40 @@ public class Matrix
         return determinant;
     }
 
-    private static void ValidateMatricesParameters(Matrix matrix1, Matrix matrix2)
+    private static void ValidateIndex(int index, int upperIndexLimit)
     {
-        ValidateInputDataParameters(matrix1.RowsAmount, matrix1.ColumnsAmount);
-        ValidateInputDataParameters(matrix2.RowsAmount, matrix2.ColumnsAmount);
-
-        if (matrix1.RowsAmount != matrix2.RowsAmount && matrix1.ColumnsAmount != matrix2.ColumnsAmount)
+        if (index < 0 || index >= upperIndexLimit)
         {
-            throw new ArgumentException($"Matrices must be same size. First matrix rows and columns amount: {matrix1.RowsAmount} {matrix1.ColumnsAmount}; " +
-                $"Second matrix rows and columns amount: {matrix2.RowsAmount} {matrix2.ColumnsAmount}");
+            throw new IndexOutOfRangeException($"Index must be in matrix range: >= 0 and < {upperIndexLimit}; index = {index}");
         }
     }
 
-    private static void ValidateIndex(int index, int matrixBoundary)
+    private static void ValidateMatrixSize(int rowsAmount, int columnsAmount)
     {
-        if (index < 0 || index >= matrixBoundary)
+        if (rowsAmount <= 0)
         {
-            throw new IndexOutOfRangeException($"Index must be in matrix range: >= 0 and < {matrixBoundary}; index = {index}");
+            throw new ArgumentOutOfRangeException(nameof(rowsAmount), $"Matrix rows amount must be >= 0, current amount: {rowsAmount}");
+        }
+
+        if (columnsAmount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(columnsAmount), $"Matrix columns amount must be >= 0, current amount: {columnsAmount}");
         }
     }
 
-    private static void ValidateInputDataParameters(Matrix matrix) =>
-    ValidateInputDataParameters(matrix.RowsAmount, matrix.ColumnsAmount);
-
-    private static void ValidateInputDataParameters(int rowsAmount, int columnsAmount)
+    private Matrix GetMinor(int rowIndex)
     {
-        if (rowsAmount < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(rowsAmount), $"Array rows amount must be >= 0, current amount: {rowsAmount}");
-        }
-
-        if (columnsAmount < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(columnsAmount), $"Array columns amount must be >= 0, current amount: {columnsAmount}");
-        }
-    }
-
-    private Matrix GetMinor(int position)
-    {
-        int minorRowsAmount = RowsAmount - 1;
-        Matrix minor = new(minorRowsAmount, minorRowsAmount);
+        int minorSize = RowsAmount - 1;
+        Matrix minor = new(minorSize, minorSize);
 
         for (int i = 1; i < RowsAmount; i++)
         {
-            for (int j = 0; j < position; j++)
+            for (int j = 0; j < rowIndex; j++)
             {
                 minor._rows[i - 1][j] = _rows[i][j];
             }
 
-            for (int j = position + 1; j < RowsAmount; j++)
+            for (int j = rowIndex + 1; j < RowsAmount; j++)
             {
                 minor._rows[i - 1][j - 1] = _rows[i][j];
             }
@@ -306,13 +284,12 @@ public class Matrix
     public override string ToString()
     {
         StringBuilder stringBuilder = new();
-        int length = _rows.Length - 1;
+        int maxIndex = _rows.Length - 1;
         stringBuilder.Append('{');
 
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < maxIndex; i++)
         {
-            stringBuilder.Append(_rows[i]);
-            stringBuilder.Append(", ");
+            stringBuilder.Append(_rows[i]).Append(", ");
         }
 
         stringBuilder.Append(_rows[^1]);
@@ -342,7 +319,7 @@ public class Matrix
 
         for (int i = 0; i < RowsAmount; i++)
         {
-            if (_rows[i] != matrix._rows[i])
+            if (!_rows[i].Equals(matrix._rows[i]))
             {
                 return false;
             }
@@ -353,7 +330,7 @@ public class Matrix
 
     public override int GetHashCode()
     {
-        int prime = 7;
+        int prime = 21;
         int hash = 1;
 
         foreach (Vector row in _rows)

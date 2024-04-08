@@ -26,11 +26,11 @@ internal class Program
         Vector vector2 = new Vector(new double[] { 4, 5, 6 });
         Vector vector3 = new Vector(new double[] { 7, 8, 9 });
         Vector[] vectors =
-            {
+        {
             vector1,
             vector2,
             vector3
-            };
+        };
 
         Matrix matrix3 = new Matrix(vectors);
         Console.WriteLine(matrix3);
@@ -73,7 +73,6 @@ internal class Program
         Matrix matrix4 = Matrix.GetSum(matrix2, matrix3);
         Console.WriteLine($"Результат: {matrix4}");
         Console.WriteLine();
-
 
         Console.WriteLine($"Вычтем {matrix2} и {matrix3}");
         matrix4 = Matrix.GetDifference(matrix2, matrix3);
