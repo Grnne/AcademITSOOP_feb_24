@@ -8,16 +8,20 @@ internal class Program
         Console.WriteLine();
         Console.Write("Создадим нашу коллекцию, заполним и отобразим её:");
 
-        MyHashTable<string> strings1 = new MyHashTable<string>();
-        strings1.Add("a");
-        strings1.Add("b");
-        strings1.Add("c");
-        strings1.Add("d");
-        strings1.Add("e");
-        strings1.Add("f");
-        strings1.Add("a");
-        strings1.Add("a");
-        strings1.Add("a");
+        SimpleHashTable<string> strings1 = new SimpleHashTable<string>
+        {
+            "a",
+            "b",
+            "c",
+            "d",
+            null!,
+            "e",
+            "f",
+            "a",
+            "a",
+            "a",
+        };
+
         Console.WriteLine(strings1);
         Console.WriteLine();
 
