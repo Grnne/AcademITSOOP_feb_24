@@ -153,7 +153,7 @@ internal class SimpleHashTable<T> : ICollection<T>
 
         stringBuilder.Append('[');
 
-        foreach (T? item in this)
+        foreach (T item in this)
         {
             if (item is null)
             {
