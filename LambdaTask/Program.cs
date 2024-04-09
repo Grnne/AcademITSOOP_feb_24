@@ -22,28 +22,34 @@ internal class Program
         Console.WriteLine(string.Join(", ", persons));
         Console.WriteLine();
 
-        Console.WriteLine("Список с уникальными именами: ");
-        Console.WriteLine(string.Join(", ", persons.Select(x => x.Name).Distinct()) + ".");
+        Console.WriteLine("Список с уникальными именами:");
+        var distinctNames = persons
+            .Select(x => x.Name)
+            .Distinct()
+            .ToList();
+        Console.WriteLine(string.Join(", ", distinctNames));
         Console.WriteLine();
 
         Console.WriteLine("Люди моложе 18:");
-        var persons2 = new List<Person>(persons.Select(x => x).Where(y => y.Age < 18));
-        Console.WriteLine(string.Join(", ", persons2) + ".");
-
-        Console.WriteLine($"И их средний возраст: {persons2.Average(x => x.Age)}");
+        var teenagers = persons
+            .Where(y => y.Age < 18)
+            .ToList();
+        Console.WriteLine("Имена: " + string.Join(", ", teenagers) + ".");
+        Console.WriteLine($"И их средний возраст: {teenagers.Average(x => x.Age)}");
         Console.WriteLine();
 
-        Dictionary<string, double> personsByAge = persons
+        var averageAgesByName = persons
             .GroupBy(x => x.Name)
             .ToDictionary(x => x.Key, x => x.Average(x => x.Age));
-        Console.WriteLine($"Средний возраст людей по имени: {string.Join(Environment.NewLine, personsByAge)}");
+        Console.WriteLine($"Средний возраст людей по имени: {string.Join(Environment.NewLine, averageAgesByName)}");
         Console.WriteLine();
 
-        Console.WriteLine("Люди с возрастом от 20 до 45, отсортированные по убыванию возраста: ");
-        var persons3 = new List<Person>(persons
+        Console.WriteLine("Люди с возрастом от 20 до 45, отсортированные по убыванию возраста:");
+        var middleAgedPersons = persons
             .Where(x => x.Age >= 20 && x.Age <= 45)
-            .OrderByDescending(x => x.Age));
-        Console.WriteLine(string.Join(Environment.NewLine, persons3));
+            .OrderByDescending(x => x.Age)
+            .ToList();
+        Console.WriteLine(string.Join(Environment.NewLine, middleAgedPersons.Select(x => x.Name)));
         Console.WriteLine();
 
         // Задача 2
@@ -52,28 +58,29 @@ internal class Program
         Console.Clear();
 
         Console.Write("Введите количество чисел для вычисления квадратного корня: ");
-        var limit = Convert.ToInt32(Console.ReadLine());
+        var numbersAmount = Convert.ToInt32(Console.ReadLine());
 
-        foreach (var root in GetSquareRoots(limit))
+        foreach (var root in GetSquareRoots().Take(numbersAmount))
         {
             Console.WriteLine(root);
         }
 
         Console.WriteLine();
-        Console.Write("Нажмите любую клавишу, чтобы отобразить ряд Фибоначчи: ");
-        Console.ReadKey();
+        Console.Write("Введите количество чисел ряда Фибоначчи: ");
+        
+        var fibonacciNumbersAmount = Convert.ToInt32(Console.ReadLine());   
 
-        foreach (var number in GetFibbonacciNumbers())
+        foreach (var fibonacciNumber in GetFibonacciNumbers().Take(fibonacciNumbersAmount))
         {
-            Console.WriteLine(number);
+            Console.WriteLine(fibonacciNumber);
         }
     }
 
-    public static IEnumerable<double> GetSquareRoots(int limit)
+    public static IEnumerable<double> GetSquareRoots()
     {
         var i = 0;
 
-        while (i <= limit)
+        while (true)
         {
             yield return Math.Sqrt(i);
 
@@ -81,15 +88,22 @@ internal class Program
         }
     }
 
-    public static IEnumerable<Int128> GetFibbonacciNumbers()
+    public static IEnumerable<Int128> GetFibonacciNumbers()
     {
-        Int128 j = 1;
+        yield return 0;
+        yield return 1;
 
-        for (Int128 i = 1; ; i += j)
+        Int128 fibonacciNumber1 = 0;
+        Int128 fibonacciNumber2 = 1;
+        Int128 fibonacciNumber3;
+
+        while (true)
         {
-            yield return i;
+            fibonacciNumber3 = fibonacciNumber1 + fibonacciNumber2;
+            fibonacciNumber1 = fibonacciNumber2;
+            fibonacciNumber2 = fibonacciNumber3;
 
-            j = i - j;
+            yield return fibonacciNumber3;
         }
     }
 }
