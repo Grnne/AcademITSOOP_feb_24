@@ -20,6 +20,7 @@ internal class Program
         double[] doubles = { 10, 11, 12, 13, 14 };
         Vector vector2 = new Vector(doubles);
         Console.WriteLine(vector2);
+        Console.WriteLine($"Посмотрим длину вектора: {vector2.GetLength()}");
         Console.WriteLine();
 
         Console.WriteLine("Сделаем с этим вектором операцию сложения, скалярного произведения и вычитания.");

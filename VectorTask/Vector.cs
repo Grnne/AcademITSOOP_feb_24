@@ -16,7 +16,7 @@ public class Vector
 
     public Vector(int size)
     {
-        ValidateSize(size);
+        CheckSize(size);
 
         _components = new double[size];
     }
@@ -25,15 +25,15 @@ public class Vector
 
     public Vector(int size, Vector vector)
     {
-        ValidateSize(size);
+        CheckSize(size);
 
         _components = new double[size];
-        _components = (double[])vector._components.Clone();
+        Array.Copy(vector._components, _components, Math.Min(size, vector.Size));
     }
 
     public Vector(double[] components)
     {
-        ValidateSize(components.Length);
+        CheckSize(components.Length);
 
         _components = new double[components.Length];
         components.CopyTo(_components, 0);
@@ -41,12 +41,7 @@ public class Vector
 
     public Vector(int size, double[] components)
     {
-        ValidateSize(size);
-
-        if (size < components.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(components), $"Size argument must be greater than or equal to array size. Size: {components.Length}, array size: {size}");
-        }
+        CheckSize(size);
 
         _components = new double[size];
         Array.Copy(components, _components, Math.Min(size, components.Length));
@@ -57,6 +52,18 @@ public class Vector
         Vector result = new Vector(vector1);
         result.Add(vector2);
         return result;
+    }
+
+    public double GetLength()
+    {
+        double componentsSquareSum = 0;
+
+        foreach(double component in  _components)
+        {
+            componentsSquareSum += component * component;
+        }
+        
+        return Math.Sqrt(componentsSquareSum);
     }
 
     public static Vector GetDifference(Vector vector1, Vector vector2)
@@ -118,7 +125,7 @@ public class Vector
         MultiplyByScalar(-1);
     }
 
-    private static void ValidateSize(int size)
+    private static void CheckSize(int size)
     {
         if (size <= 0)
         {
@@ -129,6 +136,7 @@ public class Vector
     public override string ToString()
     {
         StringBuilder stringBuilder = new();
+
         stringBuilder.Append('{');
         stringBuilder.AppendJoin(", ", _components);
         stringBuilder.Append('}');
