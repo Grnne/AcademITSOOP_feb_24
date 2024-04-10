@@ -45,6 +45,22 @@ public static class CsvToHtmlParser
                     {
                         streamWriter.Write('"');
                         i++;
+
+                        if (i == currentLine.Length - 1)
+                        {
+                            streamWriter.Write(currentLine[i] + "<br/>");
+                            i = -1;
+                            currentLine = streamReader.ReadLine();
+
+                            while (currentLine.Length == 0)
+                            {
+                                streamWriter.Write("<br/>");
+                                currentLine = streamReader.ReadLine();
+                            }
+
+                            continue;
+                        }
+
                         continue;
                     }
 
