@@ -1,6 +1,6 @@
 ﻿namespace CsvTask;
 
-//TODO метод для обработки пустой строки и кавычки в конце, возможно кейс
+
 internal class Program
 {
     static void Main(string[] args)
@@ -12,16 +12,20 @@ internal class Program
             return;
         }
 
-        string input = args[0];
-        string output = args[1];
+        string inputCsvPath = args[0];
+        string outputHtmlPath = args[1];
 
         try
         {
-            CsvToHtmlParser.ParseCsvToHtml(input, output);
+            CsvToHtmlConverter.Convert(inputCsvPath, outputHtmlPath);
         }
         catch (FileNotFoundException)
         {
             Console.WriteLine("File not found. Enter input and output file paths, input must be .csv and output - .html");
+        }
+        catch (IOException)
+        {
+            Console.WriteLine("I/O error, cant read the file.");
         }
     }
 }

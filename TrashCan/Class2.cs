@@ -1,8 +1,9 @@
-﻿namespace CsvTask;
+﻿using CsvTask;
 
-public static class CsvToHtmlParser
+
+public static class CsvToHtmlConverter
 {
-    public static void ParseCsvToHtml(string input, string output)
+    public static void Convert(string input, string output)
     {
         using StreamReader streamReader = new(input);
         using StreamWriter streamWriter = new(output);
@@ -115,7 +116,7 @@ public static class CsvToHtmlParser
         streamWriter.WriteLine("<!DOCTYPE HTML>");
         streamWriter.WriteLine("<html>");
         streamWriter.WriteLine("<head>");
-        streamWriter.WriteLine("\t<title>Даже не знаю, что тут нужно писать</title>");
+        streamWriter.WriteLine("\t<title>Данные из CSV файла в виде таблицы HTML</title>");
         streamWriter.WriteLine("\t<meta charset=\"utf-8\">");
         streamWriter.WriteLine("</head>");
         streamWriter.WriteLine("<body style=\"background-color:lightslategray\">");
@@ -129,23 +130,22 @@ public static class CsvToHtmlParser
         streamWriter.Write("</html>");
     }
 
-    // Хотелось бы сюда погрузить дублирующийся код, но я имя не могу придумать
-    public static void CheckLineEnd(int i, StreamWriter streamWriter, string currentLine) 
-    {
-
-    }
-
-    // А тут поди прямо в кейсе можно писать в стрим? без вывода переменной
     public static void WriteCharAsHtmlEntity(char character, StreamWriter streamWriter)
     {
-        string str = character switch
+        switch (character)
         {
-            '<' => "&lt;",
-            '>' => "&gt;",
-            '&' => "&amp;",
-            _ => character.ToString()
-        };
-
-        streamWriter.Write(str);
+            case '<':
+                streamWriter.Write("&lt;");
+                break;
+            case '>':
+                streamWriter.Write("&gt;");
+                break;
+            case '&':
+                streamWriter.Write("&amp;");
+                break;
+            default:
+                streamWriter.Write(character);
+                break;
+        }
     }
 }
