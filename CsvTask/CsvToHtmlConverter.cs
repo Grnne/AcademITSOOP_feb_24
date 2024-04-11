@@ -14,27 +14,21 @@ public static class CsvToHtmlConverter
 
         while ((currentLine = streamReader.ReadLine()) != null)
         {
-            streamWriter.WriteLine("<tr>");
-            streamWriter.Write("\t<td>");
+            if (isInsideQuotes)
+            {
+                streamWriter.Write("<br/>");
+            }
+            else
+            {
+                streamWriter.WriteLine("<tr>");
+                streamWriter.Write("\t<td>");
+            }
 
             for (int i = 0; i < currentLine.Length; i++)
             {
                 if (currentLine[i] == '"' && !isInsideQuotes)
                 {
                     isInsideQuotes = true;
-
-                    if (i == currentLine.Length - 1)
-                    {
-                        streamWriter.Write("<br/>");
-                        i = -1;
-                        currentLine = streamReader.ReadLine();
-
-                        while (currentLine.Length == 0)
-                        {
-                            streamWriter.Write("<br/>");
-                            currentLine = streamReader.ReadLine();
-                        }
-                    }
 
                     continue;
                 }
@@ -46,41 +40,12 @@ public static class CsvToHtmlConverter
                         streamWriter.Write('"');
                         i++;
 
-                        if (i == currentLine.Length - 1)
-                        {
-                            streamWriter.Write(currentLine[i] + "<br/>");
-                            i = -1;
-                            currentLine = streamReader.ReadLine();
-
-                            while (currentLine.Length == 0)
-                            {
-                                streamWriter.Write("<br/>");
-                                currentLine = streamReader.ReadLine();
-                            }
-
-                            continue;
-                        }
-
                         continue;
                     }
 
                     if (currentLine[i] == '"')
                     {
                         isInsideQuotes = false;
-                        continue;
-                    }
-
-                    if (i == currentLine.Length - 1)
-                    {
-                        streamWriter.Write(currentLine[i] + "<br/>");
-                        i = -1;
-                        currentLine = streamReader.ReadLine();
-
-                        while (currentLine.Length == 0)
-                        {
-                            streamWriter.Write("<br/>");
-                            currentLine = streamReader.ReadLine();
-                        }
 
                         continue;
                     }
@@ -101,8 +66,11 @@ public static class CsvToHtmlConverter
                 }
             }
 
-            streamWriter.WriteLine("</td>");
-            streamWriter.WriteLine("</tr>");
+            if (!isInsideQuotes)
+            {
+                streamWriter.WriteLine("</td>");
+                streamWriter.WriteLine("</tr>");
+            }
         }
 
         WriteBottomTags(streamWriter);

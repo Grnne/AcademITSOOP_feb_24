@@ -1,6 +1,4 @@
-﻿using CsvTask;
-
-
+﻿
 public static class CsvToHtmlConverter
 {
     public static void Convert(string input, string output)
@@ -15,95 +13,59 @@ public static class CsvToHtmlConverter
 
         while ((currentLine = streamReader.ReadLine()) != null)
         {
-            streamWriter.WriteLine("<tr>");
-            streamWriter.Write("\t<td>");
-
-            for (int i = 0; i < currentLine.Length; i++)
+            if (isInsideQuotes)
             {
-                if (currentLine[i] == '"' && !isInsideQuotes)
+                streamWriter.Write("<br/>");
+            }
+            else
+            {
+                streamWriter.WriteLine("<tr>");
+                streamWriter.Write("\t<td>");
+
+                for (int i = 0; i < currentLine.Length; i++)
                 {
-                    isInsideQuotes = true;
-
-                    if (i == currentLine.Length - 1)
+                    if (currentLine[i] == '"' && !isInsideQuotes)
                     {
-                        streamWriter.Write("<br/>");
-                        i = -1;
-                        currentLine = streamReader.ReadLine();
+                        isInsideQuotes = true;
 
-                        while (currentLine.Length == 0)
-                        {
-                            streamWriter.Write("<br/>");
-                            currentLine = streamReader.ReadLine();
-                        }
+                        continue;
                     }
 
-                    continue;
-                }
-
-                if (isInsideQuotes)
-                {
-                    if (i + 1 < currentLine.Length && currentLine[i + 1] == '"' && currentLine[i] == '"')
+                    if (isInsideQuotes)
                     {
-                        streamWriter.Write('"');
-                        i++;
-
-                        if (i == currentLine.Length - 1)
+                        if (i + 1 < currentLine.Length && currentLine[i + 1] == '"' && currentLine[i] == '"')
                         {
-                            streamWriter.Write(currentLine[i] + "<br/>");
-                            i = -1;
-                            currentLine = streamReader.ReadLine();
-
-                            while (currentLine.Length == 0)
-                            {
-                                streamWriter.Write("<br/>");
-                                currentLine = streamReader.ReadLine();
-                            }
+                            streamWriter.Write('"');
+                            i++;
 
                             continue;
                         }
 
-                        continue;
-                    }
-
-                    if (currentLine[i] == '"')
-                    {
-                        isInsideQuotes = false;
-                        continue;
-                    }
-
-                    if (i == currentLine.Length - 1)
-                    {
-                        streamWriter.Write(currentLine[i] + "<br/>");
-                        i = -1;
-                        currentLine = streamReader.ReadLine();
-
-                        while (currentLine.Length == 0)
+                        if (currentLine[i] == '"')
                         {
-                            streamWriter.Write("<br/>");
-                            currentLine = streamReader.ReadLine();
+                            isInsideQuotes = false;
+
+                            continue;
                         }
 
-                        continue;
-                    }
-
-                    WriteCharAsHtmlEntity(currentLine[i], streamWriter);
-                }
-                else
-                {
-                    if (currentLine[i] == ',')
-                    {
-                        streamWriter.WriteLine("</td>");
-                        streamWriter.Write("\t<td>");
+                        WriteCharAsHtmlEntity(currentLine[i], streamWriter);
                     }
                     else
                     {
-                        WriteCharAsHtmlEntity(currentLine[i], streamWriter);
+                        if (currentLine[i] == ',')
+                        {
+                            streamWriter.WriteLine("</td>");
+                            streamWriter.Write("\t<td>");
+                        }
+                        else
+                        {
+                            WriteCharAsHtmlEntity(currentLine[i], streamWriter);
+                        }
                     }
                 }
+                streamWriter.WriteLine("</td>");
+                streamWriter.WriteLine("</tr>");
             }
-
-            streamWriter.WriteLine("</td>");
-            streamWriter.WriteLine("</tr>");
         }
 
         WriteBottomTags(streamWriter);
