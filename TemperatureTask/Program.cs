@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using TemperatureTask.Model;
+using TemperatureTask.Presenter;
+
+// TODO Биндинги, структура, узнать про мвп
 
 namespace TemperatureTask
 {
@@ -16,7 +17,13 @@ namespace TemperatureTask
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            IConverter converter = new TemperatureConverter();
+            var view = new ConverterView();
+            TemperaturePresenter controller = new TemperaturePresenter(converter, view);
+            view.SetController(controller);
+            
+            Application.Run(view);
         }
     }
 }
