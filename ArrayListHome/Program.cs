@@ -4,13 +4,13 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        string path = "..\\..\\..\\input.txt";
+        string filePath = "..\\..\\..\\input.txt";
 
         try
         {
-            List<string> list = GetLinesFromFileToList(path);
+            List<string> fileLines = GetFileLines(filePath);
 
-            foreach (string line in list)
+            foreach (string line in fileLines)
             {
                 Console.WriteLine(line);
             }
@@ -20,34 +20,36 @@ internal class Program
         {
             Console.WriteLine("File not found");
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            Console.WriteLine("Something gone wrong");
+            Console.WriteLine(e);
         }
 
         Console.WriteLine();
 
-        List<int> numbers = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 9, 9, 9 };
-        RemoveEvenNumbers(numbers);
-        Console.WriteLine("Removed even numbers from list. " + string.Join(", ", numbers) + Environment.NewLine);
+        List<int> numbers1 = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 9, 9, 9 };
+        Console.WriteLine("Made new numbers list: " + string.Join(", ", numbers1));
+        RemoveEvenNumbers(numbers1);
+        Console.WriteLine("Removed even numbers from list: " + string.Join(", ", numbers1) + Environment.NewLine);
 
         List<int> numbers2 = new() { 3, 3, 3, 3, 3, 3, 34, 4, 4, 5, 6, 6, 6, 6 };
-        numbers2 = GetDistinctItems(numbers2);
-        Console.WriteLine("Got distinct numbers from list. " + string.Join(", ", numbers2));
+        Console.WriteLine("Made another numbers list: " + string.Join(", ", numbers2));
+        List<int> distinctNumbers = GetDistinctItems(numbers2);
+        Console.WriteLine("Got distinct numbers from list: " + string.Join(", ", distinctNumbers));
     }
 
-    public static List<string> GetLinesFromFileToList(string path)
+    public static List<string> GetFileLines(string path)
     {
         using StreamReader streamReader = new(path);
-        List<string> list = new();
-        string currentLine;
+        List<string> fileLines = new();
+        string? currentLine;
 
         while ((currentLine = streamReader.ReadLine()) != null)
         {
-            list.Add(currentLine);
+            fileLines.Add(currentLine);
         }
 
-        return list;
+        return fileLines;
     }
 
     public static void RemoveEvenNumbers(List<int> numbers)
@@ -61,18 +63,18 @@ internal class Program
         }
     }
 
-    public static List<T> GetDistinctItems<T>(List<T> items)
+    public static List<T> GetDistinctItems<T>(List<T> list)
     {
-        List<T> distinctItems = new(items.Count);
+        List<T> distinctItemsList = new(list.Count);
 
-        foreach (T number in items)
+        foreach (T item in list)
         {
-            if (!distinctItems.Contains(number))
+            if (!distinctItemsList.Contains(item))
             {
-                distinctItems.Add(number);
+                distinctItemsList.Add(item);
             }
         }
 
-        return distinctItems;
+        return distinctItemsList;
     }
 }
