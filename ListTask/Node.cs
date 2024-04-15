@@ -2,18 +2,18 @@
 
  internal class Node<T>
 {
-    public T Item { get; set; }
+    public T Data { get; set; }
 
     public Node<T>? Next { get; set; }
 
-    public Node(T item)
+    public Node(T data)
     {
-        Item = item;
+        Data = data;
     }
 
-    public Node(T item, Node<T> next)
+    public Node(T Data, Node<T>? next)
     {
-        Item = item;
+        this.Data = Data;
         Next = next;
     }
 }

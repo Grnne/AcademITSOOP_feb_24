@@ -15,17 +15,18 @@ public class SinglyLinkedList<T> : IEnumerable<T>
         {
             CheckIsListEmpty();
 
-            return GetNode(index)!.Item;
+            return GetNode(index)!.Data;
         }
 
         set
         {
-            // А как мне в индексаторе вернуть прошлое значение?
-            Node<T> node = GetNode(index)!;
-            //T? oldItem = node.Item;
-            node.Item = value;
+            if (index < 0 || index > Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. List count: {Count}");
+            }
 
-            //return oldItem;
+            Node<T> node = GetNode(index);
+            node.Data = value;
         }
     }
 
@@ -33,33 +34,36 @@ public class SinglyLinkedList<T> : IEnumerable<T>
     {
         CheckIsListEmpty();
 
-        return _head!.Item;
+        return _head!.Data;
     }
 
-    public void AddFirst(T item)
+    public void AddFirst(T data)
     {
-        _head = new Node<T>(item, _head!);
+        _head = new Node<T>(data, _head!);
         Count++;
     }
 
-    public void Add(T item) // Добавил, чтоб получалось инициализировать список через new() {1, 3, 34}
+    public void Add(T data)
     {
-        Add(Count, item);
+        Add(Count, data);
     }
 
-    public void Add(int index, T item)
+    public void Add(int index, T data)
     {
-        ValidateIndex(index);
+        if (index < 0 || index > Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. List count: {Count}");
+        }
 
         if (index == 0)
         {
-            AddFirst(item);
+            AddFirst(data);
 
             return;
         }
 
         Node<T> previousNode = GetNode(index - 1);
-        previousNode.Next = new Node<T>(item, previousNode.Next!);
+        previousNode.Next = new Node<T>(data, previousNode.Next!);
         Count++;
     }
 
@@ -67,39 +71,38 @@ public class SinglyLinkedList<T> : IEnumerable<T>
     {
         CheckIsListEmpty();
 
-        T deletedItem = _head!.Item;
+        T removedData = _head!.Data;
         _head = _head.Next;
         Count--;
 
-        return deletedItem;
+        return removedData;
     }
 
     public T RemoveAt(int index)
     {
-        ValidateIndex(index);
+        CheckIndex(index);
 
         if (index == 0)
         {
             return RemoveFirst();
         }
 
-        Node<T> previousNode = GetNode(index - 1)!;
-        T deletedItem = previousNode.Next!.Item;
+        Node<T> previousNode = GetNode(index - 1);
+        T removedData = previousNode.Next!.Data;
         previousNode.Next = previousNode.Next.Next;
         Count--;
 
-        return deletedItem;
-
+        return removedData;
     }
 
-    public bool Remove(T item)
+    public bool Remove(T data)
     {
         if (_head == null)
         {
             return false;
         }
 
-        if (Equals(_head.Item, item))
+        if (Equals(_head.Data, data))
         {
             RemoveFirst();
 
@@ -110,7 +113,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
 
         while (previousNode.Next != null)
         {
-            if (Equals(previousNode.Next.Item, item))
+            if (Equals(previousNode.Next.Data, data))
             {
                 previousNode.Next = previousNode.Next.Next;
                 Count--;
@@ -130,10 +133,10 @@ public class SinglyLinkedList<T> : IEnumerable<T>
             return;
         }
 
-        Node<T> currentNode = _head!;
+        Node<T>? currentNode = _head;
         Node<T>? previousNode = null;
 
-        for (int i = 0; i < Count; i++)
+        while (currentNode != null)
         {
             Node<T>? nextNode = currentNode.Next;
             currentNode.Next = previousNode;
@@ -147,35 +150,35 @@ public class SinglyLinkedList<T> : IEnumerable<T>
 
     public SinglyLinkedList<T> Copy()
     {
-        SinglyLinkedList<T> copy = new();
+        SinglyLinkedList<T> copyNode = new();
 
         if (_head is null)
         {
-            return copy;
+            return copyNode;
         }
 
-        copy._head = new Node<T>(_head.Item);
-        copy.Count = Count;
+        copyNode._head = new Node<T>(_head.Data);
+        copyNode.Count = Count;
 
-        Node<T> currentNode = copy._head;
-        Node<T> sourceNode = _head.Next!;
+        Node<T> currentNode = copyNode._head;
+        Node<T>? sourceNode = _head.Next!;
 
         while (sourceNode is not null)
         {
-            currentNode.Next = new Node<T>(sourceNode.Item);
+            currentNode.Next = new Node<T>(sourceNode.Data);
 
             currentNode = currentNode.Next;
             sourceNode = sourceNode.Next!;
         }
 
-        return copy;
+        return copyNode;
     }
 
-    private void ValidateIndex(int index)
+    private void CheckIndex(int index)
     {
-        if (index < 0 || index > Count)
+        if (index < 0 || index >= Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range.");
+            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. List count: {Count}");
         }
     }
 
@@ -189,11 +192,11 @@ public class SinglyLinkedList<T> : IEnumerable<T>
 
     private Node<T> GetNode(int index)
     {
-        Node<T>? node = _head;
+        Node<T> node = _head!;
 
         for (int i = 0; i < index; i++)
         {
-            node = node!.Next;
+            node = node.Next!;
         }
 
         return node;
@@ -201,11 +204,11 @@ public class SinglyLinkedList<T> : IEnumerable<T>
 
     public IEnumerator<T> GetEnumerator()
     {
-        var currentNode = _head;
+        Node<T>? currentNode = _head;
 
         while (currentNode != null)
         {
-            yield return currentNode.Item;
+            yield return currentNode.Data;
 
             currentNode = currentNode.Next;
         }
@@ -220,7 +223,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
     {
         if (_head is null)
         {
-            return "null";
+            return "[]";
         }
 
         StringBuilder stringBuilder = new StringBuilder();
