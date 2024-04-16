@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Text;
 
 namespace ArrayListTask;
@@ -8,8 +9,6 @@ public class ArrayList<T> : IList<T>
     private const int DefaultCapacity = 6;
 
     private T[] _items;
-
-    public int Count { get; private set; }
 
     private int _version;
 
@@ -21,7 +20,7 @@ public class ArrayList<T> : IList<T>
         {
             if (value < Count)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), $"Capacity is less than the current items count. Capacity: {value} Count: {Count}");
+                throw new ArgumentOutOfRangeException(nameof(value), $"Capacity is less than the current items count. Capacity: {value}; Count: {Count}");
             }
 
             if (value == _items.Length)
@@ -42,6 +41,8 @@ public class ArrayList<T> : IList<T>
 
     public bool IsReadOnly => false;
 
+    public int Count { get; private set; }
+
     public T this[int index]
     {
         get
@@ -55,7 +56,7 @@ public class ArrayList<T> : IList<T>
         {
             CheckIndex(index);
             _items[index] = value;
-            Count++;
+            _version++;
         }
     }
 
@@ -68,7 +69,7 @@ public class ArrayList<T> : IList<T>
     {
         if (capacity < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(capacity), $"Capacity must be more than zero, capacity: {capacity}!");
+            throw new ArgumentOutOfRangeException(nameof(capacity), $"Capacity must be greater than zero, capacity: {capacity}");
         }
 
         if (capacity == 0)
@@ -88,7 +89,10 @@ public class ArrayList<T> : IList<T>
 
     public void Insert(int index, T item)
     {
-        CheckIndex(index);
+        if (index < 0 || index > Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index), $"Argument is out of range. Must be in range from 0 to {Count}. Index: {index}");
+        }
 
         if (Count == _items.Length)
         {
@@ -132,11 +136,13 @@ public class ArrayList<T> : IList<T>
 
         if (array.Length < Count + arrayIndex)
         {
-            // В документации The exception that is thrown when one of the arguments provided to a method is not valid.
-            // Вроде бы подходит, ну и такую же ошибку может лист выдать из базовой библиотеки.
             throw new ArgumentException($"Destination array was not long enough. Destination array length: {array.Length}, source length + destination index = {Count + arrayIndex}", nameof(array));
         }
 
+        if (array.Length <= arrayIndex)
+        {
+            throw new ArgumentOutOfRangeException(nameof(arrayIndex), $"Destination index is out of range. Must be in range from 0 to {array.Length - 1}. Index: {arrayIndex}");
+        }
         Array.Copy(_items, 0, array, arrayIndex, Count);
     }
 
@@ -202,20 +208,15 @@ public class ArrayList<T> : IList<T>
 
     private void CheckIndex(int index)
     {
-        if (index < 0 || index > Count)
+        if (index < 0 || index >= Count)
         {
-            if (index < 0 || index >= Count)
-            {
-                throw new ArgumentOutOfRangeException($"Argument is out of range. Must be in range from 0 to {Count - 1}. Index: {index}");
-            }
+            throw new ArgumentOutOfRangeException(nameof(index), $"Argument is out of range. Must be in range from 0 to {Count - 1}. Index: {index}");
         }
     }
 
     private void IncreaseCapacity()
     {
-        int newCapacity = _items.Length == 0 ? DefaultCapacity : 2 * _items.Length;
-
-        Capacity = newCapacity;
+        Capacity = _items.Length == 0 ? DefaultCapacity : 2 * _items.Length;
     }
 
     public void TrimExcess()

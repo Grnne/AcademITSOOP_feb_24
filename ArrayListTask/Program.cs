@@ -1,12 +1,10 @@
 ﻿namespace ArrayListTask;
 
-//TODO спросить как вывести через стринг_джоин только элементы в отображаемой области, и про прагма варнинг
-
 internal class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Создадим наш лист, добавим элемент и посмотрим его длину");
+        Console.WriteLine("Создадим наш список, добавим элемент и посмотрим его длину");
         ArrayList<int> list = new() { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
         Console.WriteLine(list);
         Console.WriteLine();
@@ -43,6 +41,6 @@ internal class Program
         Console.WriteLine();
 
         list.Clear();
-        Console.WriteLine("Лист после очистки: " + list);
+        Console.WriteLine("Список после очистки: " + list);
     }
 }
