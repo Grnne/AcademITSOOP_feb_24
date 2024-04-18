@@ -54,23 +54,23 @@ public class Vector
         return result;
     }
 
-    public double GetLength()
-    {
-        double componentsSquareSum = 0;
-
-        foreach(double component in  _components)
-        {
-            componentsSquareSum += component * component;
-        }
-        
-        return Math.Sqrt(componentsSquareSum);
-    }
-
     public static Vector GetDifference(Vector vector1, Vector vector2)
     {
         Vector result = new Vector(vector1);
         result.Subtract(vector2);
         return result;
+    }
+
+    public double GetLength()
+    {
+        double componentsSquaresSum = 0;
+
+        foreach (double component in _components)
+        {
+            componentsSquaresSum += component * component;
+        }
+
+        return Math.Sqrt(componentsSquaresSum);
     }
 
     public static double GetScalarProduct(Vector vector1, Vector vector2)
