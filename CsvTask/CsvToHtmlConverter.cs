@@ -2,14 +2,14 @@
 
 public static class CsvToHtmlConverter
 {
-    public static void Convert(string input, string output)
+    public static void Convert(string inputCsvPath, string outputHtmlPath)
     {
-        using StreamReader streamReader = new(input);
-        using StreamWriter streamWriter = new(output);
+        using StreamReader streamReader = new(inputCsvPath);
+        using StreamWriter streamWriter = new(outputHtmlPath);
 
         WriteHeadTags(streamWriter);
 
-        string currentLine;
+        string? currentLine;
         bool isInsideQuotes = false;
 
         while ((currentLine = streamReader.ReadLine()) != null)
@@ -74,11 +74,9 @@ public static class CsvToHtmlConverter
         }
 
         WriteBottomTags(streamWriter);
-        Console.WriteLine("Parsing is done");
-        Console.ReadKey();
     }
 
-    public static void WriteHeadTags(StreamWriter streamWriter)
+    private static void WriteHeadTags(StreamWriter streamWriter)
     {
         streamWriter.WriteLine("<!DOCTYPE HTML>");
         streamWriter.WriteLine("<html>");
@@ -90,7 +88,7 @@ public static class CsvToHtmlConverter
         streamWriter.WriteLine("<table border=\"2\">");
     }
 
-    public static void WriteBottomTags(StreamWriter streamWriter)
+    private static void WriteBottomTags(StreamWriter streamWriter)
     {
         streamWriter.WriteLine("</table>");
         streamWriter.WriteLine("</body>");
@@ -99,20 +97,12 @@ public static class CsvToHtmlConverter
 
     public static void WriteCharAsHtmlEntity(char character, StreamWriter streamWriter)
     {
-        switch (character)
+        streamWriter.Write(character switch
         {
-            case '<':
-                streamWriter.Write("&lt;");
-                break;
-            case '>':
-                streamWriter.Write("&gt;");
-                break;
-            case '&':
-                streamWriter.Write("&amp;");
-                break;
-            default:
-                streamWriter.Write(character);
-                break;
-        }
+            '<' => "&lt;",
+            '>' => "&gt;",
+            '&' => "&amp;",
+            _ => character.ToString()
+        });
     }
 }
