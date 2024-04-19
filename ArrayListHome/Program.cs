@@ -4,25 +4,23 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        string filePath = "..\\..\\..\\input.txt";
-
         try
         {
+            string filePath = "..\\..\\..\\input.txt";
             List<string> fileLines = GetFileLines(filePath);
 
             foreach (string line in fileLines)
             {
                 Console.WriteLine(line);
             }
-
         }
-        catch (FileNotFoundException)
+        catch (FileNotFoundException e)
         {
-            Console.WriteLine("File not found");
+            Console.WriteLine("Error: " + e.Message);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine("Error: " + e.Message);
         }
 
         Console.WriteLine();
@@ -38,9 +36,9 @@ internal class Program
         Console.WriteLine("Got distinct numbers from list: " + string.Join(", ", distinctNumbers));
     }
 
-    public static List<string> GetFileLines(string path)
+    public static List<string> GetFileLines(string filePath)
     {
-        using StreamReader streamReader = new(path);
+        using StreamReader streamReader = new(filePath);
         List<string> fileLines = new();
         string? currentLine;
 
