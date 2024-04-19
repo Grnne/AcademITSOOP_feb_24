@@ -13,7 +13,7 @@ public class Matrix
 
     public Matrix(int rowsAmount, int columnsAmount)
     {
-        ValidateMatrixSize(rowsAmount, columnsAmount);
+        CheckMatrixSize(rowsAmount, columnsAmount);
 
         _rows = new Vector[rowsAmount];
 
@@ -38,7 +38,7 @@ public class Matrix
         int rowsAmount = array.GetLength(0);
         int columnsAmount = array.GetLength(1);
 
-        ValidateMatrixSize(rowsAmount, columnsAmount);
+        CheckMatrixSize(rowsAmount, columnsAmount);
 
         _rows = new Vector[rowsAmount];
 
@@ -80,7 +80,7 @@ public class Matrix
 
     public static Matrix GetSum(Matrix matrix1, Matrix matrix2)
     {
-        ValidateMatricesParameters(matrix1, matrix2);
+        CheckMatricesSizesEquality(matrix1, matrix2);
 
         Matrix resultMatrix = new(matrix1);
         resultMatrix.Add(matrix2);
@@ -90,7 +90,7 @@ public class Matrix
 
     public static Matrix GetDifference(Matrix matrix1, Matrix matrix2)
     {
-        ValidateMatricesParameters(matrix1, matrix2);
+        CheckMatricesSizesEquality(matrix1, matrix2);
 
         Matrix resultMatrix = new Matrix(matrix1);
         resultMatrix.Subtract(matrix2);
@@ -122,14 +122,14 @@ public class Matrix
 
     public Vector GetRow(int index)
     {
-        ValidateIndex(index, RowsAmount);
+        CheckIndex(index, RowsAmount);
 
         return new Vector(_rows[index]);
     }
 
     public void SetRow(int index, Vector vector)
     {
-        ValidateIndex(index, RowsAmount);
+        CheckIndex(index, RowsAmount);
 
         if (vector.Size != ColumnsAmount)
         {
@@ -141,7 +141,7 @@ public class Matrix
 
     public Vector GetColumn(int index)
     {
-        ValidateIndex(index, RowsAmount);
+        CheckIndex(index, RowsAmount);
 
         Vector column = new(RowsAmount);
 
@@ -155,7 +155,7 @@ public class Matrix
 
     public void Add(Matrix matrix)
     {
-        ValidateMatricesParameters(this, matrix);
+        CheckMatricesSizesEquality(this, matrix);
 
         for (int i = 0; i < _rows.Length; i++)
         {
@@ -165,7 +165,7 @@ public class Matrix
 
     public void Subtract(Matrix matrix)
     {
-        ValidateMatricesParameters(this, matrix);
+        CheckMatricesSizesEquality(this, matrix);
 
         for (int i = 0; i < _rows.Length; i++)
         {
@@ -239,7 +239,7 @@ public class Matrix
         return determinant;
     }
 
-    private static void ValidateIndex(int index, int upperIndexLimit)
+    private static void CheckIndex(int index, int upperIndexLimit)
     {
         if (index < 0 || index >= upperIndexLimit)
         {
@@ -247,17 +247,22 @@ public class Matrix
         }
     }
 
-    private static void ValidateMatrixSize(int rowsAmount, int columnsAmount)
+    private static void CheckMatrixSize(int rowsAmount, int columnsAmount)
     {
         if (rowsAmount <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(rowsAmount), $"Matrix rows amount must be >= 0, current amount: {rowsAmount}");
+            throw new ArgumentOutOfRangeException(nameof(rowsAmount), $"Matrix rows amount must be greater than 0, current amount: {rowsAmount}");
         }
 
         if (columnsAmount <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(columnsAmount), $"Matrix columns amount must be >= 0, current amount: {columnsAmount}");
+            throw new ArgumentOutOfRangeException(nameof(columnsAmount), $"Matrix columns amount must greater than 0, current amount: {columnsAmount}");
         }
+    }
+
+    private static void CheckMatricesSizesEquality(Matrix matrix1, Matrix matrix2)
+    {
+        
     }
 
     private Matrix GetMinor(int rowIndex)
@@ -330,7 +335,7 @@ public class Matrix
 
     public override int GetHashCode()
     {
-        int prime = 21;
+        int prime = 23;
         int hash = 1;
 
         foreach (Vector row in _rows)

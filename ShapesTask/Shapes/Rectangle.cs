@@ -44,7 +44,7 @@ public class Rectangle : IShape
 
     public override int GetHashCode()
     {
-        int prime = 21;
+        int prime = 23;
         int hash = 1;
 
         hash = prime * hash + Width.GetHashCode();

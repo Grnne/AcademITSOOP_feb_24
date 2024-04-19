@@ -176,7 +176,7 @@ public class Vector
 
     public override int GetHashCode()
     {
-        int prime = 21;
+        int prime = 23;
         int hash = 1;
 
         foreach (double component in _components)
