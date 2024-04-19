@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Text;
 
 namespace ArrayListTask;
@@ -11,6 +10,10 @@ public class ArrayList<T> : IList<T>
     private T[] _items;
 
     private int _version;
+
+    public bool IsReadOnly => false;
+
+    public int Count { get; private set; }
 
     public int Capacity
     {
@@ -39,10 +42,6 @@ public class ArrayList<T> : IList<T>
         }
     }
 
-    public bool IsReadOnly => false;
-
-    public int Count { get; private set; }
-
     public T this[int index]
     {
         get
@@ -69,7 +68,7 @@ public class ArrayList<T> : IList<T>
     {
         if (capacity < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(capacity), $"Capacity must be greater than zero, capacity: {capacity}");
+            throw new ArgumentOutOfRangeException(nameof(capacity), $"Capacity must be greater than or equal to zero, capacity: {capacity}");
         }
 
         if (capacity == 0)
@@ -131,7 +130,7 @@ public class ArrayList<T> : IList<T>
     {
         if (array is null)
         {
-            throw new ArgumentNullException(nameof(array), "Destination array cant be null.");
+            throw new ArgumentNullException(nameof(array), "Destination array can't be null.");
         }
 
         if (array.Length < Count + arrayIndex)
@@ -139,10 +138,11 @@ public class ArrayList<T> : IList<T>
             throw new ArgumentException($"Destination array was not long enough. Destination array length: {array.Length}, source length + destination index = {Count + arrayIndex}", nameof(array));
         }
 
-        if (array.Length <= arrayIndex)
+        if (arrayIndex < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(arrayIndex), $"Destination index is out of range. Must be in range from 0 to {array.Length - 1}. Index: {arrayIndex}");
+            throw new ArgumentOutOfRangeException(nameof(arrayIndex), $"Array index: {arrayIndex} is less than 0.");
         }
+
         Array.Copy(_items, 0, array, arrayIndex, Count);
     }
 
