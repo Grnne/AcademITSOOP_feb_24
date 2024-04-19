@@ -23,25 +23,25 @@ internal class Program
         Console.WriteLine();
 
         Console.WriteLine("Список с уникальными именами:");
-        var distinctNames = persons
-            .Select(x => x.Name)
+        var uniqueNames = persons
+            .Select(p => p.Name)
             .Distinct()
             .ToList();
-        Console.WriteLine(string.Join(", ", distinctNames));
+        Console.WriteLine("Имена: " + string.Join(", ", uniqueNames));
         Console.WriteLine();
 
         Console.WriteLine("Люди моложе 18:");
         var teenagers = persons
-            .Where(y => y.Age < 18)
+            .Where(p => p.Age < 18)
             .ToList();
-        Console.WriteLine("Имена: " + string.Join(", ", teenagers) + ".");
-        Console.WriteLine($"И их средний возраст: {teenagers.Average(x => x.Age)}");
+        Console.WriteLine("Имя, возраст: " + string.Join(", ", teenagers) + ".");
+        Console.WriteLine($"И их средний возраст: {teenagers.Average(t => t.Age)}");
         Console.WriteLine();
 
-        var averageAgesByName = persons
-            .GroupBy(x => x.Name)
-            .ToDictionary(x => x.Key, x => x.Average(x => x.Age));
-        Console.WriteLine($"Средний возраст людей по имени: {string.Join(Environment.NewLine, averageAgesByName)}");
+        var averageAgesByNames = persons
+            .GroupBy(p => p.Name)
+            .ToDictionary(g => g.Key, g => g.Average(ga => ga.Age)); // А во вложенной функции как лучше назвать переменную для группы людей?
+        Console.WriteLine($"Средний возраст людей по имени: {string.Join(Environment.NewLine, averageAgesByNames)}");
         Console.WriteLine();
 
         Console.WriteLine("Люди с возрастом от 20 до 45, отсортированные по убыванию возраста:");
@@ -67,7 +67,6 @@ internal class Program
 
         Console.WriteLine();
         Console.Write("Введите количество чисел ряда Фибоначчи: ");
-        
         var fibonacciNumbersAmount = Convert.ToInt32(Console.ReadLine());   
 
         foreach (var fibonacciNumber in GetFibonacciNumbers().Take(fibonacciNumbersAmount))
@@ -93,17 +92,16 @@ internal class Program
         yield return 0;
         yield return 1;
 
-        Int128 fibonacciNumber1 = 0;
-        Int128 fibonacciNumber2 = 1;
-        Int128 fibonacciNumber3;
+        Int128 previousFibonacciNumber = 0;
+        Int128 currentFibonacciNumber = 1;
 
         while (true)
         {
-            fibonacciNumber3 = fibonacciNumber1 + fibonacciNumber2;
-            fibonacciNumber1 = fibonacciNumber2;
-            fibonacciNumber2 = fibonacciNumber3;
+            Int128 nextFibonacciNumber = previousFibonacciNumber + currentFibonacciNumber;
+            previousFibonacciNumber = currentFibonacciNumber;
+            currentFibonacciNumber = nextFibonacciNumber;
 
-            yield return fibonacciNumber3;
+            yield return nextFibonacciNumber;
         }
     }
 }
