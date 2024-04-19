@@ -7,7 +7,7 @@ internal class SimpleHashTable<T> : ICollection<T>
 {
     private const int DefaultCapacity = 50;
 
-    private readonly List<T?>?[] _lists;
+    private readonly List<T>?[] _lists;
 
     private int _version;
 
@@ -22,9 +22,9 @@ internal class SimpleHashTable<T> : ICollection<T>
 
     public SimpleHashTable(int capacity)
     {
-        if (capacity < 0)
+        if (capacity <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(capacity), "List size must be greater than 0");
+            throw new ArgumentOutOfRangeException(nameof(capacity), $"Capacity: {capacity} must be greater than 0");
         }
 
         _lists = new List<T?>[capacity];
@@ -36,7 +36,7 @@ internal class SimpleHashTable<T> : ICollection<T>
 
         if (_lists[index] is null)
         {
-            _lists[index] = [];
+            _lists[index] = new List<T>();
         }
 
         _lists[index]!.Add(item);
@@ -96,7 +96,7 @@ internal class SimpleHashTable<T> : ICollection<T>
 
         if (arrayIndex < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Index must be greater than 0");
+            throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Index must be greater than or equal to 0");
         }
 
         if (array.Length < arrayIndex + Count)
