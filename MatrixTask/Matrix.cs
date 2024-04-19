@@ -13,7 +13,7 @@ public class Matrix
 
     public Matrix(int rowsAmount, int columnsAmount)
     {
-        CheckMatrixSize(rowsAmount, columnsAmount);
+        CheckMatrixDimensions(rowsAmount, columnsAmount);
 
         _rows = new Vector[rowsAmount];
 
@@ -38,7 +38,7 @@ public class Matrix
         int rowsAmount = array.GetLength(0);
         int columnsAmount = array.GetLength(1);
 
-        CheckMatrixSize(rowsAmount, columnsAmount);
+        CheckMatrixDimensions(rowsAmount, columnsAmount);
 
         _rows = new Vector[rowsAmount];
 
@@ -80,7 +80,7 @@ public class Matrix
 
     public static Matrix GetSum(Matrix matrix1, Matrix matrix2)
     {
-        CheckMatricesSizesEquality(matrix1, matrix2);
+        CheckMatricesDimensionsEquality(matrix1, matrix2);
 
         Matrix resultMatrix = new(matrix1);
         resultMatrix.Add(matrix2);
@@ -90,7 +90,7 @@ public class Matrix
 
     public static Matrix GetDifference(Matrix matrix1, Matrix matrix2)
     {
-        CheckMatricesSizesEquality(matrix1, matrix2);
+        CheckMatricesDimensionsEquality(matrix1, matrix2);
 
         Matrix resultMatrix = new Matrix(matrix1);
         resultMatrix.Subtract(matrix2);
@@ -141,7 +141,7 @@ public class Matrix
 
     public Vector GetColumn(int index)
     {
-        CheckIndex(index, RowsAmount);
+        CheckIndex(index, ColumnsAmount);
 
         Vector column = new(RowsAmount);
 
@@ -155,7 +155,7 @@ public class Matrix
 
     public void Add(Matrix matrix)
     {
-        CheckMatricesSizesEquality(this, matrix);
+        CheckMatricesDimensionsEquality(this, matrix);
 
         for (int i = 0; i < _rows.Length; i++)
         {
@@ -165,7 +165,7 @@ public class Matrix
 
     public void Subtract(Matrix matrix)
     {
-        CheckMatricesSizesEquality(this, matrix);
+        CheckMatricesDimensionsEquality(this, matrix);
 
         for (int i = 0; i < _rows.Length; i++)
         {
@@ -211,7 +211,7 @@ public class Matrix
         _rows = newRows;
     }
 
-    public double GetDeterminant()  
+    public double GetDeterminant()
     {
         if (RowsAmount != ColumnsAmount)
         {
@@ -247,22 +247,27 @@ public class Matrix
         }
     }
 
-    private static void CheckMatrixSize(int rowsAmount, int columnsAmount)
+    private static void CheckMatrixDimensions(int rowsAmount, int columnsAmount)
     {
         if (rowsAmount <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(rowsAmount), $"Matrix rows amount must be greater than 0, current amount: {rowsAmount}");
+            throw new ArgumentOutOfRangeException(nameof(rowsAmount), $"Matrix rows amount: {rowsAmount} must be greater than 0");
         }
 
         if (columnsAmount <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(columnsAmount), $"Matrix columns amount must greater than 0, current amount: {columnsAmount}");
+            throw new ArgumentOutOfRangeException(nameof(columnsAmount), $"Matrix columns amount: {columnsAmount} must be greater than 0");
         }
     }
 
-    private static void CheckMatricesSizesEquality(Matrix matrix1, Matrix matrix2)
+    private static void CheckMatricesDimensionsEquality(Matrix matrix1, Matrix matrix2)
     {
-        
+        if (matrix1.RowsAmount != matrix2.RowsAmount || matrix1.ColumnsAmount != matrix2.ColumnsAmount)
+        {
+            throw new ArgumentException("Matrices must have same dimensions." + Environment.NewLine +
+                $"First matrix rows amount: {matrix1.RowsAmount}; columns amount: {matrix1.ColumnsAmount}" + Environment.NewLine +
+                $"Second matrix rows amount: {matrix2.RowsAmount}; columns amount: {matrix2.ColumnsAmount}");
+        }
     }
 
     private Matrix GetMinor(int rowIndex)
@@ -317,7 +322,7 @@ public class Matrix
 
         Matrix matrix = (Matrix)obj;
 
-        if (RowsAmount != matrix.RowsAmount)
+        if (RowsAmount != matrix.RowsAmount || ColumnsAmount != matrix.ColumnsAmount)
         {
             return false;
         }
