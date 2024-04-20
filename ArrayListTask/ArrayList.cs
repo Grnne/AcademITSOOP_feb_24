@@ -5,6 +5,8 @@ namespace ArrayListTask;
 
 public class ArrayList<T> : IList<T>
 {
+    public int Count { get; private set; }
+
     private const int DefaultCapacity = 6;
 
     private T[] _items;
@@ -12,8 +14,6 @@ public class ArrayList<T> : IList<T>
     private int _version;
 
     public bool IsReadOnly => false;
-
-    public int Count { get; private set; }
 
     public int Capacity
     {
