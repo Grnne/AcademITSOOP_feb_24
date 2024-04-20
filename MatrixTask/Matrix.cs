@@ -309,11 +309,11 @@ public class Matrix
         return determinant * determinantCoefficient;
     }
 
-    private static void CheckIndex(int index, int upperLimitIndex)
+    private static void CheckIndex(int index, int indexUpperLimit)
     {
-        if (index < 0 || index >= upperLimitIndex)
+        if (index < 0 || index >= indexUpperLimit)
         {
-            throw new IndexOutOfRangeException($"Index must be in matrix range: >= 0 and < {upperLimitIndex}; index = {index}");
+            throw new IndexOutOfRangeException($"Index must be in matrix range: >= 0 and < {indexUpperLimit}; index = {index}");
         }
     }
 
