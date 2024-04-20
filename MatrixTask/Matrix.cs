@@ -213,30 +213,100 @@ public class Matrix
 
     public double GetDeterminant()
     {
-        if (RowsAmount != ColumnsAmount)
+        int size = ColumnsAmount;
+
+        // For 2 dimension matrix
+        if (size == 2)
         {
-            throw new InvalidOperationException($"Matrix must be square. Current rows amount: {RowsAmount}; columns amount: {ColumnsAmount}");
+            return GetColumn(0)[0] * GetColumn(1)[1]
+                - GetColumn(0)[1] * GetColumn(1)[0];
         }
 
-        if (_rows.Length == 1)
+        // For 3 dimension matrix
+        if (size == 3)
         {
-            return _rows[0][0];
+            return GetColumn(0)[0] * GetColumn(1)[1] * GetColumn(2)[2]
+                + GetColumn(0)[1] * GetColumn(1)[2] * GetColumn(2)[0]
+                + GetColumn(0)[2] * GetColumn(1)[0] * GetColumn(2)[1]
+                - GetColumn(0)[2] * GetColumn(1)[1] * GetColumn(2)[0]
+                - GetColumn(0)[0] * GetColumn(1)[2] * GetColumn(2)[1]
+                - GetColumn(0)[1] * GetColumn(1)[0] * GetColumn(2)[2];
         }
 
-        if (_rows.Length == 2)
+        // Swap and modifying determinant coefficient if matrix[0][0] = 0, return if whole column is 0
+        // Нужно сделать аналогичный метод для каждого столбца, т.к. сейчас будет выдавать ошибки, если будет деление на ноль
+        // Стоит ли оставить метод тут, для оптимизации в случае пустого первого столбца?
+        Vector tempColumn = GetColumn(0);
+        int determinantCoefficient = 1;
+
+        if (tempColumn[0] == 0)
         {
-            return _rows[0][0] * _rows[1][1] - _rows[1][0] * _rows[0][1];
+            int count = 0;
+
+            while (tempColumn[count] == 0)
+            {
+                count++;
+
+                if (count == size)
+                {
+                    return 0;
+                }
+            }
+
+            Vector tempRow = GetRow(count);
+            SetRow(count, GetRow(0));
+            SetRow(0, tempRow);
+            determinantCoefficient *= -1;
         }
 
-        double determinant = 0;
+        // Making upper triangular matrix by multiplying and subtracting
+        // Нужно как-то сделать, чтоб из-за округления значения близкие к 0 после вычитания занулялись
+        // и чтоб значения в периоде адекватно округлялись.
+        // Сделать вместо коэффициента умножение каждого столбца на текущую цифру противоположного?
+        // Всё равно, если получится число в периоде в диагонали, будет большая погрешность в определителе
 
-        for (int i = 0; i < _rows.Length; i++)
+        for (int i = 0; i < size - 1; i++)
         {
-            Matrix minor = GetMinor(i);
-            determinant += Math.Pow(-1, i) * _rows[i][0] * minor.GetDeterminant();
+            for (int j = i + 1; j < size; j++)
+            {
+                if (GetRow(j)[i] != 0)
+                {
+                    Vector multipliedRow = new(GetRow(i));
+                    double multiplyCoefficient = Math.Round(GetRow(j)[i] / multipliedRow[i], 8, MidpointRounding.AwayFromZero);
+                    multipliedRow.MultiplyByScalar(multiplyCoefficient);
+
+                    for (int k = 0; k < size; k++)
+                    {
+                        multipliedRow[k] = Math.Round(multipliedRow[k], 8, MidpointRounding.AwayFromZero);
+                    }
+
+                    Vector processedRow = GetRow(j);
+
+                    for (int k = 0; k < size; k++)
+                    {
+                        processedRow[k] = Math.Round(processedRow[k], 8, MidpointRounding.AwayFromZero);
+                    }
+
+                    processedRow.Subtract(multipliedRow);
+
+                    for (int k = 0; k < size; k++)
+                    {
+                        processedRow[k] = Math.Round(processedRow[k], 8, MidpointRounding.ToZero);
+                    }
+
+                    SetRow(j, processedRow);
+                }
+            }
         }
 
-        return determinant;
+        double determinant = 1;
+
+        for (int i = 0; i < size; i++)
+        {
+            determinant *= GetRow(i)[i];
+        }
+
+        return determinant * determinantCoefficient;
     }
 
     private static void CheckIndex(int index, int upperIndexLimit)
@@ -270,27 +340,6 @@ public class Matrix
         }
     }
 
-    private Matrix GetMinor(int rowIndex)
-    {
-        int minorSize = RowsAmount - 1;
-        Matrix minor = new(minorSize, minorSize);
-
-        for (int i = 1; i < RowsAmount; i++)
-        {
-            for (int j = 0; j < rowIndex; j++)
-            {
-                minor._rows[i - 1][j] = _rows[i][j];
-            }
-
-            for (int j = rowIndex + 1; j < RowsAmount; j++)
-            {
-                minor._rows[i - 1][j - 1] = _rows[i][j];
-            }
-        }
-
-        return minor;
-    }
-
     public override string ToString()
     {
         StringBuilder stringBuilder = new();
@@ -304,6 +353,7 @@ public class Matrix
 
         stringBuilder.Append(_rows[^1]);
         stringBuilder.Append('}');
+        
 
         return stringBuilder.ToString();
     }

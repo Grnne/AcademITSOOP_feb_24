@@ -1,55 +1,106 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-
-//namespace TrashCan;
-//internal class Class1
+﻿//class GFG
 //{
 
-//    public Node<T>? SearchNode(T item)
+//    // Dimension of input square matrix
+//    static readonly int N = 4;
+
+//    // Function to get determinant of matrix
+//    static int determinantOfMatrix(int[,] mat, int n)
 //    {
-//        if (_root == null)
+//        int num1, num2, det = 1, index,
+//                        total = 1; // Initialize result
+
+//        // temporary array for storing row
+//        int[] temp = new int[n + 1];
+
+//        // loop for traversing the diagonal elements
+//        for (int i = 0; i < n; i++)
 //        {
-//            return null;
-//        }
+//            index = i; // initialize the index
 
-//        if (item.Equals(_root.Item))
-//        {
-//            return _root;
-//        }
-
-//        Node<T>? currentNode = _root;
-
-//        while (0 == 0)
-//        {
-//            int comparisonResult = Compare(item, currentNode.Item);
-
-//            if (comparisonResult == 0)
+//            // finding the index which has non zero value
+//            while (index < n && mat[index, i] == 0)
 //            {
-//                return currentNode;
+//                index++;
 //            }
-
-//            if (comparisonResult < 0)
+//            if (index == n) // if there is non zero element
 //            {
-//                if (currentNode.Left is null)
+//                // the determinant of matrix as zero
+//                continue;
+//            }
+//            if (index != i)
+//            {
+//                // loop for swapping the diagonal element row
+//                // and index row
+//                for (int j = 0; j < n; j++)
 //                {
-//                    return null;
+//                    swap(mat, index, j, i, j);
 //                }
-
-//                currentNode = currentNode.Left;
+//                // determinant sign changes when we shift
+//                // rows go through determinant properties
+//                det = (int)(det * Math.Pow(-1, index - i));
 //            }
-//            else
-//            {
-//                if (currentNode.Right is null)
-//                {
-//                    return null;
-//                }
 
-//                currentNode = currentNode.Right;
+//            // storing the values of diagonal row elements
+//            for (int j = 0; j < n; j++)
+//            {
+//                temp[j] = mat[i, j];
+//            }
+
+//            // traversing every row below the diagonal
+//            // element
+//            for (int j = i + 1; j < n; j++)
+//            {
+//                num1 = temp[i]; // value of diagonal element
+//                num2 = mat[j,
+//                           i]; // value of next row element
+
+//                // traversing every column of row
+//                // and multiplying to every row
+//                for (int k = 0; k < n; k++)
+//                {
+
+//                    // multiplying to make the diagonal
+//                    // element and next row element equal
+//                    mat[j, k] = (num1 * mat[j, k])
+//                                - (num2 * temp[k]);
+//                }
+//                total = total * num1; // Det(kA)=kDet(A);
 //            }
 //        }
+
+//        // multiplying the diagonal elements to get
+//        // determinant
+//        for (int i = 0; i < n; i++)
+//        {
+//            det = det * mat[i, i];
+//        }
+//        return (det / total); // Det(kA)/k=Det(A);
 //    }
 
+//    static int[,] swap(int[,] arr, int i1, int j1, int i2,
+//                        int j2)
+//    {
+//        int temp = arr[i1, j1];
+//        arr[i1, j1] = arr[i2, j2];
+//        arr[i2, j2] = temp;
+//        return arr;
+//    }
+
+//    // Driver code
+//    public static void Main(String[] args)
+//    {
+//        /*int mat[N,N] = {{6, 1, 1},
+//                        {4, -2, 5},
+//                        {2, 8, 7}}; */
+
+//        int[,] mat = { { 1, 0, 2, -1 },
+//                        { 3, 0, 0, 5 },
+//                        { 2, 1, 4, -3 },
+//                        { 1, 0, 5, 0 } };
+
+//        // Function call
+//        Console.Write("Determinant of the matrix is : {0}",
+//                      determinantOfMatrix(mat, N));
+//    }
 //}

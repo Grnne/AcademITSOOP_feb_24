@@ -81,8 +81,17 @@ internal class Program
 
         Console.WriteLine($"Произведение {matrix2} и {matrix3}");
         Console.WriteLine($"Результат: {Matrix.GetProduct(matrix2, matrix3)}");
+        Console.WriteLine();
+        
+        Matrix matrix5 = new Matrix(new double[,]
+        {
+            { 0, 2, 3, 4 },
+            { 0, 0, 2, 3 },
+            { 3, 5, 1, 0 },
+            { 5, 1, 0, 0 }
+        });
 
-        Console.WriteLine($"Найдем определитель матрицы {matrix2}");
-        Console.WriteLine($"Результат: {matrix2.GetDeterminant()}");
+        Console.WriteLine($"Найдем определитель матрицы {matrix5}");
+        Console.WriteLine($"Результат: {matrix5.GetDeterminant()}");
     }
 }
