@@ -17,7 +17,7 @@ internal class SimpleHashTable<T> : ICollection<T>
 
     public SimpleHashTable()
     {
-        _lists = new List<T?>[DefaultCapacity];
+        _lists = new List<T>?[DefaultCapacity];
     }
 
     public SimpleHashTable(int capacity)
@@ -27,7 +27,7 @@ internal class SimpleHashTable<T> : ICollection<T>
             throw new ArgumentOutOfRangeException(nameof(capacity), $"Capacity: {capacity} must be greater than 0");
         }
 
-        _lists = new List<T?>[capacity];
+        _lists = new List<T>?[capacity];
     }
 
     public void Add(T item)
@@ -71,7 +71,7 @@ internal class SimpleHashTable<T> : ICollection<T>
             return;
         }
 
-        foreach (List<T?>? list in _lists)
+        foreach (List<T>? list in _lists)
         {
             list?.Clear();
         }
@@ -80,14 +80,14 @@ internal class SimpleHashTable<T> : ICollection<T>
         Count = 0;
     }
 
-    public bool Contains(T? item)
+    public bool Contains(T item)
     {
         int index = GetIndex(item);
 
         return _lists[index] != null && _lists[index]!.Contains(item);
     }
 
-    public void CopyTo(T?[] array, int arrayIndex)
+    public void CopyTo(T[] array, int arrayIndex)
     {
         if (array == null)
         {
@@ -101,7 +101,7 @@ internal class SimpleHashTable<T> : ICollection<T>
 
         if (array.Length < arrayIndex + Count)
         {
-            throw new ArgumentException($"Destination array was not long enough. Destination array length: {array.Length}, source length + destination index = {Count + arrayIndex}", nameof(array));
+            throw new ArgumentException($"Destination array is not long enough. Destination array length: {array.Length}, source length + destination index = {Count + arrayIndex}", nameof(array));
         }
 
         int i = arrayIndex;
@@ -117,11 +117,11 @@ internal class SimpleHashTable<T> : ICollection<T>
     {
         int version = _version;
 
-        foreach (List<T?>? list in _lists)
+        foreach (List<T>? list in _lists)
         {
             if (list is not null)
             {
-                foreach (T? item in list)
+                foreach (T item in list)
                 {
                     if (version != _version)
                     {
@@ -139,7 +139,7 @@ internal class SimpleHashTable<T> : ICollection<T>
         return GetEnumerator();
     }
 
-    private int GetIndex(T? item) => (item is null) ? 0 : Math.Abs(item.GetHashCode() % _lists.Length);
+    private int GetIndex(T item) => (item is null) ? 0 : Math.Abs(item.GetHashCode() % _lists.Length);
 
     public override string ToString()
     {
@@ -151,20 +151,21 @@ internal class SimpleHashTable<T> : ICollection<T>
         StringBuilder stringBuilder = new();
 
         stringBuilder.Append('[');
+        stringBuilder.AppendJoin(", ", this.Select(i => i?.ToString() ?? "null"));
 
-        foreach (T item in this)
-        {
-            if (item is null)
-            {
-                stringBuilder.Append("null, ");
-            }
-            else
-            {
-                stringBuilder.Append(item).Append(", ");
-            }
-        }
+        //foreach (T item in this)
+        //{
+        //    if (item is null)
+        //    {
+        //        stringBuilder.Append("null, ");
+        //    }
+        //    else
+        //    {
+        //        stringBuilder.Append(item).Append(", ");
+        //    }
+        //}
+        //stringBuilder.Remove(stringBuilder.Length - 2, 2);
 
-        stringBuilder.Remove(stringBuilder.Length - 2, 2);
         stringBuilder.Append(']');
 
         return stringBuilder.ToString();

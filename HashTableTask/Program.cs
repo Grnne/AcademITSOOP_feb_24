@@ -8,13 +8,13 @@ internal class Program
         Console.WriteLine();
         Console.Write("Создадим нашу коллекцию, заполним и отобразим её: ");
 
-        SimpleHashTable<string> strings1 = new SimpleHashTable<string>
+        SimpleHashTable<string?> strings1 = new()
         {
             "a",
             "b",
             "c",
             "d",
-            null!,
+            null,
             "e",
             "f",
             "a",
@@ -28,7 +28,7 @@ internal class Program
         Console.WriteLine("Скопируем нашу коллекцию в массив");
         string[] stringsArray = new string[strings1.Count];
         strings1.CopyTo(stringsArray, 0);
-        Console.WriteLine(string.Join(", ", stringsArray)); // Тут как-то кратко можно заменить нулл с "" на "null"?
+        Console.WriteLine(string.Join(", ", stringsArray.Select(s => s?.ToString() ?? "null")));
         Console.WriteLine();
 
         Console.WriteLine($"Удаляем 'e': {strings1.Remove("e")}, кол-во элементов: {strings1.Count}," +
