@@ -5,11 +5,16 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+        
+
+
         Matrix matrix1 = new Matrix(new double[,]
         {
             {1, 2 },
             {4, 1}
         });
+
+
 
         Matrix matrix2 = new Matrix(new double[,]
         {
@@ -17,6 +22,8 @@ internal class Program
             {4, 1,15},
             { 0,2,11}
         });
+
+        Console.WriteLine($"Matrices must have same dimensions. First matrix rows amount: {matrix1.RowsAmount}; columns amount: {matrix1.ColumnsAmount} Second matrix rows amount: {matrix2.RowsAmount}; columns amount: {matrix2.ColumnsAmount}");
 
         Matrix matrix3 = new Matrix(new double[,]
         {

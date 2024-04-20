@@ -107,7 +107,7 @@ public class Matrix
 
         int resultRowsAmount = matrix1.RowsAmount;
         int resultColumnsAmount = matrix2.ColumnsAmount;
-        Matrix resultMatrix = new Matrix(resultRowsAmount, resultRowsAmount);
+        Matrix resultMatrix = new Matrix(resultRowsAmount, resultColumnsAmount);
 
         for (int i = 0; i < resultRowsAmount; i++)
         {
@@ -309,11 +309,11 @@ public class Matrix
         return determinant * determinantCoefficient;
     }
 
-    private static void CheckIndex(int index, int upperIndexLimit)
+    private static void CheckIndex(int index, int upperLimitIndex)
     {
-        if (index < 0 || index >= upperIndexLimit)
+        if (index < 0 || index >= upperLimitIndex)
         {
-            throw new IndexOutOfRangeException($"Index must be in matrix range: >= 0 and < {upperIndexLimit}; index = {index}");
+            throw new IndexOutOfRangeException($"Index must be in matrix range: >= 0 and < {upperLimitIndex}; index = {index}");
         }
     }
 
@@ -334,9 +334,8 @@ public class Matrix
     {
         if (matrix1.RowsAmount != matrix2.RowsAmount || matrix1.ColumnsAmount != matrix2.ColumnsAmount)
         {
-            throw new ArgumentException("Matrices must have same dimensions." + Environment.NewLine +
-                $"First matrix rows amount: {matrix1.RowsAmount}; columns amount: {matrix1.ColumnsAmount}" + Environment.NewLine +
-                $"Second matrix rows amount: {matrix2.RowsAmount}; columns amount: {matrix2.ColumnsAmount}");
+            throw new ArgumentException($"Matrices must have same dimensions. First matrix rows amount: {matrix1.RowsAmount}; columns amount: {matrix1.ColumnsAmount}" +
+                $" Second matrix rows amount: {matrix2.RowsAmount}; columns amount: {matrix2.ColumnsAmount}");
         }
     }
 
