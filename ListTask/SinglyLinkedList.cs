@@ -13,17 +13,14 @@ public class SinglyLinkedList<T> : IEnumerable<T>
     {
         get
         {
-            CheckIsListEmpty();
+            CheckIndex(index);
 
             return GetNode(index)!.Data;
         }
 
         set
         {
-            if (index < 0 || index > Count)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. List count: {Count}");
-            }
+            CheckIndex(index);
 
             Node<T> node = GetNode(index);
             node.Data = value;
@@ -52,7 +49,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
     {
         if (index < 0 || index > Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. List count: {Count}");
+            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. Possible index upper limit: {Count}");
         }
 
         if (index == 0)
@@ -63,7 +60,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
         }
 
         Node<T> previousNode = GetNode(index - 1);
-        previousNode.Next = new Node<T>(data, previousNode.Next!);
+        previousNode.Next = new Node<T>(data, previousNode.Next);
         Count++;
     }
 
@@ -109,7 +106,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
             return true;
         }
 
-        Node<T>? previousNode = _head;
+        Node<T> previousNode = _head;
 
         while (previousNode.Next != null)
         {
@@ -142,7 +139,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
             currentNode.Next = previousNode;
 
             previousNode = currentNode;
-            currentNode = nextNode!;
+            currentNode = nextNode;
         }
 
         _head = previousNode;
@@ -150,35 +147,35 @@ public class SinglyLinkedList<T> : IEnumerable<T>
 
     public SinglyLinkedList<T> Copy()
     {
-        SinglyLinkedList<T> copyNode = new();
+        SinglyLinkedList<T> listCopy = new();
 
         if (_head is null)
         {
-            return copyNode;
+            return listCopy;
         }
 
-        copyNode._head = new Node<T>(_head.Data);
-        copyNode.Count = Count;
+        listCopy._head = new Node<T>(_head.Data);
+        listCopy.Count = Count;
 
-        Node<T> currentNode = copyNode._head;
-        Node<T>? sourceNode = _head.Next!;
+        Node<T> copyNode = listCopy._head;
+        Node<T>? sourceNode = _head.Next;
 
         while (sourceNode is not null)
         {
-            currentNode.Next = new Node<T>(sourceNode.Data);
+            copyNode.Next = new Node<T>(sourceNode.Data);
 
-            currentNode = currentNode.Next;
-            sourceNode = sourceNode.Next!;
+            copyNode = copyNode.Next;
+            sourceNode = sourceNode.Next;
         }
 
-        return copyNode;
+        return listCopy;
     }
 
     private void CheckIndex(int index)
     {
         if (index < 0 || index >= Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. List count: {Count}");
+            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. Possible index upper limit: {Count}");
         }
     }
 

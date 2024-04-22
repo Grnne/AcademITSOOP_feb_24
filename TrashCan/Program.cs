@@ -5,8 +5,15 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        
+        int n = 10;
+        int result = 1;
 
+        for (int i = 1; i < n; i += 2)
+        {
+            result *= i;
+        }
+
+        Console.WriteLine(result);
 
         Matrix matrix1 = new Matrix(new double[,]
         {

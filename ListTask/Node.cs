@@ -1,6 +1,6 @@
 ﻿namespace ListTask;
 
- internal class Node<T>
+internal class Node<T>
 {
     public T Data { get; set; }
 
@@ -11,9 +11,9 @@
         Data = data;
     }
 
-    public Node(T Data, Node<T>? next)
+    public Node(T data, Node<T>? next)
     {
-        this.Data = Data;
+        Data = data;
         Next = next;
     }
 }

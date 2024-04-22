@@ -13,13 +13,27 @@ internal class Program
 
         list1.RemoveFirst();
         Console.WriteLine($"Удалим 1й элемент и посмотрим новый первый элемент: {list1.GetFirst()}");
+        Console.WriteLine("Отобразим список");
+        Console.WriteLine(list1);
+        Console.WriteLine();
+
         list1.AddFirst(123123);
         Console.WriteLine($"Добавим новый 1 элемент и посмотрим его значение: {list1.GetFirst()}");
+        Console.WriteLine("Отобразим список");
+        Console.WriteLine(list1);
+        Console.WriteLine();
 
         list1.Add(5, 123);
         Console.WriteLine($"Поменяем значение по индексу 5 на 123 и отобразим: {list1[5]}");
+        Console.WriteLine("Отобразим список");
+        Console.WriteLine(list1);
+        Console.WriteLine();
+
         list1.RemoveAt(5);
         Console.WriteLine($"Удалим значение по индексу 5 отобразим результат: {list1[5]}");
+        Console.WriteLine("Отобразим список");
+        Console.WriteLine(list1);
+        Console.WriteLine();
 
         Console.WriteLine($"Удалим значение 9: {list1.Remove(9)} и отобразим результат: {list1}");
 
