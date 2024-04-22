@@ -5,6 +5,28 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+        LinkedList<string> list = new LinkedList<string>();
+        Dictionary<int,int> map = new Dictionary<int,int>();
+        Queue<string> queue = new Queue<string>();
+        Stack<string> stack = new Stack<string>();
+
+
+        string? message = null;
+
+        // warning: dereference null.
+        Console.WriteLine($"The length of the message is {message.Length}");
+
+        var originalMessage = message;
+        message = "Hello, World!";
+
+        // No warning. Analysis determined "message" is not-null.
+        Console.WriteLine($"The length of the message is {message.Length}");
+
+        // warning!
+        Console.WriteLine(originalMessage.Length);
+
+
+
         int n = 10;
         int result = 1;
 

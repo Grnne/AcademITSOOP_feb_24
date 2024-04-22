@@ -151,21 +151,7 @@ internal class SimpleHashTable<T> : ICollection<T>
         StringBuilder stringBuilder = new();
 
         stringBuilder.Append('[');
-        stringBuilder.AppendJoin(", ", this.Select(i => i?.ToString() ?? "null"));
-
-        //foreach (T item in this)
-        //{
-        //    if (item is null)
-        //    {
-        //        stringBuilder.Append("null, ");
-        //    }
-        //    else
-        //    {
-        //        stringBuilder.Append(item).Append(", ");
-        //    }
-        //}
-        //stringBuilder.Remove(stringBuilder.Length - 2, 2);
-
+        stringBuilder.AppendJoin(", ", this.Select(s => s?.ToString() ?? "null"));
         stringBuilder.Append(']');
 
         return stringBuilder.ToString();

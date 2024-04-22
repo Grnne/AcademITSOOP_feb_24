@@ -1,8 +1,10 @@
 ﻿namespace TreeTask;
 
-internal class BinarySearchTree<T>
+public class BinarySearchTree<T>
 {
     private Node<T>? _root;
+
+    private  readonly Comparer<T>? _comparer = Comparer<T>.Default;
 
     public int Count { get; private set; }
 
@@ -16,88 +18,16 @@ internal class BinarySearchTree<T>
         Count++;
     }
 
-    public void Add(T item)
+    public BinarySearchTree(T item, Comparer<T> comparer)
     {
-        if (_root == null)
+        if (comparer is null)
         {
-            _root = new Node<T>(item);
-            Count++;
-
-            return;
+            throw new ArgumentNullException(nameof(comparer), "Comparer can't be null");
         }
 
-        Node<T>? currentNode = _root;
-
-        while (0 == 0)
-        {
-            int comparisonResult = Compare(item, currentNode.Item);
-
-            if (comparisonResult < 0)
-            {
-                if (currentNode!.Left is null)
-                {
-                    currentNode.Left = new Node<T>(item);
-                    Count++;
-
-                    return;
-                }
-                else
-                {
-                    currentNode = currentNode.Left;
-                }
-            }
-            else
-            {
-                if (currentNode!.Right is null)
-                {
-                    currentNode.Right = new Node<T>(item);
-                    Count++;
-
-                    return;
-                }
-                else
-                {
-                    currentNode = currentNode.Right;
-                }
-            }
-        }
-
-    }
-
-    public Node<T>? SearchNode(T item) => SearchNodesFamily(item, out _);
-
-    public bool Remove(T item)
-    {
-        if (_root is null)
-        {
-            return false;
-        }
-
-        Node<T>? parentNode;
-        Node<T>? currentNode = SearchNodesFamily(item, out parentNode);
-
-        if (currentNode is null)
-        {
-            return false;
-        }
-
-        if (currentNode.Left is null && currentNode.Right is null)
-        {
-            RemoveLeaf(currentNode, parentNode);
-
-            return true;
-        }
-
-        if (currentNode.Left is null || currentNode.Right is null)
-        {
-            RemoveParentWith1Child(currentNode, parentNode);
-
-            return true;
-        }
-
-        RemoveParentWithMultipleChilds(currentNode, parentNode);
-
-        return true;
+        _root = new Node<T>(item);
+        _comparer = comparer;
+        Count++;
     }
 
     public bool BreadthFirstSearch(T item)
@@ -114,7 +44,7 @@ internal class BinarySearchTree<T>
         {
             Node<T> currentNode = stack.Pop();
 
-            if (Compare(item, currentNode.Item) == 0)
+            if (Compare(item, currentNode.Data) == 0)
             {
                 return true;
             }
@@ -149,7 +79,7 @@ internal class BinarySearchTree<T>
         {
             Node<T> currentNode = queue.Dequeue();
 
-            if (Compare(item, currentNode.Item) == 0)
+            if (Compare(item, currentNode.Data) == 0)
             {
                 return true;
             }
@@ -177,85 +107,95 @@ internal class BinarySearchTree<T>
             return false;
         }
 
-       return DepthFirstWalkRecursive(item, _root);
+        return DepthFirstWalkRecursive(item, _root);
     }
 
-    public static bool DepthFirstWalkRecursive(T item, Node<T> currentNode)
+    public void Add(T data)
     {
-        if (Compare(item, currentNode.Item) == 0)
-        {
-            return true;
-        }
-
-        if (currentNode.Left is null && currentNode.Right is null)
-        {
-            return false;
-        }
-
-        if (currentNode.Left is not null)
-        {
-            DepthFirstWalkRecursive(item, currentNode.Left);
-        }
-
-        if (currentNode.Right is not null)
-        {
-            DepthFirstWalkRecursive(item, currentNode.Right);
-        }
-
-        return false;
-    }
-
-    private Node<T>? SearchNodesFamily(T item, out Node<T>? parentNode) // Возможно, лучше кортеж возвращать?
-    {
-        if (item is null)
-        {
-            throw new ArgumentNullException(nameof(item), "Argument cant be null");
-        }
-        
-        parentNode = null;
-
         if (_root == null)
         {
-            return null;
+            _root = new Node<T>(data);
+            Count++;
+
+            return;
         }
 
-        if (item.Equals(_root.Item))
+        Node<T> currentNode = _root;
+
+        while (true)
         {
-            return _root;
-        }
-
-        Node<T>? currentNode = _root;
-
-        while (0 == 0)
-        {
-            int comparisonResult = Compare(item, currentNode.Item);
-
-            if (comparisonResult == 0)
-            {
-                return currentNode;
-            }
+            int comparisonResult = Compare(data);
 
             if (comparisonResult < 0)
             {
                 if (currentNode.Left is null)
                 {
-                    return null;
-                }
+                    currentNode.Left = new Node<T>(data);
+                    Count++;
 
-                parentNode = currentNode;
+                    return;
+                }
                 currentNode = currentNode.Left;
             }
             else
             {
                 if (currentNode.Right is null)
                 {
-                    return null;
-                }
+                    currentNode.Right = new Node<T>(data);
+                    Count++;
 
-                parentNode = currentNode;
-                currentNode = currentNode.Right;
+                    return;
+                }
+                else
+                {
+                    currentNode = currentNode.Right;
+                }
             }
         }
+    }
+
+    public bool Contains(T item)
+    {
+        if (Compare(SearchNodesFamily(item, out _).Data, item) == 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool Remove(T item)
+    {
+        if (_root is null)
+        {
+            return false;
+        }
+
+        Node<T>? parentNode;
+        Node<T>? currentNode = SearchNodesFamily(item, out parentNode);
+
+        if (currentNode is null)
+        {
+            return false;
+        }
+
+        if (currentNode.Left is null && currentNode.Right is null)
+        {
+            RemoveLeaf(currentNode, parentNode);
+
+            return true;
+        }
+
+        if (currentNode.Left is null || currentNode.Right is null)
+        {
+            RemoveNodeWithZeroOrSingleChild(currentNode, parentNode);
+
+            return true;
+        }
+
+        RemoveNodeWithTwoChildren(currentNode, parentNode);
+
+        return true;
     }
 
     private void RemoveLeaf(Node<T> currentNode, Node<T>? parentNode)
@@ -268,7 +208,7 @@ internal class BinarySearchTree<T>
         {
             parentNode.Left = null;
         }
-        else if (parentNode.Right == currentNode)
+        else
         {
             parentNode.Right = null;
         }
@@ -276,7 +216,7 @@ internal class BinarySearchTree<T>
         Count--;
     }
 
-    private void RemoveParentWith1Child(Node<T> currentNode, Node<T>? parentNode)
+    private void RemoveNodeWithZeroOrSingleChild(Node<T> currentNode, Node<T>? parentNode)
     {
         Node<T> childNode;
 
@@ -305,7 +245,7 @@ internal class BinarySearchTree<T>
         Count--;
     }
 
-    private void RemoveParentWithMultipleChilds(Node<T> currentNode, Node<T>? parentNode) // TODO перепроверить
+    private void RemoveNodeWithTwoChildren(Node<T> currentNode, Node<T>? parentNode) // TODO перепроверить
     {
         Node<T> leftmostChild = currentNode.Right!;
         Node<T>? leftmostChildParent = currentNode;
@@ -344,8 +284,86 @@ internal class BinarySearchTree<T>
         Count--;
     }
 
-    public static int Compare(T? thisNodeItem, T? otherNodeItem) // TODO Возможно надо сделать нормальный компаратор
+    private static bool DepthFirstWalkRecursive(T item, Node<T> currentNode)
     {
-        return Comparer<T>.Default.Compare(thisNodeItem, otherNodeItem); 
+        if (Compare(item, currentNode.Data) == 0)
+        {
+            return true;
+        }
+
+        if (currentNode.Left is null && currentNode.Right is null)
+        {
+            return false;
+        }
+
+        if (currentNode.Left is not null)
+        {
+            DepthFirstWalkRecursive(item, currentNode.Left);
+        }
+
+        if (currentNode.Right is not null)
+        {
+            DepthFirstWalkRecursive(item, currentNode.Right);
+        }
+
+        return false;
+    }
+
+    private Node<T>? SearchNodesFamily(T item, out Node<T>? parentNode) // Возможно, лучше кортеж возвращать?
+    {
+        if (item is null)
+        {
+            throw new ArgumentNullException(nameof(item), "Argument cant be null");
+        }
+
+        parentNode = null;
+
+        if (_root == null)
+        {
+            return null;
+        }
+
+        if (item.Equals(_root.Data))
+        {
+            return _root;
+        }
+
+        Node<T>? currentNode = _root;
+
+        while (0 == 0)
+        {
+            int comparisonResult = Compare(item, currentNode.Data);
+
+            if (comparisonResult == 0)
+            {
+                return currentNode;
+            }
+
+            if (comparisonResult < 0)
+            {
+                if (currentNode.Left is null)
+                {
+                    return null;
+                }
+
+                parentNode = currentNode;
+                currentNode = currentNode.Left;
+            }
+            else
+            {
+                if (currentNode.Right is null)
+                {
+                    return null;
+                }
+
+                parentNode = currentNode;
+                currentNode = currentNode.Right;
+            }
+        }
+    }
+
+    private int Compare(T data1, T data2) // TODO Возможно надо сделать нормальный компаратор
+    {
+        return _comparer!.Compare(data1, data2);
     }
 }

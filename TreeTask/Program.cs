@@ -23,6 +23,8 @@ internal class Program
         tree1.Add(13);
         tree1.Add(15);
 
+
+
         tree1.Remove(8);
     }
 }

@@ -2,7 +2,7 @@
 
 internal class Node<T>(T item)
 {
-    public T Item { get; set; } = item;
+    public T Data { get; set; } = item;
 
     public Node<T>? Left { get; set; }
 
