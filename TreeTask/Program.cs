@@ -2,12 +2,10 @@
 
 internal class Program
 {
-
     static void Main(string[] args)
     {
-        BinarySearchTree<int> tree = new();
+        BinarySearchTree<int> tree = new(8);
 
-        tree.Add(8);
         tree.Add(4);
         tree.Add(12);
         tree.Add(2);

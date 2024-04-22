@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TreeTask;
+﻿namespace TreeTask;
 
 public class BinarySearchTree<T>
 {
@@ -9,10 +7,6 @@ public class BinarySearchTree<T>
     private readonly Comparer<T>? _comparer = Comparer<T>.Default;
 
     public int Count { get; private set; }
-
-    public BinarySearchTree()
-    {
-    }
 
     public BinarySearchTree(T data)
     {
