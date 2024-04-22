@@ -95,11 +95,6 @@ public class BinarySearchTree<T>
     {
         action.Invoke(currentNode.Data);
 
-        if (currentNode.Left is null && currentNode.Right is null)
-        {
-            return;
-        }
-
         if (currentNode.Left is not null)
         {
             TraverseDepthFirstRecursive(action, currentNode.Left);
