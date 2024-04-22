@@ -2,6 +2,7 @@
 
 internal class Program
 {
+
     static void Main(string[] args)
     {
         BinarySearchTree<int> tree = new();
@@ -24,19 +25,21 @@ internal class Program
 
         Console.WriteLine("Заполним и выведем наше дерево");
         Console.WriteLine(tree);
-        
+
         Console.WriteLine($"Проверим команду Contains(1): {tree.Contains(1)}");
         Console.WriteLine($"Проверим команду Remove(1): {tree.Remove(1)}; попробуем найти этот элемент: {tree.Contains(1)}");
         Console.WriteLine();
 
         Console.WriteLine("Проверим обходы");
         Console.WriteLine("В ширину:");
-        tree.TraverseDepthFirst(Console.WriteLine);
+        tree.TraverseDepthFirst(PrintNode);
         Console.WriteLine();
         Console.WriteLine("В ширину рекурсивный:");
-        tree.TraverseDepthFirstRecursive(Console.WriteLine);
+        tree.TraverseDepthFirstRecursive(PrintNode);
         Console.WriteLine();
         Console.WriteLine("В глубину:");
-        tree.TraverseBreadthFirst(Console.WriteLine);
+        tree.TraverseBreadthFirst(PrintNode);
     }
+
+    static void PrintNode(int i) => Console.Write(i + " ");
 }
