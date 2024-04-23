@@ -5,18 +5,18 @@ using TemperatureTask.View;
 
 namespace TemperatureTask
 {
-    public partial class ConverterView : Form, IView
+    public partial class ConverterView : Form, IView //TODO спросить про нейминг контролов
     {
-        private TemperaturePresenter _controller;
-        
+        private TemperaturePresenter _presenter;
+
         public ConverterView()
         {
             Start();
         }
 
-        public void SetController(TemperaturePresenter controller)
-        { 
-            _controller = controller;
+        public void SetPresenter(TemperaturePresenter presenter)
+        {
+            _presenter = presenter;
         }
 
         public void Start()
@@ -24,41 +24,50 @@ namespace TemperatureTask
             InitializeComponent();
         }
 
-        public (int, int) GetScalesAsInt(Control.ControlCollection sourceScales, Control.ControlCollection resultScales)
+        public void ShowResultTemperature(double resultTemperature)
         {
-            (int, int) scales = (0, 0);
-
-            foreach (RadioButton radioButton in sourceScales)
-            {
-                if (radioButton.Checked == true)
-                {
-                    scales.Item1 = Convert.ToInt32(radioButton.Name);
-                }
-            }
-
-            foreach (RadioButton radioButton in resultScales)
-            {
-                if (radioButton.Checked == true)
-                {
-                    scales.Item2 = Convert.ToInt32(radioButton.Name);
-                }
-            }
-
-            return scales;
+            resultTemperatureTextBox.Text = $"{resultTemperature}";
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        private int GetScaleAsInt(GroupBox.ControlCollection scales)
+        {
+            int scale = 0;
+
+            foreach (RadioButton radioButton in scales) // TODO Нету итератора в GroupBox, спросить; Тут ли делать преобразование в инты
+            {
+                if (radioButton.Checked)
+                {
+                    switch (radioButton.Text)
+                    {
+                        case "Celsius":
+                            scale = 0;
+                            break;
+                        case "Fahrenheit":
+                            scale = 1;
+                            break;
+                        default:
+                            scale = 2;
+                            break;
+                    }
+                }
+            }
+
+            return scale;
+        }
+
+        private void ConvertButton_Click(object sender, EventArgs e)
         {
             try
             {
                 var sourceTemperature = double.Parse(sourceTemperatureTextBox.Text);
-                var temperatureScales = GetScalesAsInt(sourceScaleBox.Controls, resultScaleBox.Controls);
+                var sourceScale = GetScaleAsInt(sourceScaleBox.Controls);
+                var resultScale = GetScaleAsInt(resultScaleBox.Controls);
 
-                resultTemperatureTextBox.Text = $"{_controller.GetConvertedTemperature(sourceTemperature, temperatureScales)}";
+                _presenter.GetConvertedTemperature(sourceTemperature, sourceScale, resultScale); // Имя метода тогда show а не гет?
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Input value must be a number", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); //TODO Спросить про возможность центровки без создания экземпляра вручную
             }
         }
     }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.ConvertButton = new System.Windows.Forms.Button();
             this.sourceTemperatureTextBox = new System.Windows.Forms.TextBox();
             this.resultTemperatureTextBox = new System.Windows.Forms.TextBox();
             this.sourceRadioButtonCelsius = new System.Windows.Forms.RadioButton();
@@ -39,28 +39,28 @@
             this.resultRadioButtonCelsius = new System.Windows.Forms.RadioButton();
             this.resultRadioButtonFahrenheit = new System.Windows.Forms.RadioButton();
             this.resultRadioButtonKelvin = new System.Windows.Forms.RadioButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.SourceLabel = new System.Windows.Forms.Label();
+            this.DestinationLabel = new System.Windows.Forms.Label();
             this.sourceScaleBox.SuspendLayout();
             this.resultScaleBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // ConvertButton
             // 
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.button1.Location = new System.Drawing.Point(165, 126);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(169, 37);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Convert";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.ConvertButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.ConvertButton.Location = new System.Drawing.Point(171, 129);
+            this.ConvertButton.Name = "ConvertButton";
+            this.ConvertButton.Size = new System.Drawing.Size(169, 37);
+            this.ConvertButton.TabIndex = 0;
+            this.ConvertButton.Text = "Convert";
+            this.ConvertButton.UseVisualStyleBackColor = true;
+            this.ConvertButton.Click += new System.EventHandler(this.ConvertButton_Click);
             // 
             // sourceTemperatureTextBox
             // 
-            this.sourceTemperatureTextBox.Location = new System.Drawing.Point(140, 83);
+            this.sourceTemperatureTextBox.Location = new System.Drawing.Point(171, 54);
             this.sourceTemperatureTextBox.Name = "sourceTemperatureTextBox";
-            this.sourceTemperatureTextBox.Size = new System.Drawing.Size(217, 20);
+            this.sourceTemperatureTextBox.Size = new System.Drawing.Size(169, 20);
             this.sourceTemperatureTextBox.TabIndex = 1;
             // 
             // resultTemperatureTextBox
@@ -68,10 +68,10 @@
             this.resultTemperatureTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.resultTemperatureTextBox.Location = new System.Drawing.Point(139, 25);
+            this.resultTemperatureTextBox.Location = new System.Drawing.Point(171, 102);
             this.resultTemperatureTextBox.Name = "resultTemperatureTextBox";
             this.resultTemperatureTextBox.ReadOnly = true;
-            this.resultTemperatureTextBox.Size = new System.Drawing.Size(217, 20);
+            this.resultTemperatureTextBox.Size = new System.Drawing.Size(169, 20);
             this.resultTemperatureTextBox.TabIndex = 5;
             // 
             // sourceRadioButtonCelsius
@@ -79,7 +79,7 @@
             this.sourceRadioButtonCelsius.AutoSize = true;
             this.sourceRadioButtonCelsius.Checked = true;
             this.sourceRadioButtonCelsius.Location = new System.Drawing.Point(13, 19);
-            this.sourceRadioButtonCelsius.Name = "0";
+            this.sourceRadioButtonCelsius.Name = "sourceRadioButtonCelsius";
             this.sourceRadioButtonCelsius.Size = new System.Drawing.Size(58, 17);
             this.sourceRadioButtonCelsius.TabIndex = 6;
             this.sourceRadioButtonCelsius.TabStop = true;
@@ -90,7 +90,7 @@
             // 
             this.sourceRadioButtonFahrenheit.AutoSize = true;
             this.sourceRadioButtonFahrenheit.Location = new System.Drawing.Point(13, 42);
-            this.sourceRadioButtonFahrenheit.Name = "1";
+            this.sourceRadioButtonFahrenheit.Name = "sourceRadioButtonFahrenheit";
             this.sourceRadioButtonFahrenheit.Size = new System.Drawing.Size(75, 17);
             this.sourceRadioButtonFahrenheit.TabIndex = 7;
             this.sourceRadioButtonFahrenheit.TabStop = true;
@@ -101,7 +101,7 @@
             // 
             this.sourceRadioButtonKelvin.AutoSize = true;
             this.sourceRadioButtonKelvin.Location = new System.Drawing.Point(13, 65);
-            this.sourceRadioButtonKelvin.Name = "2";
+            this.sourceRadioButtonKelvin.Name = "sourceRadioButtonKelvin";
             this.sourceRadioButtonKelvin.Size = new System.Drawing.Size(54, 17);
             this.sourceRadioButtonKelvin.TabIndex = 8;
             this.sourceRadioButtonKelvin.TabStop = true;
@@ -137,7 +137,7 @@
             this.resultRadioButtonCelsius.AutoSize = true;
             this.resultRadioButtonCelsius.Checked = true;
             this.resultRadioButtonCelsius.Location = new System.Drawing.Point(13, 19);
-            this.resultRadioButtonCelsius.Name = "0";
+            this.resultRadioButtonCelsius.Name = "resultRadioButtonCelsius";
             this.resultRadioButtonCelsius.Size = new System.Drawing.Size(58, 17);
             this.resultRadioButtonCelsius.TabIndex = 6;
             this.resultRadioButtonCelsius.TabStop = true;
@@ -148,7 +148,7 @@
             // 
             this.resultRadioButtonFahrenheit.AutoSize = true;
             this.resultRadioButtonFahrenheit.Location = new System.Drawing.Point(13, 42);
-            this.resultRadioButtonFahrenheit.Name = "1";
+            this.resultRadioButtonFahrenheit.Name = "resultRadioButtonFahrenheit";
             this.resultRadioButtonFahrenheit.Size = new System.Drawing.Size(75, 17);
             this.resultRadioButtonFahrenheit.TabIndex = 7;
             this.resultRadioButtonFahrenheit.TabStop = true;
@@ -159,44 +159,47 @@
             // 
             this.resultRadioButtonKelvin.AutoSize = true;
             this.resultRadioButtonKelvin.Location = new System.Drawing.Point(13, 65);
-            this.resultRadioButtonKelvin.Name = "2";
+            this.resultRadioButtonKelvin.Name = "resultRadioButtonKelvin";
             this.resultRadioButtonKelvin.Size = new System.Drawing.Size(54, 17);
             this.resultRadioButtonKelvin.TabIndex = 8;
             this.resultRadioButtonKelvin.TabStop = true;
             this.resultRadioButtonKelvin.Text = "Kelvin";
             this.resultRadioButtonKelvin.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // SourceLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(137, 67);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 13);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Source temperature";
+            this.SourceLabel.AutoSize = true;
+            this.SourceLabel.Location = new System.Drawing.Point(168, 38);
+            this.SourceLabel.Name = "SourceLabel";
+            this.SourceLabel.Size = new System.Drawing.Size(100, 13);
+            this.SourceLabel.TabIndex = 14;
+            this.SourceLabel.Text = "Source temperature";
             // 
-            // label2
+            // DestinationLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(136, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(96, 13);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "Result temperature";
+            this.DestinationLabel.AutoSize = true;
+            this.DestinationLabel.Location = new System.Drawing.Point(168, 86);
+            this.DestinationLabel.Name = "DestinationLabel";
+            this.DestinationLabel.Size = new System.Drawing.Size(96, 13);
+            this.DestinationLabel.TabIndex = 15;
+            this.DestinationLabel.Text = "Result temperature";
             // 
-            // MainWindow
+            // ConverterView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(513, 202);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.DestinationLabel);
+            this.Controls.Add(this.SourceLabel);
             this.Controls.Add(this.resultScaleBox);
             this.Controls.Add(this.sourceScaleBox);
             this.Controls.Add(this.resultTemperatureTextBox);
             this.Controls.Add(this.sourceTemperatureTextBox);
-            this.Controls.Add(this.button1);
-            this.Name = "MainWindow";
+            this.Controls.Add(this.ConvertButton);
+            this.MaximumSize = new System.Drawing.Size(529, 241);
+            this.MinimumSize = new System.Drawing.Size(529, 241);
+            this.Name = "ConverterView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Temperature converter";
             this.sourceScaleBox.ResumeLayout(false);
             this.sourceScaleBox.PerformLayout();
@@ -209,7 +212,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ConvertButton;
         private System.Windows.Forms.TextBox sourceTemperatureTextBox;
         private System.Windows.Forms.TextBox resultTemperatureTextBox;
         private System.Windows.Forms.RadioButton sourceRadioButtonCelsius;
@@ -220,8 +223,8 @@
         private System.Windows.Forms.RadioButton resultRadioButtonCelsius;
         private System.Windows.Forms.RadioButton resultRadioButtonFahrenheit;
         private System.Windows.Forms.RadioButton resultRadioButtonKelvin;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label SourceLabel;
+        private System.Windows.Forms.Label DestinationLabel;
     }
 }
 

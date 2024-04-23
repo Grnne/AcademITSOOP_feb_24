@@ -1,61 +1,34 @@
-﻿namespace TemperatureTask.Model
+﻿using System.Collections.Generic;
+
+namespace TemperatureTask.Model
 {
     internal class TemperatureConverter : IConverter
     {
+        public static List<Scale> Scales { get; set; }
+        public static double DeltaTemperature { get; set; }
+
+        static TemperatureConverter()
+        {
+            DeltaTemperature = 0;
+            Scales = new List<Scale>() { new Scale(0, 1), new Scale(32, 9 / 5), new Scale(273.15, 1) };
+        }
+
+        // TODO Методы разделены глупо, но я подумал мб нужны проверки если температура оказывается ниже возможной, но в целом, кажется, лучше все в 1 метод; Спросить про имя для дельты и модификатора
+        public void ConvertToCelsius(double sourceTemperature, int sourceTemperatureScale)
+        {
+            DeltaTemperature = (sourceTemperature + Scales[sourceTemperatureScale].Delta) * Scales[sourceTemperatureScale].Modifier;
+        }
+
+        public double ConvertFromCelsius(int resultTemperatureScale)
+        {
+            return (DeltaTemperature - Scales[resultTemperatureScale].Delta) / Scales[resultTemperatureScale].Modifier;
+        }
 
         public double Convert(double sourceTemperature, int sourceTemperatureScale, int resultTemperatureScale)
         {
-            if (sourceTemperatureScale == resultTemperatureScale)
-            {
-                return sourceTemperature;
-            }
+            ConvertToCelsius(sourceTemperature, sourceTemperatureScale);
 
-            double resultTemperature;
-
-            if (sourceTemperatureScale == 0)
-            {
-                resultTemperature = sourceTemperature;
-            }
-            else if (sourceTemperatureScale == 1)
-            {
-                resultTemperature = ConvertKelvinToCelsius(sourceTemperature);
-            }
-            else
-            {
-                resultTemperature = ConvertFahrenheitToCelsius(sourceTemperature);
-            }
-
-            if (resultTemperatureScale == 1)
-            {
-                return ConvertCelsiusToKelvin(resultTemperature);
-            }
-
-            if (resultTemperatureScale == 2)
-            {
-                return ConvertCelsiusToFahrenheit(resultTemperature);
-            }
-
-            return resultTemperature;
-        }
-
-        private static double ConvertKelvinToCelsius(double sourceTemp)
-        {
-            return sourceTemp - 273.15;
-        }
-
-        private static double ConvertFahrenheitToCelsius(double sourceTemp)
-        {
-            return (sourceTemp - 32) * (9 / 5);
-        }
-
-        private static double ConvertCelsiusToKelvin(double sourceTemp)
-        {
-            return sourceTemp + 273.15;
-        }
-
-        private static double ConvertCelsiusToFahrenheit(double sourceTemp)
-        {
-            return sourceTemp * (9 / 5) + 32;
+            return ConvertFromCelsius(resultTemperatureScale);
         }
     }
 }

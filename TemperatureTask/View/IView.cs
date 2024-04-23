@@ -5,6 +5,9 @@ namespace TemperatureTask.View
     public interface IView
     {
         void Start();
-        void SetController(TemperaturePresenter controller);
+
+        void SetPresenter(TemperaturePresenter controller);
+
+        void ShowResultTemperature(double resultTemperature);
     }
 }

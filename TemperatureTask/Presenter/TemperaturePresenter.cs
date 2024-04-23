@@ -15,9 +15,9 @@ namespace TemperatureTask.Presenter
             View = view;
         }
 
-        public double GetConvertedTemperature(double sourceTemperature, (int,int) TemperatureScales)
+        public void GetConvertedTemperature(double sourceTemperature, int sourceScale, int resultScale)
         {
-            return Model.Convert(sourceTemperature, TemperatureScales.Item1, TemperatureScales.Item2);
+            View.ShowResultTemperature(Model.Convert(sourceTemperature, sourceScale, resultScale));
         }
     }
 }
