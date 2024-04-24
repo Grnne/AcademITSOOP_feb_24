@@ -49,6 +49,8 @@ namespace TemperatureTask
                             scale = 2;
                             break;
                     }
+
+                    break;
                 }
             }
 
