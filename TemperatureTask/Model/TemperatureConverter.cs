@@ -13,7 +13,10 @@ namespace TemperatureTask.Model
             Scales = new List<Scale>() { new Scale(0, 1), new Scale(32, 1.8), new Scale(273.15, 1) };
         }
 
-        // TODO Методы разделены глупо, но я подумал мб нужны проверки если температура оказывается ниже возможной, но в целом, кажется, лучше все в 1 метод; Спросить про имя для дельты и модификатора
+        // TODO  Спросить про имя для дельты и модификатора;
+        // И в целом помоему плохое решение, если у каких-то других шкал будет другое поведение конвертации, придется делать костыль
+        // мб стоит сделать папку со шкалами, интерфейс iscale с методами convert to celsius, convert from celsius и в каждой шкале реализовать конвертацию
+        // а потом тут сделать лист iscale и оттуда дергать методы?
         public void ConvertToCelsius(double sourceTemperature, int sourceTemperatureScale)
         {
             DeltaTemperature = (sourceTemperature - Scales[sourceTemperatureScale].Delta) / Scales[sourceTemperatureScale].Modifier;
