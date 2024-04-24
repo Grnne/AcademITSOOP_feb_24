@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\CellIcon.cs" />
     <Compile Include="Model\IModel.cs" />
     <Compile Include="Presenter\MainPresenter.cs" />
     <Compile Include="Model\Board.cs" />

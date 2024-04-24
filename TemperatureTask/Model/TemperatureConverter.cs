@@ -7,7 +7,7 @@ namespace TemperatureTask.Model
         public static List<Scale> Scales { get; set; }
         public static double DeltaTemperature { get; set; }
 
-        static TemperatureConverter()
+        static TemperatureConverter() //TODO переделать всю структуру, фаренгейт\цельсий неверно сделан
         {
             DeltaTemperature = 0;
             Scales = new List<Scale>() { new Scale(0, 1), new Scale(32, 9 / 5), new Scale(273.15, 1) };

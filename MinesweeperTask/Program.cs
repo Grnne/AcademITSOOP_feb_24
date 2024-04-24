@@ -1,4 +1,5 @@
-﻿using MinesweeperTask.Presenter;
+﻿using MinesweeperTask.Model;
+using MinesweeperTask.Presenter;
 using System;
 using System.Windows.Forms;
 
@@ -12,12 +13,36 @@ namespace MinesweeperTask
         [STAThread]
         static void Main()
         {
+            Console.WriteLine();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MainWindow view = new MainWindow();
-            MainPresenter presenter = new MainPresenter(view);
+
+            var view = new MainWindow();
+            var model = new Board();
+            var presenter = new MainPresenter(view, model);
+
+            view.SetPresenter(presenter);
 
             Application.Run(view);
         }
     }
+
+    enum State
+    {
+        Empty,
+        Bomb
+    }
+
+    enum IconState
+    {
+        Closed,
+        Open,
+        Flagged,
+        Question,
+        Bomb,
+        BombExploded
+    }
 }
+
+

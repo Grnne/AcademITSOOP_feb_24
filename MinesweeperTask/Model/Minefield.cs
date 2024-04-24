@@ -4,11 +4,20 @@ namespace MinesweeperTask.Model
 {
     internal class Minefield
     {
-        public List<Cell> Cells { get; set; }
+        public Cell[,] Cells { get; set; }
 
         public Minefield()
         {
-            Cells = new List<Cell>() { new Cell(), new Cell(), new Cell(), new Cell(), new Cell(), new Cell() };
         }
+
+        public void PlaceBombos() { }
+
+        public void ArrangeNumbers() { }
+
+        public void TraverseCells() { }
+
+        public void LeftClick() { }
+
+        public void RightClick() { }
     }
 }

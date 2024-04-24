@@ -1,6 +1,6 @@
 ﻿namespace MinesweeperTask.Model
 {
-    internal interface IModel
+    public interface IModel
     {
     }
 }

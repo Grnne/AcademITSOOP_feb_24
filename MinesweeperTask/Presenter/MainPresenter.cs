@@ -9,12 +9,10 @@ namespace MinesweeperTask.Presenter
         private readonly IModel _model;
         private readonly IMainWindow _mainWindow;
 
-        public MainPresenter(MainWindow view)
+        public MainPresenter(IMainWindow view, IModel model)
         {
-            _mainWindow = new MainWindow();
-            _mainWindow.Presenter = this;
-            _model = new Board();
-
+            _model = model;
+            _mainWindow = view;
         }
 
         public void ResetMinefield()

@@ -2,8 +2,10 @@
 
 namespace MinesweeperTask.View
 {
-    internal interface IMainWindow
+    public interface IMainWindow
     {
-        MainPresenter Presenter { get; set; }
+        void SetPresenter(MainPresenter presenter);
+
+        void Start();
     }
 }
