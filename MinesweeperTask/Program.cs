@@ -14,10 +14,8 @@ namespace MinesweeperTask
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            // TODO initialize presenter
             MainWindow view = new MainWindow();
             MainPresenter presenter = new MainPresenter(view);
-            
 
             Application.Run(view);
         }
