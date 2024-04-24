@@ -6,7 +6,7 @@ namespace TemperatureTask.View
     {
         void Start();
 
-        void SetPresenter(TemperaturePresenter controller);
+        void SetPresenter(TemperaturePresenter presenter);
 
         void ShowResultTemperature(double resultTemperature);
     }
