@@ -14,10 +14,6 @@ internal class Program
                 Console.WriteLine(line);
             }
         }
-        catch (FileNotFoundException e)
-        {
-            Console.WriteLine("Error: " + e.Message);
-        }
         catch (Exception e)
         {
             Console.WriteLine("Error: " + e.Message);

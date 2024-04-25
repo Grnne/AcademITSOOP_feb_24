@@ -17,16 +17,19 @@ internal class Program
         try
         {
             CsvToHtmlConverter.Convert(inputCsvPath, outputHtmlPath);
-            Console.WriteLine("Parsing is done");
-            Console.ReadKey();
+            Console.WriteLine("Conversion is done");
         }
-        catch (FileNotFoundException)
+        catch (FileNotFoundException e)
         {
-            Console.WriteLine("File not found. Enter input and output file paths, input must be .csv and output - .html");
+            Console.WriteLine(e.Message);
         }
         catch (IOException e)
         {
             Console.WriteLine("I/O error: " + e.Message);
+        }
+        finally 
+        {
+            Console.ReadKey();
         }
     }
 }
