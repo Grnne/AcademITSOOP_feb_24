@@ -40,8 +40,8 @@ internal class Program
 
         var averageAgesByNames = persons
             .GroupBy(p => p.Name)
-            .ToDictionary(g => g.Key, g => g.Average(ga => ga.Age)); // А во вложенной функции как лучше назвать переменную для группы людей?
-        Console.WriteLine($"Средний возраст людей по имени: {string.Join(Environment.NewLine, averageAgesByNames)}");
+            .ToDictionary(g => g.Key, g => g.Average(p => p.Age));
+        Console.WriteLine($"Средний возраст людей по имени:{Environment.NewLine}{string.Join(Environment.NewLine, averageAgesByNames)}");
         Console.WriteLine();
 
         Console.WriteLine("Люди с возрастом от 20 до 45, отсортированные по убыванию возраста:");
@@ -58,16 +58,16 @@ internal class Program
         Console.Clear();
 
         Console.Write("Введите количество чисел для вычисления квадратного корня: ");
-        var numbersAmount = Convert.ToInt32(Console.ReadLine());
+        var squareRootNumbersAmount = Convert.ToInt32(Console.ReadLine());
 
-        foreach (var root in GetSquareRoots().Take(numbersAmount))
+        foreach (var root in GetSquareRoots().Take(squareRootNumbersAmount))
         {
             Console.WriteLine(root);
         }
 
         Console.WriteLine();
         Console.Write("Введите количество чисел ряда Фибоначчи: ");
-        var fibonacciNumbersAmount = Convert.ToInt32(Console.ReadLine());   
+        var fibonacciNumbersAmount = Convert.ToInt32(Console.ReadLine());
 
         foreach (var fibonacciNumber in GetFibonacciNumbers().Take(fibonacciNumbersAmount))
         {
@@ -97,7 +97,7 @@ internal class Program
 
         while (true)
         {
-            Int128 nextFibonacciNumber = previousFibonacciNumber + currentFibonacciNumber;
+            var nextFibonacciNumber = previousFibonacciNumber + currentFibonacciNumber;
             previousFibonacciNumber = currentFibonacciNumber;
             currentFibonacciNumber = nextFibonacciNumber;
 
