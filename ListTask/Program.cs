@@ -30,7 +30,7 @@ internal class Program
         Console.WriteLine();
 
         list1.RemoveAt(5);
-        Console.WriteLine($"Удалим значение по индексу 5 отобразим результат: {list1[5]}");
+        Console.WriteLine($"Удалим элемент по индексу 5 отобразим удаленное значение: {list1[5]}");
         Console.WriteLine("Отобразим список");
         Console.WriteLine(list1);
         Console.WriteLine();

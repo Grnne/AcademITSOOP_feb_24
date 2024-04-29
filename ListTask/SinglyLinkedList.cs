@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace ListTask;
@@ -31,7 +32,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
     {
         CheckIsListEmpty();
 
-        return _head!.Data;
+        return _head.Data;
     }
 
     public void AddFirst(T data)
@@ -49,7 +50,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
     {
         if (index < 0 || index > Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. Possible index upper limit: {Count}");
+            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. Possible index range: from 0 to {Count}");
         }
 
         if (index == 0)
@@ -68,7 +69,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
     {
         CheckIsListEmpty();
 
-        T removedData = _head!.Data;
+        T removedData = _head.Data;
         _head = _head.Next;
         Count--;
 
@@ -175,10 +176,11 @@ public class SinglyLinkedList<T> : IEnumerable<T>
     {
         if (index < 0 || index >= Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. Possible index upper limit: {Count}");
+            throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. Possible index range: from 0 to {Count - 1}");
         }
     }
 
+    [MemberNotNull(nameof(_head))]
     private void CheckIsListEmpty()
     {
         if (_head is null)
