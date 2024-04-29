@@ -151,7 +151,7 @@ internal class SimpleHashTable<T> : ICollection<T>
         StringBuilder stringBuilder = new();
 
         stringBuilder.Append('[');
-        stringBuilder.AppendJoin(", ", this.Select(s => s?.ToString() ?? "null"));
+        stringBuilder.AppendJoin(", ", this.Select(x => x?.ToString() ?? "null"));
         stringBuilder.Append(']');
 
         return stringBuilder.ToString();
