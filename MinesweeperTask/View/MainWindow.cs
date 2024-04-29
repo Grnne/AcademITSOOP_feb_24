@@ -1,5 +1,6 @@
 ﻿using MinesweeperTask.Presenter;
 using MinesweeperTask.View;
+using MinesweeperTask.Model;
 using System.Windows.Forms;
 
 namespace MinesweeperTask
@@ -25,6 +26,16 @@ namespace MinesweeperTask
 
         private void button1_Click(object sender, System.EventArgs e)
         {
+
+        }
+
+        private void MainWindow_Load(object sender, System.EventArgs e)
+        {
+            _presenter.Show(9);
+            Cell[,] test = _presenter._model.Minefield.Cells;
+            Button[] btestRow = new Button[]  { new Button(), new Button(), new Button() };
+
+            flowLayoutPanel1.Controls.AddRange(btestRow);
         }
     }
 }

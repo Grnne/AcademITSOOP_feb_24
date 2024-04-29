@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Reflection;
+using System.Text;
 using VectorTask;
 
 namespace MatrixTask;
@@ -213,88 +215,87 @@ public class Matrix
 
     public double GetDeterminant()
     {
+        if (ColumnsAmount != RowsAmount)
+        {
+            throw new ArgumentException($"The matrix must be square. Columns amount: {ColumnsAmount} must be equal to the rows amount: {RowsAmount}");
+        }
+
         int size = ColumnsAmount;
+
+        double[,] tempMatrix = new double[size, size]; // Jagged массив был бы удобнее
+
+        for (int i = 0; i < size; i++)
+        {
+            Vector tempRow = GetRow(i);
+
+            for (int j = 0; j < size; j++)
+            {
+                tempMatrix[i, j] = tempRow[j];
+            }
+        }
+
+        // For 1 dimension matrix
+        if (size == 1)
+        {
+            return tempMatrix[0, 0];
+        }
 
         // For 2 dimension matrix
         if (size == 2)
         {
-            return GetColumn(0)[0] * GetColumn(1)[1]
-                - GetColumn(0)[1] * GetColumn(1)[0];
+            return tempMatrix[0, 0] * tempMatrix[1, 1] - tempMatrix[0, 1] * tempMatrix[1, 0];
         }
 
         // For 3 dimension matrix
         if (size == 3)
         {
-            return GetColumn(0)[0] * GetColumn(1)[1] * GetColumn(2)[2]
-                + GetColumn(0)[1] * GetColumn(1)[2] * GetColumn(2)[0]
-                + GetColumn(0)[2] * GetColumn(1)[0] * GetColumn(2)[1]
-                - GetColumn(0)[2] * GetColumn(1)[1] * GetColumn(2)[0]
-                - GetColumn(0)[0] * GetColumn(1)[2] * GetColumn(2)[1]
-                - GetColumn(0)[1] * GetColumn(1)[0] * GetColumn(2)[2];
+            return tempMatrix[0, 0] * tempMatrix[1, 1] * tempMatrix[2, 2]
+                + tempMatrix[0, 1] * tempMatrix[1, 2] * tempMatrix[2, 0]
+                + tempMatrix[0, 2] * tempMatrix[1, 0] * tempMatrix[2, 1]
+                - tempMatrix[0, 2] * tempMatrix[1, 1] * tempMatrix[2, 0]
+                - tempMatrix[0, 0] * tempMatrix[1, 2] * tempMatrix[2, 1]
+                - tempMatrix[0, 1] * tempMatrix[1, 0] * tempMatrix[2, 2];
         }
 
-        // Swap and modifying determinant coefficient if matrix[0][0] = 0, return if whole column is 0
-        // Нужно сделать аналогичный метод для каждого столбца, т.к. сейчас будет выдавать ошибки, если будет деление на ноль
-        // Стоит ли оставить метод тут, для оптимизации в случае пустого первого столбца?
-        Vector tempColumn = GetColumn(0);
+        // Making upper triangular matrix by swapping, multiplying and subtracting
         int determinantCoefficient = 1;
-
-        if (tempColumn[0] == 0)
-        {
-            int count = 0;
-
-            while (tempColumn[count] == 0)
-            {
-                count++;
-
-                if (count == size)
-                {
-                    return 0;
-                }
-            }
-
-            Vector tempRow = GetRow(count);
-            SetRow(count, GetRow(0));
-            SetRow(0, tempRow);
-            determinantCoefficient *= -1;
-        }
-
-        // Making upper triangular matrix by multiplying and subtracting
-        // Нужно как-то сделать, чтоб из-за округления значения близкие к 0 после вычитания занулялись
-        // и чтоб значения в периоде адекватно округлялись.
-        // Сделать вместо коэффициента умножение каждого столбца на текущую цифру противоположного?
-        // Всё равно, если получится число в периоде в диагонали, будет большая погрешность в определителе
+        double epsilon = .00001;
+        int maxRowIndex = size;
 
         for (int i = 0; i < size - 1; i++)
         {
-            for (int j = i + 1; j < size; j++)
+            int rowIndex = i;
+            maxRowIndex -= i;
+
+            if (Math.Abs(tempMatrix[rowIndex, i]) <= epsilon) // Rearrangements
             {
-                if (GetRow(j)[i] != 0)
+                while (Math.Abs(tempMatrix[rowIndex, i]) <= epsilon)
                 {
-                    Vector multipliedRow = new(GetRow(i));
-                    double multiplyCoefficient = Math.Round(GetRow(j)[i] / multipliedRow[i], 8, MidpointRounding.AwayFromZero);
-                    multipliedRow.MultiplyByScalar(multiplyCoefficient);
+                    if (rowIndex == maxRowIndex)
+                    {
+                        return 0; // If full column is zero, or any element of main diagonal is 0, also must protect from zero division
+                    }
+
+                    rowIndex++;
+                }
+
+                double[] tempRow = GetRowFromTempMatrix(rowIndex);
+                SetRowToTempMatrix(rowIndex, GetRowFromTempMatrix(i));
+                SetRowToTempMatrix(i, tempRow);
+                determinantCoefficient *= -1;
+            }
+
+            for (int j = i + 1; j < size; j++) // Multiplying and subtracting
+            {
+                if (Math.Abs(tempMatrix[j, i]) > epsilon)
+                {
+                    double coefficientNumerator = tempMatrix[j, i];
+                    double coefficientDenominator = tempMatrix[i, i];
 
                     for (int k = 0; k < size; k++)
                     {
-                        multipliedRow[k] = Math.Round(multipliedRow[k], 8, MidpointRounding.AwayFromZero);
+                        tempMatrix[j, k] -= tempMatrix[i, k] * coefficientNumerator / coefficientDenominator;
                     }
-
-                    Vector processedRow = GetRow(j);
-
-                    for (int k = 0; k < size; k++)
-                    {
-                        processedRow[k] = Math.Round(processedRow[k], 8, MidpointRounding.AwayFromZero);
-                    }
-
-                    processedRow.Subtract(multipliedRow);
-
-                    for (int k = 0; k < size; k++)
-                    {
-                        processedRow[k] = Math.Round(processedRow[k], 8, MidpointRounding.ToZero);
-                    }
-
-                    SetRow(j, processedRow);
                 }
             }
         }
@@ -303,10 +304,20 @@ public class Matrix
 
         for (int i = 0; i < size; i++)
         {
-            determinant *= GetRow(i)[i];
+            determinant *= tempMatrix[i, i];
         }
 
         return determinant * determinantCoefficient;
+
+        double[] GetRowFromTempMatrix(int index) => Enumerable.Range(0, size).Select(x => tempMatrix[index, x]).ToArray();
+
+        void SetRowToTempMatrix(int index, double[] row)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                tempMatrix[index, i] = row[i];
+            }
+        }
     }
 
     private static void CheckIndex(int index, int indexUpperLimit)
@@ -342,8 +353,8 @@ public class Matrix
     public override string ToString()
     {
         StringBuilder stringBuilder = new();
-        int maxIndex = _rows.Length - 1;
         stringBuilder.Append('{');
+        int maxIndex = _rows.Length - 1;
 
         for (int i = 0; i < maxIndex; i++)
         {
@@ -352,7 +363,6 @@ public class Matrix
 
         stringBuilder.Append(_rows[^1]);
         stringBuilder.Append('}');
-        
 
         return stringBuilder.ToString();
     }

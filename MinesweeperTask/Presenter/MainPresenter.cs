@@ -1,4 +1,6 @@
-﻿using MinesweeperTask.Model;
+﻿using System;
+using System.Windows.Forms;
+using MinesweeperTask.Model;
 using MinesweeperTask.View;
 
 namespace MinesweeperTask.Presenter
@@ -6,15 +8,22 @@ namespace MinesweeperTask.Presenter
 {
     public class MainPresenter
     {
-        private readonly IModel _model;
+        public readonly Board  _model;
         private readonly IMainWindow _mainWindow;
 
-        public MainPresenter(IMainWindow view, IModel model)
+        public MainPresenter(IMainWindow view, Board model)
         {
             _model = model;
             _mainWindow = view;
         }
 
+        public void Show(int size)
+        {
+            _model.InitBoard(10,15);
+
+            
+        }
+        
         public void ResetMinefield()
         {
             

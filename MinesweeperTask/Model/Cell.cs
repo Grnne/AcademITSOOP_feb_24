@@ -1,14 +1,17 @@
 ﻿namespace MinesweeperTask.Model
 {
-    internal class Cell
+    public class Cell
     {
-        public State State { get; set; }
+        public CellIcon CellIcon { get; set; }
 
-        public CellIcon Icon { get; set; }
+        public bool BombState { get; set; }
 
-        public Cell(State state)
+        public int NearbyBombsAmount { get; set; }
+
+        public Cell()
         {
-            State = state;
+            CellIcon = CellIcon.Closed;
+            BombState = false;
         }
     }
 }

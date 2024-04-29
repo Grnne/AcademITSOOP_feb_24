@@ -1,6 +1,7 @@
 ﻿using MinesweeperTask.Model;
 using MinesweeperTask.Presenter;
 using System;
+using System.Net;
 using System.Windows.Forms;
 
 namespace MinesweeperTask
@@ -25,23 +26,19 @@ namespace MinesweeperTask
             view.SetPresenter(presenter);
 
             Application.Run(view);
+
+            
+
         }
     }
 
-    enum State
-    {
-        Empty,
-        Bomb
-    }
-
-    enum IconState
+    public enum CellIcon
     {
         Closed,
-        Open,
-        Flagged,
-        Question,
-        Bomb,
-        BombExploded
+        Open_empty,
+        Open_digit,
+        Open_bomb,
+        Marked
     }
 }
 
