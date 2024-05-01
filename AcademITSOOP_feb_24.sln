@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LambdaTask", "LambdaTask\La
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureTask", "TemperatureTask\TemperatureTask.csproj", "{AF3DC0A3-A05C-4018-A7CC-49F9B84F6661}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinesweeperTaskBroken", "MinesweeperTask\MinesweeperTaskBroken.csproj", "{D4FDF114-3663-4059-B197-9CAD4605CE3B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "trash can", "trash can\trash can.csproj", "{57496AD2-AEC0-4566-A451-79495D79C3FB}"
 EndProject
 Global
@@ -91,10 +89,6 @@ Global
 		{AF3DC0A3-A05C-4018-A7CC-49F9B84F6661}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF3DC0A3-A05C-4018-A7CC-49F9B84F6661}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF3DC0A3-A05C-4018-A7CC-49F9B84F6661}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4FDF114-3663-4059-B197-9CAD4605CE3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4FDF114-3663-4059-B197-9CAD4605CE3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4FDF114-3663-4059-B197-9CAD4605CE3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4FDF114-3663-4059-B197-9CAD4605CE3B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{57496AD2-AEC0-4566-A451-79495D79C3FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57496AD2-AEC0-4566-A451-79495D79C3FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57496AD2-AEC0-4566-A451-79495D79C3FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
