@@ -16,16 +16,15 @@ namespace MinesweeperTask.Model
 
         public void ModifyBombsScoreboard() { }
 
-        public void InitBoard(int rowsAmount, int columnsAmount)
+        public void InitBoard(int rowsAmount, int columnsAmount, int bombsAmount)
         {
-            Board board = new Board();
-            
+            Minefield = new Minefield(rowsAmount, columnsAmount, bombsAmount);
+
         }
 
         public Board()
         {
-            Size = 10;
-            Minefield = new Minefield(Size, Size, 10);
+            
         }
 
     }

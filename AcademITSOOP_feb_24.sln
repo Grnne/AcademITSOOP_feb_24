@@ -29,9 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LambdaTask", "LambdaTask\La
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureTask", "TemperatureTask\TemperatureTask.csproj", "{AF3DC0A3-A05C-4018-A7CC-49F9B84F6661}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinesweeperTask", "MinesweeperTask\MinesweeperTask.csproj", "{D4FDF114-3663-4059-B197-9CAD4605CE3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinesweeperTaskBroken", "MinesweeperTask\MinesweeperTaskBroken.csproj", "{D4FDF114-3663-4059-B197-9CAD4605CE3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "trash can", "trash can\trash can.csproj", "{57496AD2-AEC0-4566-A451-79495D79C3FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "trash can", "trash can\trash can.csproj", "{57496AD2-AEC0-4566-A451-79495D79C3FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

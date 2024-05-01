@@ -4,6 +4,6 @@
     {
         Minefield Minefield { get; set; }
 
-        void InitBoard(int rowsAmount, int columnsAmount);
+        void InitBoard(int rowsAmount, int columnsAmount, int bombsAmount);
     }
 }

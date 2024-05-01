@@ -8,7 +8,7 @@ namespace MinesweeperTask.Presenter
 {
     public class MainPresenter
     {
-        public readonly Board  _model;
+        public readonly Board _model;
         private readonly IMainWindow _mainWindow;
 
         public MainPresenter(IMainWindow view, Board model)
@@ -17,16 +17,16 @@ namespace MinesweeperTask.Presenter
             _mainWindow = view;
         }
 
-        public void Show(int size)
+        public void Show(int rowsAmount, int columnsAmount, int bombsAmount)
         {
-            _model.InitBoard(10,15);
+            _model.InitBoard(rowsAmount, columnsAmount, bombsAmount);
 
-            
+
         }
-        
+
         public void ResetMinefield()
         {
-            
+
         }
     }
 }

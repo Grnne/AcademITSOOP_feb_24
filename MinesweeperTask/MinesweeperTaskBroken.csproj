@@ -72,6 +72,16 @@
     <EmbeddedResource Include="View\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\MainWindow.datasource" />
+    <None Include="Properties\DataSources\MinesweeperTask.Model.Board.datasource" />
+    <None Include="Properties\DataSources\MinesweeperTask.Model.Cell.datasource" />
+    <None Include="Properties\DataSources\MinesweeperTask.Model.IModel.datasource" />
+    <None Include="Properties\DataSources\MinesweeperTask.Model.Minefield.datasource" />
+    <None Include="Properties\DataSources\MinesweeperTask.Presenter.MainPresenter.datasource" />
+    <None Include="Properties\DataSources\MinesweeperTask.Properties.Resources.datasource" />
+    <None Include="Properties\DataSources\MinesweeperTask.Properties.Settings.datasource" />
+    <None Include="Properties\DataSources\MinesweeperTask.View.IMainWindow.datasource" />
+    <None Include="Properties\DataSources\Program.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
