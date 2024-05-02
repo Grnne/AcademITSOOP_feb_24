@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MinesweeperTask.Model;
+using MinesweeperTask.Presenter;
+using MinesweeperTask.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +19,12 @@ namespace MinesweeperTask
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            var view = new MainWindow();
+            var model = new Board();
+            var presenter = new MainPresenter(view, model);
+
+            Application.Run(view);
         }
     }
 }

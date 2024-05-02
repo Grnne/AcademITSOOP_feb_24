@@ -4,7 +4,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        BinarySearchTree<int> tree = new(8);
+        BinarySearchTree<int> tree = new();
 
         tree.Add(4);
         tree.Add(12);
@@ -29,15 +29,15 @@ internal class Program
         Console.WriteLine();
 
         Console.WriteLine("Проверим обходы");
-        Console.WriteLine("В ширину:");
+        Console.WriteLine("В глубину:");
         tree.TraverseDepthFirst(PrintNode);
         Console.WriteLine();
-        Console.WriteLine("В ширину рекурсивный:");
+        Console.WriteLine("В глубину рекурсивный:");
         tree.TraverseDepthFirstRecursive(PrintNode);
         Console.WriteLine();
-        Console.WriteLine("В глубину:");
+        Console.WriteLine("В ширину:");
         tree.TraverseBreadthFirst(PrintNode);
     }
 
-    static void PrintNode(int i) => Console.Write(i + " ");
+    static void PrintNode(int d) => Console.Write(d + " ");
 }

@@ -1,29 +1,28 @@
-﻿namespace TreeTask;
+﻿using System.Text;
+
+namespace TreeTask;
 
 public class BinarySearchTree<T>
 {
     private Node<T>? _root;
 
-    private readonly Comparer<T>? _comparer = Comparer<T>.Default;
+    private readonly Comparer<T> _comparer;
 
     public int Count { get; private set; }
 
-    public BinarySearchTree(T data)
+    public BinarySearchTree()
     {
-        _root = new Node<T>(data);
-        Count++;
+        _comparer = Comparer<T>.Default;
     }
 
-    public BinarySearchTree(T data, Comparer<T> comparer)
+    public BinarySearchTree(Comparer<T> comparer)
     {
         if (comparer is null)
         {
             throw new ArgumentNullException(nameof(comparer), "Comparer can't be null");
         }
 
-        _root = new Node<T>(data);
         _comparer = comparer;
-        Count++;
     }
 
     public void TraverseDepthFirst(Action<T> action)
@@ -40,7 +39,6 @@ public class BinarySearchTree<T>
         {
             Node<T> currentNode = stack.Pop();
             action.Invoke(currentNode.Data);
-
 
             if (currentNode.Right is not null)
             {
@@ -149,7 +147,7 @@ public class BinarySearchTree<T>
         }
     }
 
-    public bool Contains(T data) => GetNodeAndParent(data).Node != null;
+    public bool Contains(T data) => GetNodeAndParent(data).Node is not null;
 
     public bool Remove(T data)
     {
@@ -158,8 +156,10 @@ public class BinarySearchTree<T>
             return false;
         }
 
-        Node<T>? parentNode = GetNodeAndParent(data).ParentNode;
-        Node<T>? currentNode = GetNodeAndParent(data).Node;
+        // Может как-то можно сразу дать 2м переменным значения из тупла, без создания промежуточной?
+        (Node<T>? Node, Node<T>? ParentNode) nodeAndParent = GetNodeAndParent(data);
+        Node<T>? parentNode = nodeAndParent.ParentNode;
+        Node<T>? currentNode = nodeAndParent.Node;
 
         if (currentNode is null)
         {
@@ -180,37 +180,17 @@ public class BinarySearchTree<T>
 
     private void RemoveNodeWithZeroOrSingleChild(Node<T> currentNode, Node<T>? parentNode)
     {
-        if (currentNode.Left is null && currentNode.Right is null)
-        {
-            if (parentNode is null)
-            {
-                _root = null;
-            }
-            else if (parentNode.Left == currentNode)
-            {
-                parentNode.Left = null;
-            }
-            else
-            {
-                parentNode.Right = null;
-            }
-
-            Count--;
-
-            return;
-        }
-
         if (currentNode.Left is null || currentNode.Right is null)
         {
-            Node<T> childNode;
+            Node<T>? childNode = null;
 
-            if (currentNode.Left is null)
-            {
-                childNode = currentNode.Right!;
-            }
-            else
+            if (currentNode.Left is not null)
             {
                 childNode = currentNode.Left;
+            }
+            else if (currentNode.Right is not null)
+            {
+                childNode = currentNode.Right;
             }
 
             if (parentNode is null)
@@ -276,15 +256,7 @@ public class BinarySearchTree<T>
             parentNode.Right = leftmostChild;
         }
 
-        if (leftmostChild.Right is null)
-        {
-            leftmostChildParent.Left = null;
-        }
-        else
-        {
-            leftmostChildParent.Left = leftmostChild.Right;
-        }
-
+        leftmostChildParent.Left = leftmostChild.Right;
         leftmostChild.Left = currentNode.Left;
         leftmostChild.Right = currentNode.Right;
 
@@ -335,14 +307,18 @@ public class BinarySearchTree<T>
 
     private int Compare(T data1, T data2)
     {
-        return _comparer!.Compare(data1, data2);
+        return _comparer.Compare(data1, data2);
     }
 
-    public override string ToString() // TODO в стрингбилдер, возможно, в виде дерева, узнать как лучше сделать
+    public override string ToString()
     {
-        string result = string.Empty;
-        void action(T i) => result += i + Environment.NewLine;
-        TraverseBreadthFirst(action);
-        return result;
+        StringBuilder sb = new StringBuilder();
+
+        sb.Append('[');
+        TraverseBreadthFirst(d => sb.Append(d).Append(", ")); // А тут как-то более изящно можно сделать?
+        sb.Remove(sb.Length - 2, 2);
+        sb.Append(']');
+
+        return sb.ToString();
     }
 }
