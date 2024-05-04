@@ -2,14 +2,14 @@
 {
     internal class Scale
     {
-        public double Delta { get; set; }
+        public double Difference { get; set; }
 
-        public double Modifier { get; set; }
+        public double Multiplier { get; set; }
 
-        public Scale(double delta, double modifier)
+        public Scale(double difference, double multiplier)
         {
-            Delta = delta;
-            Modifier = modifier;
+            Difference = difference;
+            Multiplier = multiplier;
         }
     }
 }

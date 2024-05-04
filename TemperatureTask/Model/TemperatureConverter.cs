@@ -19,12 +19,12 @@ namespace TemperatureTask.Model
         // а потом тут сделать лист iscale и оттуда дергать методы?
         public void ConvertToCelsius(double sourceTemperature, int sourceTemperatureScale)
         {
-            DeltaTemperature = (sourceTemperature - Scales[sourceTemperatureScale].Delta) / Scales[sourceTemperatureScale].Modifier;
+            DeltaTemperature = (sourceTemperature - Scales[sourceTemperatureScale].Difference) / Scales[sourceTemperatureScale].Multiplier;
         }
 
         public double ConvertFromCelsius(int resultTemperatureScale)
         {
-            return (DeltaTemperature * Scales[resultTemperatureScale].Modifier) + Scales[resultTemperatureScale].Delta;
+            return (DeltaTemperature * Scales[resultTemperatureScale].Multiplier) + Scales[resultTemperatureScale].Difference;
         }
 
         public double Convert(double sourceTemperature, int sourceTemperatureScale, int resultTemperatureScale)

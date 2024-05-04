@@ -10,12 +10,12 @@ internal class Program
         {
             new Person("Алексей", 25),
             new Person("Александр", 21),
-            new Person("Яна", 16),
+            new Person("Яна", 126),
             new Person("Евгений", 27),
-            new Person("Яна", 17),
+            new Person("Яна", 127),
             new Person("Андрей", 22),
             new Person("Даниял", 29),
-            new Person("Илья", 9),
+            new Person("Илья", 0),
             new Person("Василий", 24),
         };
 
@@ -34,9 +34,18 @@ internal class Program
         var teenagers = persons
             .Where(p => p.Age < 18)
             .ToList();
-        Console.WriteLine("Имя, возраст: " + string.Join(", ", teenagers) + ".");
-        Console.WriteLine($"И их средний возраст: {teenagers.Average(t => t.Age)}");
-        Console.WriteLine();
+
+        if (teenagers.Count == 0)
+        {
+            Console.WriteLine("Людей моложе 18 лет нет");
+            Console.WriteLine();
+        }
+        else
+        {
+            Console.WriteLine("Имя, возраст: " + string.Join(", ", teenagers) + ".");
+            Console.WriteLine($"И их средний возраст: {teenagers.Average(t => t.Age)}");
+            Console.WriteLine();
+        }
 
         var averageAgesByNames = persons
             .GroupBy(p => p.Name)
@@ -46,10 +55,10 @@ internal class Program
 
         Console.WriteLine("Люди с возрастом от 20 до 45, отсортированные по убыванию возраста:");
         var middleAgedPersons = persons
-            .Where(x => x.Age >= 20 && x.Age <= 45)
-            .OrderByDescending(x => x.Age)
+            .Where(p => p.Age >= 20 && p.Age <= 45)
+            .OrderByDescending(p => p.Age)
             .ToList();
-        Console.WriteLine(string.Join(Environment.NewLine, middleAgedPersons.Select(x => x.Name)));
+        Console.WriteLine(string.Join(Environment.NewLine, middleAgedPersons.Select(p => p.Name)));
         Console.WriteLine();
 
         // Задача 2
@@ -58,9 +67,9 @@ internal class Program
         Console.Clear();
 
         Console.Write("Введите количество чисел для вычисления квадратного корня: ");
-        var squareRootNumbersAmount = Convert.ToInt32(Console.ReadLine());
+        var squareRootsAmount = Convert.ToInt32(Console.ReadLine());
 
-        foreach (var root in GetSquareRoots().Take(squareRootNumbersAmount))
+        foreach (var root in GetSquareRoots().Take(squareRootsAmount))
         {
             Console.WriteLine(root);
         }
