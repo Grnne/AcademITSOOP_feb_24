@@ -15,20 +15,21 @@ internal class Program
             { 0, 0, 1, 0, 0, 1, 0 }
         });
 
-        graph.Data = new double[] { 1, 2, 3, 4, 5, 6, 7 };
-
         Console.WriteLine("Зададим матрицу смежности как в лекции и сделаем обходы:");
         Console.WriteLine();
 
         Console.WriteLine("Обход в ширину:");
-        graph.TraverseBreadthFirst(Console.WriteLine);
+        graph.TraverseBreadthFirst(PrintVertex);
         Console.WriteLine();
 
         Console.WriteLine("Обход в глубину:");
-        graph.TraverseDepthFirst(Console.WriteLine);
+        graph.TraverseDepthFirst(PrintVertex);
         Console.WriteLine();
 
         Console.WriteLine("Обход в глубину рекурсией:");
-        graph.TraverseDepthFirstRecursive(Console.WriteLine);
+        graph.TraverseDepthFirstRecursive(PrintVertex);
+        Console.WriteLine();
     }
+
+    static void PrintVertex(int v) => Console.Write(v + " ");
 }

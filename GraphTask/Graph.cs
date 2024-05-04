@@ -2,11 +2,9 @@
 
 public class Graph
 {
-    public int[,] Matrix { get; private set; }
+    private readonly int[,] _matrix;
 
-    public double[] Data { get; set; }
-
-    public int Size { get; private set; }
+    private readonly int _size;
 
     public Graph(int[,] matrix)
     {
@@ -15,91 +13,107 @@ public class Graph
             throw new ArgumentException($"Matrix must be square. Matrix rows amount = {matrix.GetLength(0)}, columns amount = {matrix.GetLength(1)}", nameof(matrix));
         }
 
-        Matrix = matrix;
-        Size = matrix.GetLength(0);
-        Data = new double[Size];
+        _matrix = matrix;
+        _size = matrix.GetLength(0);
     }
 
-    public void TraverseBreadthFirst(Action<double> action)
+    public void TraverseBreadthFirst(Action<int> action)
     {
-        bool[] visited = new bool[Size];
+        bool[] visited = new bool[_size];
         Queue<int> queue = new();
 
-        queue.Enqueue(0);
-
-        while (queue.Count > 0)
+        for (int i = 0; i < _size; i++)
         {
-            int currentNode = queue.Dequeue();
-
-            if (visited[currentNode])
+            if (visited[i])
             {
                 continue;
             }
 
-            action.Invoke(Data[currentNode]);
+            queue.Enqueue(i);
 
-            for (int i = 0; i < Size; i++)
+            while (queue.Count > 0)
             {
-                if (!visited[i] && Matrix[currentNode, i] == 1)
-                {
-                    queue.Enqueue(i);
-                }
-            }
+                int currentVertex = queue.Dequeue();
 
-            visited[currentNode] = true;
+                if (visited[currentVertex])
+                {
+                    continue;
+                }
+
+                for (int j = 0; j < _size; j++)
+                {
+                    if (!visited[i] && _matrix[currentVertex, i] != 0)
+                    {
+                        queue.Enqueue(j);
+                    }
+                }
+
+                action.Invoke(currentVertex);
+                visited[currentVertex] = true;
+            }
         }
     }
 
-    public void TraverseDepthFirst(Action<double> action)
+    public void TraverseDepthFirst(Action<int> action)
     {
-        bool[] visited = new bool[Size];
+        bool[] visited = new bool[_size];
         Stack<int> stack = new();
 
-        stack.Push(0);
-
-        while (stack.Count > 0)
+        for (int i = 0; i < _size; i++)
         {
-            int currentNode = stack.Pop();
-
-            if (visited[currentNode])
+            if (visited[i])
             {
                 continue;
             }
 
-            action.Invoke(Data[currentNode]);
+            stack.Push(i);
 
-            for (int i = Size - 1; i >= 0; i--)
+            while (stack.Count > 0)
             {
-                if (!visited[currentNode] && Matrix[currentNode, i] == 1)
-                {
-                    stack.Push(i);
-                }
-            }
+                int currentVertex = stack.Pop();
 
-            visited[currentNode] = true;
+                if (visited[currentVertex])
+                {
+                    continue;
+                }
+
+                for (int j = _size - 1; j >= 0; j--)
+                {
+                    if (!visited[j] && _matrix[currentVertex, j] != 0)
+                    {
+                        stack.Push(j);
+                    }
+                }
+
+                action.Invoke(currentVertex);
+                visited[currentVertex] = true;
+            }
         }
     }
 
-    public void TraverseDepthFirstRecursive(Action<double> action)
+    public void TraverseDepthFirstRecursive(Action<int> action)
     {
-        bool[] visited = new bool[Size];
+        bool[] visited = new bool[_size];
 
-        TraverseDepthFirstRecursive(action, visited, 0);
+        for (int i = 0; i < _size; i++)
+        {
+            TraverseDepthFirstRecursive(action, visited, i);
+        }
     }
 
-    private void TraverseDepthFirstRecursive(Action<double> action, bool[] visited, int currentNode)
+    private void TraverseDepthFirstRecursive(Action<int> action, bool[] visited, int currentVertex)
     {
-        if (visited[currentNode])
+        if (visited[currentVertex])
         {
             return;
         }
 
-        action.Invoke(Data[currentNode]);
-        visited[currentNode] = true;
+        action.Invoke(currentVertex);
+        visited[currentVertex] = true;
 
-        for (int i = 0; i < Size; i++)
+        for (int i = 0; i < _size; i++)
         {
-            if (!visited[i] && Matrix[currentNode, i] == 1)
+            if (!visited[i] && _matrix[currentVertex, i] != 0)
             {
                 TraverseDepthFirstRecursive(action, visited, i);
             }
