@@ -16,7 +16,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
         {
             CheckIndex(index);
 
-            return GetNode(index)!.Data;
+            return GetNode(index).Data;
         }
 
         set
@@ -37,7 +37,7 @@ public class SinglyLinkedList<T> : IEnumerable<T>
 
     public void AddFirst(T data)
     {
-        _head = new Node<T>(data, _head!);
+        _head = new Node<T>(data, _head);
         Count++;
     }
 
