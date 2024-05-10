@@ -107,7 +107,7 @@ public class Matrix
 
         int resultRowsAmount = matrix1.RowsAmount;
         int resultColumnsAmount = matrix2.ColumnsAmount;
-        Matrix resultMatrix = new Matrix(resultRowsAmount, resultColumnsAmount);
+        Matrix resultMatrix = new(resultRowsAmount, resultColumnsAmount);
 
         for (int i = 0; i < resultRowsAmount; i++)
         {
@@ -216,60 +216,58 @@ public class Matrix
         if (ColumnsAmount != RowsAmount)
         {
             throw new InvalidOperationException($"The matrix must be square. Columns amount: {ColumnsAmount} must be equal to the rows amount: {RowsAmount}");
-        }   
+        }
 
         int size = ColumnsAmount;
-
-        double[,] tempMatrix = new double[size, size]; // Jagged массив был бы удобнее
-
-        for (int i = 0; i < size; i++)
-        {
-            Vector row = GetRow(i);
-
-            for (int j = 0; j < size; j++)
-            {
-                tempMatrix[i, j] = row[j];
-            }
-        }
 
         // For 1 dimension matrix
         if (size == 1)
         {
-            return tempMatrix[0, 0];
+            return _rows[0][0];
         }
 
         // For 2 dimension matrix
         if (size == 2)
         {
-            return tempMatrix[0, 0] * tempMatrix[1, 1] - tempMatrix[0, 1] * tempMatrix[1, 0];
+            return _rows[0][0] * _rows[1][1] - _rows[0][1] * _rows[1][0];
         }
 
         // For 3 dimension matrix
         if (size == 3)
         {
-            return tempMatrix[0, 0] * tempMatrix[1, 1] * tempMatrix[2, 2]
-                + tempMatrix[0, 1] * tempMatrix[1, 2] * tempMatrix[2, 0]
-                + tempMatrix[0, 2] * tempMatrix[1, 0] * tempMatrix[2, 1]
-                - tempMatrix[0, 2] * tempMatrix[1, 1] * tempMatrix[2, 0]
-                - tempMatrix[0, 0] * tempMatrix[1, 2] * tempMatrix[2, 1]
-                - tempMatrix[0, 1] * tempMatrix[1, 0] * tempMatrix[2, 2];
+            return _rows[0][0] * _rows[1][1] * _rows[2][2]
+                + _rows[0][1] * _rows[1][2] * _rows[2][0]
+                + _rows[0][2] * _rows[1][0] * _rows[2][1]
+                - _rows[0][2] * _rows[1][1] * _rows[2][0]
+                - _rows[0][0] * _rows[1][2] * _rows[2][1]
+                - _rows[0][1] * _rows[1][0] * _rows[2][2];
+        }
+
+        double[][] triangularMatrix = new double[size][];
+
+        for (int i = 0; i < size; i++)
+        {
+            triangularMatrix[i] = new double[size];
+
+            for (int j = 0; j < size; j++)
+            {
+                triangularMatrix[i][j] = _rows[i][j];
+            }
         }
 
         // Making upper triangular matrix by swapping, multiplying and subtracting
         int determinantCoefficient = 1;
-        double epsilon = 0.1e-10f;
-        int maxRowIndex = size;
+        double epsilon = 0.1e-10f; // Не уверен, что правильно написал, но вроде оно
 
         for (int i = 0; i < size - 1; i++)
         {
             int rowIndex = i;
-            maxRowIndex -= i;
 
-            if (Math.Abs(tempMatrix[rowIndex, i]) <= epsilon) // Rearrangements
+            if (Math.Abs(triangularMatrix[rowIndex][i]) <= epsilon) // Rearrangements
             {
-                while (Math.Abs(tempMatrix[rowIndex, i]) <= epsilon)
+                while (Math.Abs(triangularMatrix[rowIndex][i]) <= epsilon)
                 {
-                    if (rowIndex == maxRowIndex)
+                    if (rowIndex == size - 1)
                     {
                         return 0; // If full column is zero, or any element of main diagonal is 0, also must protect from zero division
                     }
@@ -277,22 +275,20 @@ public class Matrix
                     rowIndex++;
                 }
 
-                double[] tempRow = GetRowFromTempMatrix(rowIndex);
-                SetRowToTempMatrix(rowIndex, GetRowFromTempMatrix(i));
-                SetRowToTempMatrix(i, tempRow);
+                (triangularMatrix[i], triangularMatrix[rowIndex]) = (triangularMatrix[rowIndex], triangularMatrix[i]);
                 determinantCoefficient *= -1;
             }
 
             for (int j = i + 1; j < size; j++) // Multiplying and subtracting
             {
-                if (Math.Abs(tempMatrix[j, i]) > epsilon)
+                if (Math.Abs(triangularMatrix[j][i]) > epsilon)
                 {
-                    double coefficientNumerator = tempMatrix[j, i];
-                    double coefficientDenominator = tempMatrix[i, i];
+                    double coefficientNumerator = triangularMatrix[j][i];
+                    double coefficientDenominator = triangularMatrix[i][i];
 
                     for (int k = 0; k < size; k++)
                     {
-                        tempMatrix[j, k] -= tempMatrix[i, k] * coefficientNumerator / coefficientDenominator;
+                        triangularMatrix[j][k] -= triangularMatrix[i][k] * coefficientNumerator / coefficientDenominator;
                     }
                 }
             }
@@ -302,20 +298,10 @@ public class Matrix
 
         for (int i = 0; i < size; i++)
         {
-            determinant *= tempMatrix[i, i];
+            determinant *= triangularMatrix[i][i];
         }
 
         return determinant * determinantCoefficient;
-
-        double[] GetRowFromTempMatrix(int index) => Enumerable.Range(0, size).Select(x => tempMatrix[index, x]).ToArray();
-
-        void SetRowToTempMatrix(int index, double[] row)
-        {
-            for (int i = 0; i < size; i++)
-            {
-                tempMatrix[index, i] = row[i];
-            }
-        }
     }
 
     private static void CheckIndex(int index, int indexUpperLimit)

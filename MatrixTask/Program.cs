@@ -8,7 +8,7 @@ internal class Program
     {
         Console.WriteLine("Немного примеров работы класса Matrix.");
         Console.WriteLine("Создадим пустую матрицу 5х5:");
-        Matrix matrix1 = new Matrix(5, 5);
+        Matrix matrix1 = new(5, 5);
         Console.WriteLine(matrix1);
         Console.WriteLine();
 
@@ -16,15 +16,15 @@ internal class Program
         Console.WriteLine();
 
         Console.WriteLine("Инициализируем матрицу через массив вещественных чисел:");
-        Matrix matrix2 = new Matrix(new double[,] { { 10, 11, 12 }, { 120, 131, 112 }, { 1, 2, 3 } });
+        Matrix matrix2 = new(new double[,] { { 10, 11, 12 }, { 120, 131, 112 }, { 1, 2, 3 } });
         Console.WriteLine(matrix2);
         Console.WriteLine();
 
         Console.WriteLine("Инициализируем матрицу через массив векторов:");
 
-        Vector vector1 = new Vector(new double[] { 1, 2, 3 });
-        Vector vector2 = new Vector(new double[] { 4, 5, 6 });
-        Vector vector3 = new Vector(new double[] { 7, 8, 9 });
+        Vector vector1 = new(new double[] { 1, 2, 3 });
+        Vector vector2 = new(new double[] { 4, 5, 6 });
+        Vector vector3 = new(new double[] { 7, 8, 9 });
         Vector[] vectors =
         {
             vector1,
@@ -32,7 +32,7 @@ internal class Program
             vector3
         };
 
-        Matrix matrix3 = new Matrix(vectors);
+        Matrix matrix3 = new(vectors);
         Console.WriteLine(matrix3);
         Console.WriteLine();
 
@@ -82,8 +82,8 @@ internal class Program
         Console.WriteLine($"Произведение {matrix2} и {matrix3}");
         Console.WriteLine($"Результат: {Matrix.GetProduct(matrix2, matrix3)}");
         Console.WriteLine();
-        
-        Matrix matrix5 = new Matrix(new double[,]
+
+        Matrix matrix5 = new(new double[,]
         {
             { 0, 0, 3, 4 },
             { 0, 0, 2, 3 },
