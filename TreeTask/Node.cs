@@ -1,8 +1,8 @@
 ﻿namespace TreeTask;
 
-internal class Node<T>(T item)
+internal class Node<T>(T data)
 {
-    public T Data { get; set; } = item;
+    public T Data { get; set; } = data;
 
     public Node<T>? Left { get; set; }
 

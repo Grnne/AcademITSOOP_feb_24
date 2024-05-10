@@ -17,17 +17,12 @@ public class BinarySearchTree<T>
 
     public BinarySearchTree(Comparer<T> comparer)
     {
-        if (comparer is null)
-        {
-            throw new ArgumentNullException(nameof(comparer), "Comparer can't be null");
-        }
-
-        _comparer = comparer;
+        _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer), "Comparer can't be null");
     }
 
     public void TraverseDepthFirst(Action<T> action)
     {
-        if (_root == null)
+        if (_root is null)
         {
             return;
         }
@@ -54,7 +49,7 @@ public class BinarySearchTree<T>
 
     public void TraverseBreadthFirst(Action<T> action)
     {
-        if (_root == null)
+        if (_root is null)
         {
             return;
         }
@@ -81,7 +76,7 @@ public class BinarySearchTree<T>
 
     public void TraverseDepthFirstRecursive(Action<T> action)
     {
-        if (_root == null)
+        if (_root is null)
         {
             return;
         }
@@ -106,7 +101,7 @@ public class BinarySearchTree<T>
 
     public void Add(T data)
     {
-        if (_root == null)
+        if (_root is null)
         {
             _root = new Node<T>(data);
             Count++;
@@ -156,64 +151,50 @@ public class BinarySearchTree<T>
             return false;
         }
 
-        // Может как-то можно сразу дать 2м переменным значения из тупла, без создания промежуточной?
-        (Node<T>? Node, Node<T>? ParentNode) nodeAndParent = GetNodeAndParent(data);
-        Node<T>? parentNode = nodeAndParent.ParentNode;
-        Node<T>? currentNode = nodeAndParent.Node;
+        (Node<T>? nodeToBeDeleted, Node<T>? parentNode) = GetNodeAndParent(data);
 
-        if (currentNode is null)
+        if (nodeToBeDeleted is null)
         {
             return false;
         }
 
-        if (currentNode.Left is null || currentNode.Right is null)
+        if (nodeToBeDeleted.Left is null || nodeToBeDeleted.Right is null)
         {
-            RemoveNodeWithZeroOrSingleChild(currentNode, parentNode);
+            RemoveNodeWithZeroOrSingleChild(nodeToBeDeleted, parentNode);
 
             return true;
         }
 
-        RemoveNodeWithTwoChildren(currentNode, parentNode);
+        RemoveNodeWithTwoChildren(nodeToBeDeleted, parentNode);
 
         return true;
     }
 
-    private void RemoveNodeWithZeroOrSingleChild(Node<T> currentNode, Node<T>? parentNode)
+    private void RemoveNodeWithZeroOrSingleChild(Node<T> nodeToBeDeleted, Node<T>? parentNode)
     {
-        if (currentNode.Left is null || currentNode.Right is null)
+        Node<T>? childNode = nodeToBeDeleted.Left is not null
+            ? _ = nodeToBeDeleted.Left : _ = nodeToBeDeleted.Right; // Студия подсказала что-то странное
+
+        if (parentNode is null)
         {
-            Node<T>? childNode = null;
-
-            if (currentNode.Left is not null)
-            {
-                childNode = currentNode.Left;
-            }
-            else if (currentNode.Right is not null)
-            {
-                childNode = currentNode.Right;
-            }
-
-            if (parentNode is null)
-            {
-                _root = childNode;
-            }
-            else if (parentNode.Left == currentNode)
-            {
-                parentNode.Left = childNode;
-            }
-            else
-            {
-                parentNode.Right = childNode;
-            }
-
-            Count--;
+            _root = childNode;
         }
+        else if (parentNode.Left == nodeToBeDeleted)
+        {
+            parentNode.Left = childNode;
+        }
+        else
+        {
+            parentNode.Right = childNode;
+        }
+
+        Count--;
     }
 
-    private void RemoveNodeWithTwoChildren(Node<T> currentNode, Node<T>? parentNode)
+    private void RemoveNodeWithTwoChildren(Node<T> nodeToBeDeleted, Node<T>? parentNode)
     {
-        Node<T> leftmostChild = currentNode.Right!;
-        Node<T> leftmostChildParent = currentNode;
+        Node<T> leftmostChild = nodeToBeDeleted.Right!;
+        Node<T> leftmostChildParent = nodeToBeDeleted;
 
         if (leftmostChild.Left is null)
         {
@@ -221,7 +202,7 @@ public class BinarySearchTree<T>
             {
                 _root = leftmostChild;
             }
-            else if (parentNode.Left == currentNode)
+            else if (parentNode.Left == nodeToBeDeleted)
             {
                 parentNode.Left = leftmostChild;
             }
@@ -230,7 +211,7 @@ public class BinarySearchTree<T>
                 parentNode.Right = leftmostChild;
             }
 
-            leftmostChild.Left = currentNode.Left;
+            leftmostChild.Left = nodeToBeDeleted.Left;
 
             Count--;
 
@@ -247,7 +228,7 @@ public class BinarySearchTree<T>
         {
             _root = leftmostChild;
         }
-        else if (parentNode.Left == currentNode)
+        else if (parentNode.Left == nodeToBeDeleted)
         {
             parentNode.Left = leftmostChild;
         }
@@ -257,15 +238,15 @@ public class BinarySearchTree<T>
         }
 
         leftmostChildParent.Left = leftmostChild.Right;
-        leftmostChild.Left = currentNode.Left;
-        leftmostChild.Right = currentNode.Right;
+        leftmostChild.Left = nodeToBeDeleted.Left;
+        leftmostChild.Right = nodeToBeDeleted.Right;
 
         Count--;
     }
 
     private (Node<T>? Node, Node<T>? ParentNode) GetNodeAndParent(T data)
     {
-        if (_root == null)
+        if (_root is null)
         {
             return (null, null);
         }
@@ -315,7 +296,7 @@ public class BinarySearchTree<T>
         StringBuilder sb = new StringBuilder();
 
         sb.Append('[');
-        TraverseBreadthFirst(d => sb.Append(d).Append(", ")); // А тут как-то более изящно можно сделать?
+        TraverseBreadthFirst(d => sb.Append(d).Append(", "));
         sb.Remove(sb.Length - 2, 2);
         sb.Append(']');
 

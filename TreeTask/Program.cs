@@ -24,8 +24,9 @@ internal class Program
         Console.WriteLine("Заполним и выведем наше дерево");
         Console.WriteLine(tree);
 
-        Console.WriteLine($"Проверим команду Contains(1): {tree.Contains(1)}");
-        Console.WriteLine($"Проверим команду Remove(1): {tree.Remove(1)}; попробуем найти этот элемент: {tree.Contains(1)}");
+        int index = 1;
+        Console.WriteLine($"Проверим команду Contains(index): {tree.Contains(index)}");
+        Console.WriteLine($"Проверим команду Remove(index): {tree.Remove(index)}; попробуем найти этот элемент: {tree.Contains(index)}");
         Console.WriteLine();
 
         Console.WriteLine("Проверим обходы");
