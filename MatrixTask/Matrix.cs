@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using VectorTask;
 
 namespace MatrixTask;
@@ -61,7 +59,7 @@ public class Matrix
     {
         if (vectors.Length == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(vectors), $"Matrix rows amount must be >= 0, current amount: {vectors.Length}");
+            throw new ArgumentOutOfRangeException(nameof(vectors), $"Matrix rows amount must be greater then 0, current amount: {vectors.Length}");
         }
 
         int maxColumnsAmount = 0;
@@ -94,7 +92,7 @@ public class Matrix
     {
         CheckMatricesDimensionsEquality(matrix1, matrix2);
 
-        Matrix resultMatrix = new Matrix(matrix1);
+        Matrix resultMatrix = new(matrix1);
         resultMatrix.Subtract(matrix2);
 
         return resultMatrix;
@@ -135,7 +133,7 @@ public class Matrix
 
         if (vector.Size != ColumnsAmount)
         {
-            throw new ArgumentOutOfRangeException(nameof(vector), $"Vector size: {vector.Size} must be equal to matrix columns amount: {ColumnsAmount}");
+            throw new ArgumentException($"Vector size: {vector.Size} must be equal to matrix columns amount: {ColumnsAmount}", nameof(vector));
         }
 
         _rows[index] = new Vector(vector);
@@ -217,8 +215,8 @@ public class Matrix
     {
         if (ColumnsAmount != RowsAmount)
         {
-            throw new ArgumentException($"The matrix must be square. Columns amount: {ColumnsAmount} must be equal to the rows amount: {RowsAmount}");
-        }
+            throw new InvalidOperationException($"The matrix must be square. Columns amount: {ColumnsAmount} must be equal to the rows amount: {RowsAmount}");
+        }   
 
         int size = ColumnsAmount;
 
@@ -226,11 +224,11 @@ public class Matrix
 
         for (int i = 0; i < size; i++)
         {
-            Vector tempRow = GetRow(i);
+            Vector row = GetRow(i);
 
             for (int j = 0; j < size; j++)
             {
-                tempMatrix[i, j] = tempRow[j];
+                tempMatrix[i, j] = row[j];
             }
         }
 
@@ -259,7 +257,7 @@ public class Matrix
 
         // Making upper triangular matrix by swapping, multiplying and subtracting
         int determinantCoefficient = 1;
-        double epsilon = .00001;
+        double epsilon = 0.1e-10f;
         int maxRowIndex = size;
 
         for (int i = 0; i < size - 1; i++)
@@ -332,12 +330,12 @@ public class Matrix
     {
         if (rowsAmount <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(rowsAmount), $"Matrix rows amount: {rowsAmount} must be greater than 0");
+            throw new InvalidOperationException($"Matrix rows amount: {rowsAmount} must be greater than 0");
         }
 
         if (columnsAmount <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(columnsAmount), $"Matrix columns amount: {columnsAmount} must be greater than 0");
+            throw new InvalidOperationException($"Matrix columns amount: {columnsAmount} must be greater than 0");
         }
     }
 
@@ -353,6 +351,7 @@ public class Matrix
     public override string ToString()
     {
         StringBuilder stringBuilder = new();
+
         stringBuilder.Append('{');
         int maxIndex = _rows.Length - 1;
 
