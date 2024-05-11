@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using TemperatureTask.Model;
+using TemperatureTask.Model.Scales;
 using TemperatureTask.Presenter;
+using TemperatureTask.View;
 
 namespace TemperatureTask
 {
@@ -13,11 +16,16 @@ namespace TemperatureTask
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            IConverter converter = new TemperatureConverter();
+            ITemperatureConverter converter = new TemperatureConverter(new List<Scale>()
+            {   new Celsius(),
+                new Fahrenheit(),
+                new Kelvin()
+            });
+
             var view = new ConverterView();
             TemperaturePresenter presenter = new TemperaturePresenter(converter, view);
             view.SetPresenter(presenter);
-            
+
             Application.Run(view);
         }
     }

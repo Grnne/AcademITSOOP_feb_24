@@ -1,21 +1,22 @@
 ﻿using TemperatureTask.Model;
+using TemperatureTask.Model.Scales;
 using TemperatureTask.View;
 
 namespace TemperatureTask.Presenter
 {
     public class TemperaturePresenter
     {
-        public IConverter Model { get; set; }
+        public ITemperatureConverter Model { get; set; }
 
-        public IView View { get; set; }
+        public IConverterView View { get; set; }
 
-        public TemperaturePresenter(IConverter converter, IView view)
+        public TemperaturePresenter(ITemperatureConverter converter, IConverterView view)
         {
             Model = converter;
             View = view;
         }
 
-        public void GetConvertedTemperature(double sourceTemperature, int sourceScale, int resultScale)
+        public void GetConvertedTemperature(double sourceTemperature, Scale sourceScale, Scale resultScale)
         {
             View.ShowResultTemperature(Model.Convert(sourceTemperature, sourceScale, resultScale));
         }

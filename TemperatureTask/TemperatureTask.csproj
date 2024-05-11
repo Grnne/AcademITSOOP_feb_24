@@ -51,15 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\IConverter.cs" />
-    <Compile Include="Model\Scale.cs" />
+    <Compile Include="Model\ITemperatureConverter.cs" />
     <Compile Include="Model\Scales\Kelvin.cs" />
     <Compile Include="Model\Scales\Fahrenheit.cs" />
     <Compile Include="Model\Scales\Celsius.cs" />
-    <Compile Include="Model\Scales\IScale.cs" />
+    <Compile Include="Model\Scales\Scale.cs" />
     <Compile Include="Presenter\TemperaturePresenter.cs" />
     <Compile Include="Model\TemperatureConverter.cs" />
-    <Compile Include="View\IView.cs" />
+    <Compile Include="View\IConverterView.cs" />
     <Compile Include="View\ConverterView.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -2,7 +2,7 @@
 
 namespace TemperatureTask.View
 {
-    public interface IView
+    public interface IConverterView
     {
         void Start();
 

@@ -2,16 +2,19 @@
 
 namespace TemperatureTask.Model.Scales
 {
-    internal class Kelvin : IScale
+    internal class Kelvin : Scale
     {
-        public double ConvertFromCelsius(int resultTemperatureScale)
-        {
-            throw new NotImplementedException();
-        }
+        public override string Name { get; set; }
 
-        public void ConvertToCelsius(double sourceTemperature, int sourceTemperatureScale)
+        public override double Difference { get; set; }
+
+        public override double Multiplier { get; set; }
+
+        public Kelvin()
         {
-            throw new NotImplementedException();
+            Name = "Kelvin";
+            Difference = 273.15;
+            Multiplier = 1.0;
         }
     }
 }

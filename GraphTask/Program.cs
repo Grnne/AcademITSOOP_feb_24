@@ -2,7 +2,7 @@
 
 internal class Program
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
         Graph graph = new(new[,]
         {
@@ -31,5 +31,5 @@ internal class Program
         Console.WriteLine();
     }
 
-    static void PrintVertex(int v) => Console.Write(v + " ");
+    private static void PrintVertex(int v) => Console.Write(v + " ");
 }

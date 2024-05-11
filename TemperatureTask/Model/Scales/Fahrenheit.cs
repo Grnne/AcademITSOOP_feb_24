@@ -1,15 +1,20 @@
-﻿namespace TemperatureTask.Model.Scales
-{
-    internal class Fahrenheit : IScale
-    {
-        public double ConvertFromCelsius(int resultTemperatureScale)
-        {
-            throw new System.NotImplementedException();
-        }
+﻿using System;
 
-        public void ConvertToCelsius(double sourceTemperature, int sourceTemperatureScale)
+namespace TemperatureTask.Model.Scales
+{
+    internal class Fahrenheit : Scale
+    {
+        public override string Name { get; set; }
+
+        public override double Difference { get; set; }
+
+        public override double Multiplier { get; set; }
+
+        public Fahrenheit()
         {
-            throw new System.NotImplementedException();
+            Name = "Fahrenheit";
+            Difference = 32.0;
+            Multiplier = 1.8;
         }
     }
 }

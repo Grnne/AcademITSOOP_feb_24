@@ -5,7 +5,7 @@ using TemperatureTask.View;
 
 namespace TemperatureTask
 {
-    public partial class ConverterView : Form, IView //TODO спросить про нейминг контролов
+    public partial class ConverterView : Form, IConverterView //TODO спросить про нейминг контролов
     {
         private TemperaturePresenter _presenter;
 
