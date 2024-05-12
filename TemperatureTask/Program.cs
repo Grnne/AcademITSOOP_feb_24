@@ -4,12 +4,12 @@ using System.Windows.Forms;
 using TemperatureTask.Model;
 using TemperatureTask.Model.Scales;
 using TemperatureTask.Presenter;
-using TemperatureTask.View;
 
 namespace TemperatureTask
 {
     internal static class Program
     {
+        // TODO спросить про где делать обработку ошибок
         [STAThread]
         static void Main()
         {
@@ -22,9 +22,9 @@ namespace TemperatureTask
                 new Kelvin()
             });
 
-            var view = new ConverterView();
+            var view = new converterView();
             TemperaturePresenter presenter = new TemperaturePresenter(converter, view);
-            view.SetPresenter(presenter);
+
 
             Application.Run(view);
         }

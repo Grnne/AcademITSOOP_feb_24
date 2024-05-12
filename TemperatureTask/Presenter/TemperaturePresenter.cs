@@ -1,5 +1,4 @@
 ﻿using TemperatureTask.Model;
-using TemperatureTask.Model.Scales;
 using TemperatureTask.View;
 
 namespace TemperatureTask.Presenter
@@ -14,11 +13,15 @@ namespace TemperatureTask.Presenter
         {
             Model = converter;
             View = view;
+            view.SetPresenter(this);
+            view.SetScales(Model.GetScales());
         }
 
-        public void GetConvertedTemperature(double sourceTemperature, Scale sourceScale, Scale resultScale)
+        public void ConvertTemperature(double sourceTemperature, string sourceScaleName, string resultScaleName)
         {
-            View.ShowResultTemperature(Model.Convert(sourceTemperature, sourceScale, resultScale));
+            View.ShowResultTemperature(Model.Convert(sourceTemperature
+                , Model.GetScales().Find(x => x.Name == sourceScaleName)
+                , Model.GetScales().Find(x => x.Name == resultScaleName)));
         }
     }
 }

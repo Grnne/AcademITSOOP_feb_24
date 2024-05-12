@@ -1,4 +1,6 @@
-﻿using TemperatureTask.Presenter;
+﻿using System.Collections.Generic;
+using TemperatureTask.Model.Scales;
+using TemperatureTask.Presenter;
 
 namespace TemperatureTask.View
 {
@@ -7,6 +9,8 @@ namespace TemperatureTask.View
         void Start();
 
         void SetPresenter(TemperaturePresenter presenter);
+
+        void SetScales(List<Scale> scales);
 
         void ShowResultTemperature(double resultTemperature);
     }

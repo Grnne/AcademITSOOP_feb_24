@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinesweeperTask", "Mineswee
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinesweeperTaskBroken", "MinesweeperTaskBroken\MinesweeperTaskBroken.csproj", "{D4FDF114-3663-4059-B197-9CAD4605CE3B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "trash", "trash", "{BC804AE1-0811-451C-B74D-57FD55CF9002}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingViews", "TestingViews\TestingViews.csproj", "{4FEE66AF-54CC-44EB-8756-AF4191F046A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,9 +109,18 @@ Global
 		{D4FDF114-3663-4059-B197-9CAD4605CE3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4FDF114-3663-4059-B197-9CAD4605CE3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4FDF114-3663-4059-B197-9CAD4605CE3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FEE66AF-54CC-44EB-8756-AF4191F046A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FEE66AF-54CC-44EB-8756-AF4191F046A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FEE66AF-54CC-44EB-8756-AF4191F046A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FEE66AF-54CC-44EB-8756-AF4191F046A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{57496AD2-AEC0-4566-A451-79495D79C3FB} = {BC804AE1-0811-451C-B74D-57FD55CF9002}
+		{D4FDF114-3663-4059-B197-9CAD4605CE3B} = {BC804AE1-0811-451C-B74D-57FD55CF9002}
+		{4FEE66AF-54CC-44EB-8756-AF4191F046A3} = {BC804AE1-0811-451C-B74D-57FD55CF9002}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E467D0E-D4C5-4A57-9B2A-F8C583B10247}

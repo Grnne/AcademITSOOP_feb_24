@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TemperatureTask.Model.Scales
+﻿namespace TemperatureTask.Model.Scales
 {
     internal class Fahrenheit : Scale
     {
