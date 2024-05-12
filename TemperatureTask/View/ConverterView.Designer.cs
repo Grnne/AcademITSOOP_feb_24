@@ -54,6 +54,7 @@
             this.sourceTemperatureTextBox.Name = "sourceTemperatureTextBox";
             this.sourceTemperatureTextBox.Size = new System.Drawing.Size(169, 20);
             this.sourceTemperatureTextBox.TabIndex = 1;
+            this.sourceTemperatureTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sourceTemperatureTextBox_KeyDown);
             // 
             // resultTemperatureTextBox
             // 
@@ -119,6 +120,7 @@
             this.Name = "converterView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Temperature converter";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.converterView_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

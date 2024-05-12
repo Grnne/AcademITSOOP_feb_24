@@ -82,7 +82,7 @@ namespace TemperatureTask
             resultTemperatureTextBox.Text = $"{resultTemperature}";
         }
 
-        private void convertButton_Click(object sender, EventArgs e)
+        public void ConvertTemperature()
         {
             try
             {
@@ -95,6 +95,27 @@ namespace TemperatureTask
             catch (FormatException)
             {
                 MessageBox.Show("Input value must be a number", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void convertButton_Click(object sender, EventArgs e)
+        {
+            ConvertTemperature();
+        }
+
+        private void sourceTemperatureTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                ConvertTemperature();
+            }
+        }
+
+        private void converterView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) // Чего-то он не хочет работать.
+            {
+                ConvertTemperature();
             }
         }
     }
