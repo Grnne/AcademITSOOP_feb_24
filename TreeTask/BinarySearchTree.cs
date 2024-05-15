@@ -15,9 +15,9 @@ public class BinarySearchTree<T>
         _comparer = Comparer<T>.Default;
     }
 
-    public BinarySearchTree(Comparer<T> comparer)
+    public BinarySearchTree(Comparer<T>? comparer)
     {
-        _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer), "Comparer can't be null");
+        _comparer = comparer ?? Comparer<T>.Default;
     }
 
     public void TraverseDepthFirst(Action<T> action)
@@ -172,8 +172,7 @@ public class BinarySearchTree<T>
 
     private void RemoveNodeWithZeroOrSingleChild(Node<T> nodeToBeDeleted, Node<T>? parentNode)
     {
-        Node<T>? childNode = nodeToBeDeleted.Left is not null
-            ? _ = nodeToBeDeleted.Left : _ = nodeToBeDeleted.Right; // Студия подсказала что-то странное
+        Node<T>? childNode = nodeToBeDeleted.Left ?? nodeToBeDeleted.Right;
 
         if (parentNode is null)
         {
@@ -293,7 +292,7 @@ public class BinarySearchTree<T>
 
     public override string ToString()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
 
         sb.Append('[');
         TraverseBreadthFirst(d => sb.Append(d).Append(", "));
