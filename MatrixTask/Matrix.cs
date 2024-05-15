@@ -59,7 +59,7 @@ public class Matrix
     {
         if (vectors.Length == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(vectors), $"Matrix rows amount must be greater then 0, current amount: {vectors.Length}");
+            throw new ArgumentOutOfRangeException(nameof(vectors), $"Matrix rows amount must be greater than 0, current amount: {vectors.Length}");
         }
 
         int maxColumnsAmount = 0;
@@ -257,7 +257,7 @@ public class Matrix
 
         // Making upper triangular matrix by swapping, multiplying and subtracting
         int determinantCoefficient = 1;
-        double epsilon = 0.1e-10f; // Не уверен, что правильно написал, но вроде оно
+        const double epsilon = 1e-10d;
 
         for (int i = 0; i < size - 1; i++)
         {
@@ -316,12 +316,12 @@ public class Matrix
     {
         if (rowsAmount <= 0)
         {
-            throw new InvalidOperationException($"Matrix rows amount: {rowsAmount} must be greater than 0");
+            throw new ArgumentOutOfRangeException($"Matrix rows amount: {rowsAmount} must be greater than 0");
         }
 
         if (columnsAmount <= 0)
         {
-            throw new InvalidOperationException($"Matrix columns amount: {columnsAmount} must be greater than 0");
+            throw new ArgumentOutOfRangeException($"Matrix columns amount: {columnsAmount} must be greater than 0");
         }
     }
 
