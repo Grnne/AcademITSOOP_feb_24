@@ -256,16 +256,16 @@ public class Matrix
         }
 
         // Making upper triangular matrix by swapping, multiplying and subtracting
-        const double Epsilon = 1e-10;
+        const double epsilon = 1e-10;
         int determinantCoefficient = 1;
 
         for (int i = 0; i < size - 1; i++)
         {
             int rowIndex = i;
 
-            if (Math.Abs(triangularMatrix[rowIndex][i]) <= Epsilon) // Rearrangements
+            if (Math.Abs(triangularMatrix[rowIndex][i]) <= epsilon) // Rearrangements
             {
-                while (Math.Abs(triangularMatrix[rowIndex][i]) <= Epsilon)
+                while (Math.Abs(triangularMatrix[rowIndex][i]) <= epsilon)
                 {
                     if (rowIndex == size - 1)
                     {
@@ -281,7 +281,7 @@ public class Matrix
 
             for (int j = i + 1; j < size; j++) // Multiplying and subtracting
             {
-                if (Math.Abs(triangularMatrix[j][i]) > Epsilon)
+                if (Math.Abs(triangularMatrix[j][i]) > epsilon)
                 {
                     double coefficientNumerator = triangularMatrix[j][i];
                     double coefficientDenominator = triangularMatrix[i][i];
