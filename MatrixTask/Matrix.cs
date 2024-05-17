@@ -256,16 +256,16 @@ public class Matrix
         }
 
         // Making upper triangular matrix by swapping, multiplying and subtracting
+        const double Epsilon = 1e-10;
         int determinantCoefficient = 1;
-        const double epsilon = 1e-10d;
 
         for (int i = 0; i < size - 1; i++)
         {
             int rowIndex = i;
 
-            if (Math.Abs(triangularMatrix[rowIndex][i]) <= epsilon) // Rearrangements
+            if (Math.Abs(triangularMatrix[rowIndex][i]) <= Epsilon) // Rearrangements
             {
-                while (Math.Abs(triangularMatrix[rowIndex][i]) <= epsilon)
+                while (Math.Abs(triangularMatrix[rowIndex][i]) <= Epsilon)
                 {
                     if (rowIndex == size - 1)
                     {
@@ -281,7 +281,7 @@ public class Matrix
 
             for (int j = i + 1; j < size; j++) // Multiplying and subtracting
             {
-                if (Math.Abs(triangularMatrix[j][i]) > epsilon)
+                if (Math.Abs(triangularMatrix[j][i]) > Epsilon)
                 {
                     double coefficientNumerator = triangularMatrix[j][i];
                     double coefficientDenominator = triangularMatrix[i][i];
@@ -316,12 +316,12 @@ public class Matrix
     {
         if (rowsAmount <= 0)
         {
-            throw new ArgumentOutOfRangeException($"Matrix rows amount: {rowsAmount} must be greater than 0");
+            throw new ArgumentOutOfRangeException(nameof(rowsAmount), $"Matrix rows amount: {rowsAmount} must be greater than 0");
         }
 
         if (columnsAmount <= 0)
         {
-            throw new ArgumentOutOfRangeException($"Matrix columns amount: {columnsAmount} must be greater than 0");
+            throw new ArgumentOutOfRangeException(nameof(columnsAmount), $"Matrix columns amount: {columnsAmount} must be greater than 0");
         }
     }
 
