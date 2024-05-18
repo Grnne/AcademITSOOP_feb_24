@@ -8,7 +8,7 @@
 
         public int GameOver { get; set; } // TODO нормальные кондиции для конца игры,  сделать енум для win\lose, возможно сделать эвент на достижение 1 или 2
 
-        public int BombsCountTable { get; set; } 
+        public int BombsCountTable { get; set; }
 
         public int DefusedBombsCount { get; set; }// TODO возможно впихнуть сюда кастом сеттер, чтоб при достижении 0 давало геймовер 2
 
@@ -23,7 +23,10 @@
         public int OpenCell(int y, int x)
         {
             if (Minefield.Cells[y, x].CellIcon == CellIcon.Closed)
-            GameOver = Minefield.RevealEmptySpaces(y, x);
+            {
+                GameOver = Minefield.RevealEmptySpaces(y, x);
+            }
+
             return GameOver;
         }
 
@@ -63,8 +66,6 @@
                     break;
             }
         }
-
-        public void ModifyBombsScoreboard() { } // TODO доделать тут
 
         public void InitBoard(int difficulty)
         {
