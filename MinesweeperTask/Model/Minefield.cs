@@ -5,51 +5,56 @@ namespace MinesweeperTask.Model
 {
     public class Minefield
     {
-        public Cell[,] Cells { get; set; }
+        public Cell[,] Cells { get; private set; }
 
-        public int RowsAmount { get; set; }
+        public int RowsAmount { get; private set; }
 
-        public int ColumnsAmount { get; set; }
+        public int ColumnsAmount { get; private set; }
 
-        public Minefield(int rowsAmount, int columnsAmount, int bombsAmount)
-        {
-            RowsAmount = rowsAmount;
-            ColumnsAmount = columnsAmount;
-
-            Cells = new Cell[rowsAmount, columnsAmount];
-
-            for (int i = 0; i < rowsAmount; i++)
-            {
-                for (int j = 0; j < columnsAmount; j++)
-                {
-                    Cells[i, j] = new Cell();
-                }
-            }
-
-            PlaceBombos(bombsAmount);
-        }
+        public int BombsAmount { get; private set; }
 
         public Minefield(int difficulty)
         {
             switch (difficulty)
             {
                 case 0:
-                    new Minefield(8, 8, 10);
+                    RowsAmount = 5;
+                    ColumnsAmount = 5;
+                    BombsAmount = 5;
+
                     break;
                 case 1:
-                    new Minefield(15, 15, 30);
+                    RowsAmount = 8;
+                    ColumnsAmount = 16;
+                    BombsAmount = 20;
+
                     break;
                 case 2:
-                    new Minefield(20, 25, 60);
+                    RowsAmount = 12;
+                    ColumnsAmount = 24;
+                    BombsAmount = 60;
+
                     break;
                 default:
                     throw new NotImplementedException();
             }
+
+            Cells = new Cell[RowsAmount, ColumnsAmount];
+
+            for (int i = 0; i < RowsAmount; i++)
+            {
+                for (int j = 0; j < ColumnsAmount; j++)
+                {
+                    Cells[i, j] = new Cell();
+                }
+            }
+
+            PlaceBombs(BombsAmount, 3, 3);
         }
 
-        public void PlaceBombos(int bombsAmount) //TODO First apply
+        public void PlaceBombs(int bombsAmount, int senderPosY, int senderPosX) //TODO First click apply
         {
-            HashSet<(int x, int y)> bombs = new HashSet<(int x, int y)>();
+            HashSet<(int y, int x)> bombs = new HashSet<(int y, int x)>();
             Random random = new Random();
 
             while (bombs.Count < bombsAmount)
@@ -59,62 +64,80 @@ namespace MinesweeperTask.Model
 
             foreach (var bomb in bombs)
             {
-                Cells[bomb.x, bomb.y].BombState = true;
+                Cells[bomb.y, bomb.x].BombState = true;
             }
 
             foreach (var bomb in bombs)
             {
-                DrawBombsAmount(bomb.x, bomb.y);
+                DrawBombsAmount(bomb.y, bomb.x);
             }
         }
 
-        private void DrawBombsAmount(int x, int y) //TODO Переставить х и у где надо
+        private void DrawBombsAmount(int y, int x)
         {
-            if (Cells[x, y].BombState)
+            if (Cells[y, x].BombState)
             {
                 for (int i = -1; i <= 1; i++)
                 {
                     for (int j = -1; j <= 1; j++)
                     {
-                        if ((x + i >= 0 && y + j >= 0) && (x + i < RowsAmount && y + j < ColumnsAmount)
-                            && Cells[x + i, y + j].BombState == false)
+                        if ((y + i >= 0 && x + j >= 0) && (y + i < RowsAmount && x + j < ColumnsAmount)
+                            && Cells[y + i, x + j].BombState == false)
 
                         {
-                            Cells[x + i, y + j].NearbyBombsAmount++;
+                            Cells[y + i, x + j].NearbyBombsAmount++;
                         }
                     }
-
                 }
             }
         }
 
-        public void RevealEmptySpaces(int x, int y)
+        public int RevealEmptySpaces(int y, int x)
         {
+            if (Cells[y, x].BombState)
+            {
+                return 1;
+            }
+
+            if (Cells[y, x].NearbyBombsAmount > 0)
+            {
+                Cells[y, x].CellIcon = CellIcon.OpenDigit;
+
+                return 0;
+            }
+
             bool[,] visited = new bool[RowsAmount, ColumnsAmount];
 
-            RevealEmptySpaces(x, y, visited);
+            RevealEmptySpaces(y, x, visited);
+
+            return 0;
         }
 
-        private void RevealEmptySpaces(int y, int x, bool[,] visited) // TODO доделать как просплюсь
+        private void RevealEmptySpaces(int y, int x, bool[,] visited)
         {
             for (int i = -1; i <= 1; i++)
             {
                 for (int j = -1; j <= 1; j++)
                 {
-                    int current_y = y + i;
-                    int current_x = x + j;
+                    int currentY = y + i;
+                    int currentX = x + j;
 
-                    if ((current_y >= 0 && current_x >= 0) && (current_y < RowsAmount && current_x < ColumnsAmount))
+                    if ((currentY >= 0 && currentX >= 0) && (currentY < RowsAmount && currentX < ColumnsAmount) && (!Cells[currentY, currentX].BombState))
                     {
-                        if (Cells[current_y, current_x].NearbyBombsAmount == 0)
+                        if (Cells[currentY, currentX].NearbyBombsAmount == 0)
                         {
-                            Cells[current_y, current_x].CellIcon = CellIcon.Open_empty;
+                            Cells[currentY, currentX].CellIcon = CellIcon.OpenEmpty;
                         }
 
-                        if (!visited[current_y, current_x] && Cells[current_y, current_x].NearbyBombsAmount == 0)
+                        if (Cells[currentY, currentX].NearbyBombsAmount > 0)
                         {
-                            visited[current_y, current_x] = true;
-                            RevealEmptySpaces(current_y, current_x, visited);
+                            Cells[currentY, currentX].CellIcon = CellIcon.OpenDigit;
+                        }
+
+                        if (!visited[currentY, currentX] && Cells[currentY, currentX].NearbyBombsAmount == 0)
+                        {
+                            visited[currentY, currentX] = true;
+                            RevealEmptySpaces(currentY, currentX, visited);
                         }
                     }
                 }

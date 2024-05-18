@@ -10,17 +10,15 @@
 
         public Cell()
         {
-            CellIcon = CellIcon.Closed;
-            BombState = false;
         }
     }
 
     public enum CellIcon
     {
-        Closed,
-        Open_empty,
-        Open_digit,
-        Open_bomb,
-        Marked
+        Closed = 0,
+        OpenEmpty = 1,
+        OpenDigit = 2,
+        OpenBomb = 3,
+        Flag = 4
     }
 }
