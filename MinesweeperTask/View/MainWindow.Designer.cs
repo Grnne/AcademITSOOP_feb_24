@@ -34,6 +34,7 @@
             this.difficultyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.easyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bigHardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.halpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -41,7 +42,6 @@
             this.resetButton = new System.Windows.Forms.Button();
             this.bombCounter = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.bigHardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -72,22 +72,29 @@
             this.hardToolStripMenuItem,
             this.bigHardToolStripMenuItem});
             this.difficultyToolStripMenuItem.Name = "difficultyToolStripMenuItem";
-            this.difficultyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.difficultyToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.difficultyToolStripMenuItem.Text = "difficulty";
             // 
             // easyToolStripMenuItem
             // 
             this.easyToolStripMenuItem.Name = "easyToolStripMenuItem";
-            this.easyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.easyToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.easyToolStripMenuItem.Text = "easy";
             this.easyToolStripMenuItem.Click += new System.EventHandler(this.easyToolStripMenuItem_Click);
             // 
             // hardToolStripMenuItem
             // 
             this.hardToolStripMenuItem.Name = "hardToolStripMenuItem";
-            this.hardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hardToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.hardToolStripMenuItem.Text = "hard";
             this.hardToolStripMenuItem.Click += new System.EventHandler(this.hardToolStripMenuItem_Click);
+            // 
+            // bigHardToolStripMenuItem
+            // 
+            this.bigHardToolStripMenuItem.Name = "bigHardToolStripMenuItem";
+            this.bigHardToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.bigHardToolStripMenuItem.Text = "big hard";
+            this.bigHardToolStripMenuItem.Click += new System.EventHandler(this.bigHardToolStripMenuItem_Click);
             // 
             // halpToolStripMenuItem
             // 
@@ -177,7 +184,7 @@
             // 
             this.tableLayoutPanel1.AutoSize = true;
             this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.InsetDouble;
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -190,13 +197,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(484, 387);
             this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // bigHardToolStripMenuItem
-            // 
-            this.bigHardToolStripMenuItem.Name = "bigHardToolStripMenuItem";
-            this.bigHardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.bigHardToolStripMenuItem.Text = "big hard";
-            this.bigHardToolStripMenuItem.Click += new System.EventHandler(this.bigHardToolStripMenuItem_Click);
             // 
             // MainWindow
             // 

@@ -8,11 +8,11 @@ using TemperatureTask.View;
 
 namespace TemperatureTask
 {
-    public partial class converterView : Form, IConverterView
+    public partial class ConverterView : Form, IConverterView
     {
         private TemperaturePresenter _presenter;
 
-        public converterView()
+        public ConverterView()
         {
             Start();
         }
@@ -22,39 +22,38 @@ namespace TemperatureTask
             _presenter = presenter;
         }
         
-        // TODO Спросить про то, должен ли тут быть список имен, а вьюха должна знать только про презентер?
-        public void SetScales(List<Scale> scales)
+        public void SetScales(List<IScale> scales)
         {
-            int i = 20;
+            var i = 20;
 
-            foreach (Scale scale in scales)
+            foreach (var scale in scales)
             {
-                RadioButton radioButton = new RadioButton();
-                radioButton.Name = $"test{i}";
-                radioButton.Text = scale.Name;
-                radioButton.Location = new Point(10, i);
+                var radioButton = new RadioButton
+                {
+                    Name = $"test{i}",
+                    Text = scale.GetName(),
+                    Location = new Point(10, i)
+                };
                 sourceScaleBox.Controls.Add(radioButton);
                 i += 20;
             }
 
-            // TODO спросить Чего-то я не не совсем понимаю логику винформс, просто sourceScaleBox.Controls[0].Checked не работает. 
-            RadioButton firstButton = (RadioButton)sourceScaleBox.Controls[0];
-            firstButton.Checked = true;
-
+            ((RadioButton)sourceScaleBox.Controls[0]).Checked = true;
             i = 20;
 
-            foreach (Scale scale in scales)
+            foreach (var scale in scales)
             {
-                RadioButton radioButton = new RadioButton();
-                radioButton.Name = $"test{i}";
-                radioButton.Text = scale.Name;
-                radioButton.Location = new Point(10, i);
+                var radioButton = new RadioButton
+                {
+                    Name = $"test{i}",
+                    Text = scale.GetName(),
+                    Location = new Point(10, i)
+                };
                 resultScaleBox.Controls.Add(radioButton);
                 i += 20;
             }
 
-            firstButton = (RadioButton)resultScaleBox.Controls[0];
-            firstButton.Checked = true;
+            ((RadioButton)resultScaleBox.Controls[0]).Checked = true;
         } 
 
         public void Start()
@@ -64,17 +63,15 @@ namespace TemperatureTask
 
         public string GetScaleName(GroupBox scaleBox)
         {
-            string scaleName = "";
-
             foreach (RadioButton radioButton in scaleBox.Controls)
             {
                 if (radioButton.Checked)
                 {
-                    scaleName = radioButton.Text;
+                    return radioButton.Text;
                 }
             }
 
-            return scaleName;
+            return ""; //TODO я вроде бы в интерфейсе поставил галочку по умолчанию, но нужно ли тут что-либо делать, на случай, если пользователь сможет убрать?
         }
 
         public void ShowResultTemperature(double resultTemperature)
@@ -98,12 +95,12 @@ namespace TemperatureTask
             }
         }
 
-        private void convertButton_Click(object sender, EventArgs e)
+        private void ConvertButton_Click(object sender, EventArgs e)
         {
             ConvertTemperature();
         }
 
-        private void sourceTemperatureTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void SourceTemperatureTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -111,9 +108,9 @@ namespace TemperatureTask
             }
         }
 
-        private void converterView_KeyDown(object sender, KeyEventArgs e)
+        private void ConverterView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) // Чего-то он не хочет работать.
+            if (e.KeyCode == Keys.Enter) // TODO  Спросить как сделать, чтоб при нажатии энтер без курсора в поле ввода работало
             {
                 ConvertTemperature();
             }

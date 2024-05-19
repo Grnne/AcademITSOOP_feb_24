@@ -16,15 +16,15 @@ namespace TemperatureTask
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            ITemperatureConverter converter = new TemperatureConverter(new List<Scale>()
-            {   new Celsius(),
-                new Fahrenheit(),
-                new Kelvin()
+            var converter = new TemperatureConverter(new List<IScale>()
+            {
+                new CelsiusScale(),
+                new FahrenheitScale(),
+                new KelvinScale()
             });
 
-            var view = new converterView();
-            TemperaturePresenter presenter = new TemperaturePresenter(converter, view);
-
+            var view = new ConverterView();
+            _ = new TemperaturePresenter(converter, view);
 
             Application.Run(view);
         }

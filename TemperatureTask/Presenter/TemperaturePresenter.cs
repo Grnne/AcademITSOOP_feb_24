@@ -5,9 +5,9 @@ namespace TemperatureTask.Presenter
 {
     public class TemperaturePresenter
     {
-        public ITemperatureConverter Model { get; set; }
+        private ITemperatureConverter Model { get; set; }
 
-        public IConverterView View { get; set; }
+        private IConverterView View { get; set; }
 
         public TemperaturePresenter(ITemperatureConverter converter, IConverterView view)
         {
@@ -20,8 +20,8 @@ namespace TemperatureTask.Presenter
         public void ConvertTemperature(double sourceTemperature, string sourceScaleName, string resultScaleName)
         {
             View.ShowResultTemperature(Model.Convert(sourceTemperature
-                , Model.GetScales().Find(x => x.Name == sourceScaleName)
-                , Model.GetScales().Find(x => x.Name == resultScaleName)));
+                , Model.GetScales().Find(x => x.GetName() == sourceScaleName)
+                , Model.GetScales().Find(x => x.GetName() == resultScaleName)));
         }
     }
 }

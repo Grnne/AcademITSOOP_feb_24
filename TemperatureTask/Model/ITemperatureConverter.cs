@@ -5,8 +5,8 @@ namespace TemperatureTask.Model
 {
     public interface ITemperatureConverter
     {
-        double Convert(double sourceTemperature, Scale sourceScale, Scale resultScale);
+        double Convert(double sourceTemperature, IScale sourceScale, IScale resultScale);
 
-        List<Scale> GetScales();
+        List<IScale> GetScales();
     }
 }

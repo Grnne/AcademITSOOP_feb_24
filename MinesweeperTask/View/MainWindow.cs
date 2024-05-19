@@ -9,8 +9,13 @@ namespace MinesweeperTask
 {
     public partial class MainWindow : Form, IView
     {
+        private readonly Color[] MineNumberColor =
+{
+            Color.Empty, Color.Blue, Color.Green, Color.Red, Color.DarkBlue,
+            Color.Maroon, Color.Cyan, Color.Black, Color.Gray
+        };
+
         private MainPresenter _presenter;
-        public int Difficulty { get; set; }
 
         public MainWindow()
         {
@@ -82,6 +87,7 @@ namespace MinesweeperTask
                         case CellIcon.OpenDigit:
                             currentButton.Image = null;
                             currentButton.Text = cells[i, j].NearbyBombsAmount.ToString();
+                            currentButton.ForeColor = MineNumberColor[cells[i, j].NearbyBombsAmount];
                             break;
                         case CellIcon.Flag:
                             currentButton.Image = Image.FromFile("..\\..\\content\\red_flag.jpg");

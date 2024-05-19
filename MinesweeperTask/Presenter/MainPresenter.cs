@@ -9,6 +9,8 @@ namespace MinesweeperTask.Presenter
 
         private IBoard _model;
 
+        //TODO переделать рестарт игры
+        
         public MainPresenter(IView view, IBoard model)
         {
             _model = model;

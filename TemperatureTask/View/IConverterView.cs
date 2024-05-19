@@ -10,7 +10,7 @@ namespace TemperatureTask.View
 
         void SetPresenter(TemperaturePresenter presenter);
 
-        void SetScales(List<Scale> scales);
+        void SetScales(List<IScale> scales);
 
         void ShowResultTemperature(double resultTemperature);
     }

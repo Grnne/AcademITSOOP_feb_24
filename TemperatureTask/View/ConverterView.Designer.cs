@@ -1,6 +1,6 @@
 ﻿namespace TemperatureTask
 {
-    partial class converterView
+    partial class ConverterView
     {
         /// <summary>
         /// Required designer variable.
@@ -46,7 +46,7 @@
             this.convertButton.TabIndex = 0;
             this.convertButton.Text = "Convert";
             this.convertButton.UseVisualStyleBackColor = true;
-            this.convertButton.Click += new System.EventHandler(this.convertButton_Click);
+            this.convertButton.Click += new System.EventHandler(this.ConvertButton_Click);
             // 
             // sourceTemperatureTextBox
             // 
@@ -54,7 +54,7 @@
             this.sourceTemperatureTextBox.Name = "sourceTemperatureTextBox";
             this.sourceTemperatureTextBox.Size = new System.Drawing.Size(169, 20);
             this.sourceTemperatureTextBox.TabIndex = 1;
-            this.sourceTemperatureTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sourceTemperatureTextBox_KeyDown);
+            this.sourceTemperatureTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SourceTemperatureTextBox_KeyDown);
             // 
             // resultTemperatureTextBox
             // 
@@ -115,12 +115,14 @@
             this.Controls.Add(this.resultTemperatureTextBox);
             this.Controls.Add(this.sourceTemperatureTextBox);
             this.Controls.Add(this.convertButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(529, 241);
             this.MinimumSize = new System.Drawing.Size(529, 241);
             this.Name = "converterView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Temperature converter";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.converterView_KeyDown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConverterView_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -58,7 +58,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -80,10 +80,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\ITemperatureConverter.cs" />
-    <Compile Include="Model\Scales\Kelvin.cs" />
-    <Compile Include="Model\Scales\Fahrenheit.cs" />
-    <Compile Include="Model\Scales\Celsius.cs" />
-    <Compile Include="Model\Scales\Scale.cs" />
+    <Compile Include="Model\Scales\KelvinScale.cs" />
+    <Compile Include="Model\Scales\FahrenheitScale.cs" />
+    <Compile Include="Model\Scales\CelsiusScale.cs" />
+    <Compile Include="Model\Scales\IScale.cs" />
     <Compile Include="Presenter\TemperaturePresenter.cs" />
     <Compile Include="Model\TemperatureConverter.cs" />
     <Compile Include="View\IConverterView.cs" />
