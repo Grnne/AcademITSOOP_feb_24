@@ -38,7 +38,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.timerLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.resetButton = new System.Windows.Forms.Button();
             this.bombCounter = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.bigHardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,7 +110,7 @@
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.timerLabel);
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.resetButton);
             this.panel1.Controls.Add(this.bombCounter);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
@@ -137,24 +137,24 @@
             this.timerLabel.Text = "100";
             this.timerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button1
+            // resetButton
             // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.RosyBrown;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 1.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.ForeColor = System.Drawing.Color.Transparent;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(200, 1);
-            this.button1.Margin = new System.Windows.Forms.Padding(0);
-            this.button1.MinimumSize = new System.Drawing.Size(64, 64);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 64);
-            this.button1.TabIndex = 0;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.resetButton.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.resetButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.resetButton.FlatAppearance.BorderColor = System.Drawing.Color.RosyBrown;
+            this.resetButton.FlatAppearance.BorderSize = 0;
+            this.resetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.resetButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 1.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.resetButton.ForeColor = System.Drawing.Color.Transparent;
+            this.resetButton.Image = ((System.Drawing.Image)(resources.GetObject("resetButton.Image")));
+            this.resetButton.Location = new System.Drawing.Point(200, 1);
+            this.resetButton.Margin = new System.Windows.Forms.Padding(0);
+            this.resetButton.MinimumSize = new System.Drawing.Size(64, 64);
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(75, 64);
+            this.resetButton.TabIndex = 0;
+            this.resetButton.UseVisualStyleBackColor = true;
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
             // bombCounter
             // 
@@ -230,7 +230,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label bombCounter;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label timerLabel;
         private System.Windows.Forms.ToolStripMenuItem difficultyToolStripMenuItem;

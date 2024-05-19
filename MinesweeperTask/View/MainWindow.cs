@@ -25,11 +25,12 @@ namespace MinesweeperTask
 
         public void DrawField(int rowsAmount, int columnsAmount)
         {
-            tableLayoutPanel1.SuspendLayout(); 
-
+            
+            tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanel1.Controls.Clear();
             tableLayoutPanel1.Dock = DockStyle.Fill;
+             //TODO Почему тут суспенд лэйаут не работает? Будто быстрее будет новое поле создать, чем это редактировать
             tableLayoutPanel1.AutoSize = true;
-            tableLayoutPanel1.Controls.Clear(); //TODO Почему тут суспенд лэйаут не работает? Будто быстрее будет новое поле создать, чем это редактировать
             tableLayoutPanel1.RowCount = rowsAmount;
             tableLayoutPanel1.ColumnCount = columnsAmount;
 
@@ -47,7 +48,7 @@ namespace MinesweeperTask
 
                     };
                     cellButton.FlatAppearance.BorderSize = 0;
-                    cellButton.Image = Image.FromFile("..\\..\\content\\closed.jpg");
+                    cellButton.Image = Image.FromFile("..\\..\\content\\cell_closed.jpg");
                     cellButton.MouseDown += new MouseEventHandler(cellButton_Click);
                     tableLayoutPanel1.Controls.Add(cellButton, j, i);
                 }
@@ -72,7 +73,7 @@ namespace MinesweeperTask
                     {
                         case CellIcon.Closed:
                             currentButton.Text = "";
-                            currentButton.Image = Image.FromFile("..\\..\\content\\closed.jpg");
+                            currentButton.Image = Image.FromFile("..\\..\\content\\cell_closed.jpg");
                             break;
                         case CellIcon.OpenEmpty:
                             currentButton.Text = "";
@@ -83,7 +84,7 @@ namespace MinesweeperTask
                             currentButton.Text = cells[i, j].NearbyBombsAmount.ToString();
                             break;
                         case CellIcon.Flag:
-                            currentButton.Image = Image.FromFile("..\\..\\content\\flag.jpg");
+                            currentButton.Image = Image.FromFile("..\\..\\content\\red_flag.jpg");
                             break;
                         default:
                             throw new InvalidOperationException();
@@ -109,7 +110,7 @@ namespace MinesweeperTask
             }
         }
 
-        private void button1_Click(object sender, System.EventArgs e)
+        private void resetButton_Click(object sender, System.EventArgs e)
         {
             _presenter.ResetField();
         }
@@ -119,9 +120,20 @@ namespace MinesweeperTask
             throw new NotImplementedException();
         }
 
-        public void Fiasko(string message)
+        public void Fiasko(bool condition)
         {
-            MessageBox.Show(message);
+            if (condition)
+            {
+                resetButton.Image = Image.FromFile("..\\..\\content\\smile_win.png");
+                MessageBox.Show("Это победа, братан!");
+                
+            }
+            else
+            {
+                resetButton.Image = Image.FromFile("..\\..\\content\\smile_lose.png");
+                MessageBox.Show("Это фиаско, братан!");
+            }
+            
         }
 
         public void SetBombCounterValue(int value)

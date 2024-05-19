@@ -21,6 +21,6 @@ namespace MinesweeperTask.View
 
         void SetBombCounterValue(int value);
 
-        void Fiasko(string message);
+        void Fiasko(bool condition);
     }
 }

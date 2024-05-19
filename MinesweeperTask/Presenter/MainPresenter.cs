@@ -25,7 +25,7 @@ namespace MinesweeperTask.Presenter
 
             if (_model.GameOver == 1)
             {
-                _view.Fiasko("Это фиаско, братан");
+                _view.Fiasko(false);
                 _model.InitBoard(_model.Difficulty);
                 _view.DrawField(_model.Minefield.RowsAmount, _model.Minefield.ColumnsAmount);
 
@@ -41,7 +41,7 @@ namespace MinesweeperTask.Presenter
             
             if (_model.GameOver == 2)
             {
-                _view.Fiasko("Победа");
+                _view.Fiasko(true);
                 _model.InitBoard(_model.Difficulty);
                 _view.DrawField(_model.Minefield.RowsAmount, _model.Minefield.ColumnsAmount);
             }
