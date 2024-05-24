@@ -16,6 +16,8 @@ namespace MinesweeperTask.Model
 
         int Time { get; set; }
 
+        void StopTimer();
+
         void InitBoard(int difficulty);
 
         void InitMinefield(int difficulty);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Timers;
 
 namespace MinesweeperTask.Model
 {
@@ -9,6 +10,8 @@ namespace MinesweeperTask.Model
         public Minefield Minefield { get; set; }
 
         public event Action Timer_Ticked;
+
+        System.Timers.Timer Timer { get; set; } //TODO переделать, чтоб запускался 1 экземпляр и всегда висел
 
         public int Difficulty { get; set; } // TODO enum
 
@@ -86,10 +89,16 @@ namespace MinesweeperTask.Model
         //Полный хаос с попытками сделать перенести тики таймера во вьюху, подумать\погуглить
         public void InitTimer()
         {
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 1000;
-            timer.Elapsed += Timer_tick;
-            timer.Start();
+
+            Timer.Interval = 1000;
+            Timer.Elapsed += Timer_tick;
+            Timer.Start();
+        }
+
+        public void StopTimer()
+        {
+
+          Timer.Stop();
         }
 
         private void Timer_tick(object sender, EventArgs e)
