@@ -11,7 +11,7 @@ namespace MinesweeperTask.Model
 
         public event Action Timer_Ticked;
 
-        System.Timers.Timer Timer { get; set; } //TODO переделать, чтоб запускался 1 экземпляр и всегда висел
+        System.Timers.Timer Timer { get; set; } = new System.Timers.Timer();//TODO переделать, чтоб запускался 1 экземпляр и всегда висел
 
         public int Difficulty { get; set; } // TODO enum
 
