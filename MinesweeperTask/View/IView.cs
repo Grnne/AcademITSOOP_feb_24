@@ -1,5 +1,6 @@
 ﻿using MinesweeperTask.Model;
 using MinesweeperTask.Presenter;
+using System.Windows.Forms;
 
 namespace MinesweeperTask.View
 {
@@ -20,6 +21,8 @@ namespace MinesweeperTask.View
         void MarkCell(int x, int y);
 
         void SetBombCounterValue(int value);
+
+        void SetTimerValue(int value);
 
         void Fiasko(bool condition);
     }

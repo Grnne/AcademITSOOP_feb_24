@@ -1,8 +1,14 @@
-﻿namespace MinesweeperTask.Model
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+
+namespace MinesweeperTask.Model
 {
-    public class Board : IBoard
+    public class Board : IBoard //TODO конструктор
     {
         public Minefield Minefield { get; set; }
+
+        public event Action Timer_Ticked;
 
         public int Difficulty { get; set; } // TODO enum
 
@@ -12,7 +18,7 @@
 
         public int DefusedBombsCount { get; set; }// TODO возможно впихнуть сюда кастом сеттер, чтоб при достижении 0 давало геймовер 2
 
-        public int Timer { get; set; } // TODO спросить
+        public int Time { get; set; } // TODO спросить
 
         public void InitMinefield(int difficulty)
         {
@@ -70,10 +76,26 @@
         public void InitBoard(int difficulty)
         {
             InitMinefield(difficulty);
+            InitTimer();
             BombsCountTable = Minefield.BombsAmount;
             DefusedBombsCount = Minefield.BombsAmount;
             GameOver = 0;
-            Timer = 0;
+            Time = 0;
+        }
+
+        //Полный хаос с попытками сделать перенести тики таймера во вьюху, подумать\погуглить
+        public void InitTimer()
+        {
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 1000;
+            timer.Elapsed += Timer_tick;
+            timer.Start();
+        }
+
+        private void Timer_tick(object sender, EventArgs e)
+        {
+            Time++;
+            Timer_Ticked?.Invoke();
         }
     }
 }

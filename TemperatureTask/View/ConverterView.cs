@@ -21,7 +21,7 @@ namespace TemperatureTask
         {
             _presenter = presenter;
         }
-        
+
         public void SetScales(List<IScale> scales)
         {
             var i = 20;
@@ -54,7 +54,7 @@ namespace TemperatureTask
             }
 
             ((RadioButton)resultScaleBox.Controls[0]).Checked = true;
-        } 
+        }
 
         public void Start()
         {

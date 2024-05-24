@@ -1,24 +1,32 @@
 ﻿using MinesweeperTask.Model;
 using MinesweeperTask.View;
+using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
 
-namespace MinesweeperTask.Presenter
+namespace MinesweeperTask.Presenter 
 {
-    public class MainPresenter
+    public class MainPresenter 
     {
         private IView _view;
 
         private IBoard _model;
 
         //TODO переделать рестарт игры
-        
+
         public MainPresenter(IView view, IBoard model)
         {
             _model = model;
             _view = view;
 
             view.SetPresenter(this);
-            
             ResetField();
+            _model.Timer_Ticked += SetTimerValue;
+        }
+
+        private void SetTimerValue()
+        {
+            _view.SetTimerValue(_model.Time);
         }
 
         public void OpenCell(int y, int x)
@@ -67,5 +75,6 @@ namespace MinesweeperTask.Presenter
         {
             _model.Difficulty = difficulty;
         }
+
     }
 }

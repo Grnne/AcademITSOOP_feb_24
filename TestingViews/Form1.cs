@@ -7,8 +7,12 @@ namespace TestingViews
     {
         public Cell[,] Cells { get; set; }
 
+        public int timer = 0;
+
         public Form1()
         {
+            
+
             int rowsAmont = 5;
             int colsAmount = 5;
             
@@ -24,6 +28,9 @@ namespace TestingViews
             
 
             InitializeComponent();
+
+
+
 
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.AutoSize = true;
@@ -51,7 +58,13 @@ namespace TestingViews
 
 
             Cells[1, 1].Bomb = true;
+
+
+            Class1 testcl = new Class1();
+
         }
+
+
 
         private void Form1_Load(object sender, EventArgs e)
         {

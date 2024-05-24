@@ -2,7 +2,10 @@
 using MinesweeperTask.Presenter;
 using MinesweeperTask.View;
 using System;
+using System.ComponentModel;
 using System.Drawing;
+using System.Reflection.Emit;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MinesweeperTask
@@ -19,7 +22,7 @@ namespace MinesweeperTask
 
         public MainWindow()
         {
-            this.MaximizeBox = false;
+            MaximizeBox = false;
             InitializeComponent();
         }
 
@@ -30,11 +33,11 @@ namespace MinesweeperTask
 
         public void DrawField(int rowsAmount, int columnsAmount)
         {
-            
+
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel1.Controls.Clear();
             tableLayoutPanel1.Dock = DockStyle.Fill;
-             //TODO Почему тут суспенд лэйаут не работает? Будто быстрее будет новое поле создать, чем это редактировать
+            //TODO Почему тут суспенд лэйаут не работает? Будто быстрее будет новое поле создать, чем это редактировать
             tableLayoutPanel1.AutoSize = true;
             tableLayoutPanel1.RowCount = rowsAmount;
             tableLayoutPanel1.ColumnCount = columnsAmount;
@@ -60,7 +63,7 @@ namespace MinesweeperTask
             }
 
             tableLayoutPanel1.ResumeLayout();
-        } 
+        }
 
         public void RedrawField(Cell[,] cells)
         {
@@ -101,26 +104,6 @@ namespace MinesweeperTask
             tableLayoutPanel1.ResumeLayout();
         }
 
-        private void cellButton_Click(object sender, MouseEventArgs e)
-        {
-            (int x, int y) = (ValueTuple<int, int>)((Button)sender).Tag;
-
-            if (e.Button == MouseButtons.Left)
-            {
-                _presenter.OpenCell(x, y);
-            }
-
-            if (e.Button == MouseButtons.Right)
-            {
-                _presenter.MarkCell(x, y);
-            }
-        }
-
-        private void resetButton_Click(object sender, System.EventArgs e)
-        {
-            _presenter.ResetField();
-        }
-
         public void RightClickOnCell(int x, int y)
         {
             throw new NotImplementedException();
@@ -132,14 +115,14 @@ namespace MinesweeperTask
             {
                 resetButton.Image = Image.FromFile("..\\..\\content\\smile_win.png");
                 MessageBox.Show("Это победа, братан!");
-                
+
             }
             else
             {
                 resetButton.Image = Image.FromFile("..\\..\\content\\smile_lose.png");
                 MessageBox.Show("Это фиаско, братан!");
             }
-            
+
         }
 
         public void SetBombCounterValue(int value)
@@ -176,6 +159,26 @@ namespace MinesweeperTask
             }
         }
 
+        private void cellButton_Click(object sender, MouseEventArgs e)
+        {
+            (int x, int y) = (ValueTuple<int, int>)((Button)sender).Tag;
+
+            if (e.Button == MouseButtons.Left)
+            {
+                _presenter.OpenCell(x, y);
+            }
+
+            if (e.Button == MouseButtons.Right)
+            {
+                _presenter.MarkCell(x, y);
+            }
+        }
+
+        private void resetButton_Click(object sender, System.EventArgs e)
+        {
+            _presenter.ResetField();
+        }
+
         //TODO "there's no native support for a RadioButton MenueItem" 
 
         private void easyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -194,6 +197,14 @@ namespace MinesweeperTask
         {
             _presenter.SetDifficulty(2);
             _presenter.ResetField();
+        }
+
+        
+        public  void SetTimerValue(int value)
+        {
+            //var test =    await Task.Run(() =>  value.ToString());
+            //    timerLabel.Text = test;
+            timerLabel.Invoke(new Action(() => timerLabel.Text = value.ToString()));
         }
     }
 }
