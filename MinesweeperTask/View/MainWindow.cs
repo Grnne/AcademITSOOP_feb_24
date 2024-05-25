@@ -12,11 +12,13 @@ namespace MinesweeperTask
 {
     public partial class MainWindow : Form, IView
     {
-        private readonly Color[] MineNumberColor =
+        private readonly Color[] _mineNumberColor =
 {
             Color.Empty, Color.Blue, Color.Green, Color.Red, Color.DarkBlue,
             Color.Maroon, Color.Cyan, Color.Black, Color.Gray
         };
+
+        private Cell[,] _cells;
 
         private MainPresenter _presenter;
 
@@ -29,6 +31,11 @@ namespace MinesweeperTask
         public void SetPresenter(MainPresenter presenter)
         {
             _presenter = presenter;
+        }
+
+        public void SetMinefield(Cell[,] cells)
+        {
+            _cells = cells;
         }
 
         public void DrawField(int rowsAmount, int columnsAmount)
@@ -65,10 +72,10 @@ namespace MinesweeperTask
             tableLayoutPanel1.ResumeLayout();
         }
 
-        public void RedrawField(Cell[,] cells)
+        public void RedrawField()
         {
-            int rowsAmount = cells.GetLength(0);
-            int columnsAmount = cells.GetLength(1);
+            int rowsAmount = _cells.GetLength(0);
+            int columnsAmount = _cells.GetLength(1);
 
             tableLayoutPanel1.SuspendLayout();
 
@@ -77,7 +84,7 @@ namespace MinesweeperTask
                 for (int j = 0; j < columnsAmount; j++)
                 {
                     Button currentButton = (Button)tableLayoutPanel1.GetControlFromPosition(j, i);
-                    switch (cells[i, j].CellIcon)
+                    switch (_cells[i, j].CellIcon)
                     {
                         case CellIcon.Closed:
                             currentButton.Text = "";
@@ -89,8 +96,8 @@ namespace MinesweeperTask
                             break;
                         case CellIcon.OpenDigit:
                             currentButton.Image = null;
-                            currentButton.Text = cells[i, j].NearbyBombsAmount.ToString();
-                            currentButton.ForeColor = MineNumberColor[cells[i, j].NearbyBombsAmount];
+                            currentButton.Text = _cells[i, j].NearbyBombsAmount.ToString();
+                            currentButton.ForeColor = _mineNumberColor[_cells[i, j].NearbyBombsAmount];
                             break;
                         case CellIcon.Flag:
                             currentButton.Image = Image.FromFile("..\\..\\content\\red_flag.jpg");
@@ -104,9 +111,27 @@ namespace MinesweeperTask
             tableLayoutPanel1.ResumeLayout();
         }
 
-        public void RightClickOnCell(int x, int y)
+        public void DrawBombsWhenGameOver(int y, int x, bool exploded)
         {
-            throw new NotImplementedException();
+            var rowsAmount = tableLayoutPanel1.RowCount;
+            var columnsAmount = tableLayoutPanel1.ColumnCount;
+
+            for (int i = 0; i < rowsAmount; i++)
+            {
+                for (int j = 0; j < columnsAmount; j++)
+                {
+                    if (i == y && j == x && exploded)
+                    {
+                        Button currentButton = (Button)tableLayoutPanel1.GetControlFromPosition(j, i);
+                        currentButton.Image = Image.FromFile("..\\..\\content\\bomb_exploded.png");
+                    }
+                    else if (_cells[i,j].BombState)
+                    {
+                        Button currentButton = (Button)tableLayoutPanel1.GetControlFromPosition(j, i);
+                        currentButton.Image = Image.FromFile("..\\..\\content\\bomb.png"); 
+                    }
+                }
+            }
         }
 
         public void Fiasko(bool condition)
@@ -130,34 +155,10 @@ namespace MinesweeperTask
             bombCounter.Text = value.ToString();
         }
 
-        public void LeftClickOnCell(int x, int y)
+        public void SetTimerValue(int value)
         {
-            throw new NotImplementedException();
-        }
-
-        public void MarkCell(int y, int x)
-        {
-            ((Button)tableLayoutPanel1.GetControlFromPosition(x, y)).Image = Image.FromFile("..\\..\\content\\flag.jpg");
-        }
-
-        public void DrawFieldTest(Cell[,] cells)
-        {
-            int rowsAmount = cells.GetLength(0);
-            int columnsAmount = cells.GetLength(1);
-
-            for (int i = 0; i < rowsAmount; i++)
-            {
-                for (int j = 0; j < columnsAmount; j++)
-                {
-                    if (cells[i, j].BombState)
-                    {
-                        ((Button)tableLayoutPanel1.GetControlFromPosition(j, i)).Image = Image.FromFile("..\\..\\content\\bomb_open.jpg");
-                    }
-
-                    ((Button)tableLayoutPanel1.GetControlFromPosition(j, i)).Text = cells[i, j].NearbyBombsAmount.ToString();
-                }
-            }
-        }
+            timerLabel.Invoke(new Action(() => timerLabel.Text = value.ToString()));
+        } 
 
         private void cellButton_Click(object sender, MouseEventArgs e)
         {
@@ -197,14 +198,6 @@ namespace MinesweeperTask
         {
             _presenter.SetDifficulty(2);
             _presenter.ResetField();
-        }
-
-        
-        public  void SetTimerValue(int value)
-        {
-            //var test =    await Task.Run(() =>  value.ToString());
-            //    timerLabel.Text = test;
-            timerLabel.Invoke(new Action(() => timerLabel.Text = value.ToString()));
         }
     }
 }

@@ -21,13 +21,14 @@ namespace MinesweeperTask.Presenter
 
             view.SetPresenter(this);
             ResetField();
+            _model.InitTimer();
             _model.Timer_Ticked += SetTimerValue;
         }
 
-        private void SetTimerValue()
+        private void SetTimerValue() // TODO timer stop at gameover
         {
             _view.SetTimerValue(_model.Time);
-        }
+        } 
 
         public void OpenCell(int y, int x)
         {
@@ -35,10 +36,9 @@ namespace MinesweeperTask.Presenter
 
             if (_model.GameOver == 1)
             {
+                DrawBombsWhenGameOver(y, x);
                 _view.Fiasko(false);
-                _model.InitBoard(_model.Difficulty);
-                _view.DrawField(_model.Minefield.RowsAmount, _model.Minefield.ColumnsAmount);
-
+                ResetField();
             }
 
             RedrawField();
@@ -51,9 +51,9 @@ namespace MinesweeperTask.Presenter
             
             if (_model.GameOver == 2)
             {
+                DrawBombsWhenGameOver(y, x);
                 _view.Fiasko(true);
-                _model.InitBoard(_model.Difficulty);
-                _view.DrawField(_model.Minefield.RowsAmount, _model.Minefield.ColumnsAmount);
+                ResetField();
             }
 
             RedrawField();
@@ -61,20 +61,32 @@ namespace MinesweeperTask.Presenter
 
         public void RedrawField()
         {
-            _view.RedrawField(_model.Minefield.Cells); //TODO инкапсуляция
+            _view.RedrawField(); //TODO инкапсуляция
         }
 
         public void ResetField()
         {
             _model.InitBoard(_model.Difficulty);
+            _view.SetMinefield(_model.Minefield.Cells);
             _view.DrawField(_model.Minefield.RowsAmount, _model.Minefield.ColumnsAmount);
             _view.SetBombCounterValue(_model.BombsCountTable);
+        }
+
+        public void DrawBombsWhenGameOver(int y, int x)
+        {
+            if (_model.GameOver == 1)
+            {
+                _view.DrawBombsWhenGameOver(y, x, true);
+            }
+            else
+            {
+                _view.DrawBombsWhenGameOver(y, x, false);
+            }
         }
 
         public void SetDifficulty(int difficulty)
         {
             _model.Difficulty = difficulty;
         }
-
     }
 }

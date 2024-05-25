@@ -11,7 +11,7 @@ namespace MinesweeperTask.Model
 
         public event Action Timer_Ticked;
 
-        System.Timers.Timer Timer { get; set; } = new System.Timers.Timer();//TODO переделать, чтоб запускался 1 экземпляр и всегда висел
+        System.Timers.Timer Timer { get; set; } = new System.Timers.Timer();
 
         public int Difficulty { get; set; } // TODO enum
 
@@ -79,7 +79,6 @@ namespace MinesweeperTask.Model
         public void InitBoard(int difficulty)
         {
             InitMinefield(difficulty);
-            InitTimer();
             BombsCountTable = Minefield.BombsAmount;
             DefusedBombsCount = Minefield.BombsAmount;
             GameOver = 0;
@@ -97,7 +96,6 @@ namespace MinesweeperTask.Model
 
         public void StopTimer()
         {
-
           Timer.Stop();
         }
 

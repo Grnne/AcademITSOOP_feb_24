@@ -136,12 +136,12 @@
             this.timerLabel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.timerLabel.Font = new System.Drawing.Font("Arial Narrow", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.timerLabel.ForeColor = System.Drawing.Color.Red;
-            this.timerLabel.Location = new System.Drawing.Point(387, 0);
+            this.timerLabel.Location = new System.Drawing.Point(416, 0);
             this.timerLabel.MinimumSize = new System.Drawing.Size(64, 64);
             this.timerLabel.Name = "timerLabel";
-            this.timerLabel.Size = new System.Drawing.Size(93, 64);
+            this.timerLabel.Size = new System.Drawing.Size(64, 64);
             this.timerLabel.TabIndex = 2;
-            this.timerLabel.Text = "100";
+            this.timerLabel.Text = "0";
             this.timerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // resetButton
