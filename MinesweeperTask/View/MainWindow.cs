@@ -2,6 +2,7 @@
 using MinesweeperTask.Presenter;
 using MinesweeperTask.View;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -10,9 +11,16 @@ namespace MinesweeperTask
     public partial class MainWindow : Form, IView
     {
         private readonly Color[] _mineNumberColor =
-{
+        {
             Color.Empty, Color.Blue, Color.Green, Color.Red, Color.DarkBlue,
             Color.Maroon, Color.Cyan, Color.Black, Color.Gray
+        };
+
+        private readonly Image[] CellIconImages =
+        { Image.FromFile("..\\..\\content\\bomb.png"), Image.FromFile("..\\..\\content\\bomb_exploded.png"),
+            Image.FromFile("..\\..\\content\\cell_closed.png"),Image.FromFile("..\\..\\content\\face_idle.png"),
+            Image.FromFile("..\\..\\content\\red_flag.png"),Image.FromFile("..\\..\\content\\smile_lose.png"),
+            Image.FromFile("..\\..\\content\\smile_start.png"),Image.FromFile("..\\..\\content\\smile_win.png")
         };
 
         private Cell[,] _cells;
@@ -21,6 +29,7 @@ namespace MinesweeperTask
 
         public MainWindow()
         {
+
             MaximizeBox = false;
             InitializeComponent();
         }
@@ -37,14 +46,17 @@ namespace MinesweeperTask
 
         public void DrawField(int rowsAmount, int columnsAmount)
         {
+            tableLayoutPanel1.GetType().GetProperty("DoubleBuffered",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                .SetValue(tableLayoutPanel1, true, null);
 
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel1.Controls.Clear();
+            
             tableLayoutPanel1.Dock = DockStyle.Fill;
-            //TODO Почему тут суспенд лэйаут не работает? Будто быстрее будет новое поле создать, чем это редактировать
-            tableLayoutPanel1.AutoSize = true;
             tableLayoutPanel1.RowCount = rowsAmount;
             tableLayoutPanel1.ColumnCount = columnsAmount;
+
 
             for (int i = 0; i < rowsAmount; i++)
             {
@@ -59,8 +71,9 @@ namespace MinesweeperTask
                         Font = new System.Drawing.Font("Arial Narrow", 20.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)))
 
                     };
-                    cellButton.FlatAppearance.BorderSize = 0;
-                    cellButton.Image = Image.FromFile("..\\..\\content\\cell_closed.jpg");
+
+                    //cellButton.FlatAppearance.BorderSize = 0;
+                    cellButton.Image = CellIconImages[2];
                     cellButton.MouseDown += new MouseEventHandler(cellButton_Click);
                     tableLayoutPanel1.Controls.Add(cellButton, j, i);
                 }
@@ -85,7 +98,7 @@ namespace MinesweeperTask
                     {
                         case CellIcon.Closed:
                             currentButton.Text = "";
-                            currentButton.Image = Image.FromFile("..\\..\\content\\cell_closed.jpg");
+                            currentButton.Image = CellIconImages[2];
                             break;
                         case CellIcon.OpenEmpty:
                             currentButton.Text = "";
@@ -97,7 +110,7 @@ namespace MinesweeperTask
                             currentButton.ForeColor = _mineNumberColor[_cells[i, j].NearbyBombsAmount];
                             break;
                         case CellIcon.Flag:
-                            currentButton.Image = Image.FromFile("..\\..\\content\\red_flag.jpg");
+                            currentButton.Image = CellIconImages[4];
                             break;
                         default:
                             throw new InvalidOperationException();
@@ -120,12 +133,12 @@ namespace MinesweeperTask
                     if (i == y && j == x && exploded)
                     {
                         Button currentButton = (Button)tableLayoutPanel1.GetControlFromPosition(j, i);
-                        currentButton.Image = Image.FromFile("..\\..\\content\\bomb_exploded.png");
+                        currentButton.Image = CellIconImages[1];
                     }
-                    else if (_cells[i,j].BombState)
+                    else if (_cells[i, j].BombState)
                     {
                         Button currentButton = (Button)tableLayoutPanel1.GetControlFromPosition(j, i);
-                        currentButton.Image = Image.FromFile("..\\..\\content\\bomb.png"); 
+                        currentButton.Image = CellIconImages[0];
                     }
                 }
             }
@@ -135,13 +148,13 @@ namespace MinesweeperTask
         {
             if (condition)
             {
-                resetButton.Image = Image.FromFile("..\\..\\content\\smile_win.png");
+                resetButton.Image = CellIconImages[7];
                 MessageBox.Show("Это победа, братан!");
 
             }
             else
             {
-                resetButton.Image = Image.FromFile("..\\..\\content\\smile_lose.png");
+                resetButton.Image = CellIconImages[5];
                 MessageBox.Show("Это фиаско, братан!");
             }
 
@@ -155,7 +168,7 @@ namespace MinesweeperTask
         public void SetTimerValue(int value)
         {
             timerLabel.Invoke(new Action(() => timerLabel.Text = value.ToString()));
-        } 
+        }
 
         private void cellButton_Click(object sender, MouseEventArgs e)
         {

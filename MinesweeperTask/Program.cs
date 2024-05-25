@@ -18,7 +18,7 @@ namespace MinesweeperTask
 
             var view = new MainWindow();
             var model = new Board();
-            var presenter = new MainPresenter(view, model);
+            _ = new MainPresenter(view, model);
 
             Application.Run(view);
         }
