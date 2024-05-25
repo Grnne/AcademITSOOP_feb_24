@@ -1,10 +1,7 @@
 ﻿using MinesweeperTask.Model;
 using MinesweeperTask.View;
-using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
 
-namespace MinesweeperTask.Presenter 
+namespace MinesweeperTask.Presenter
 {
     public class MainPresenter 
     {

@@ -1,6 +1,5 @@
 ﻿using MinesweeperTask.Model;
 using MinesweeperTask.Presenter;
-using System.Windows.Forms;
 
 namespace MinesweeperTask.View
 {

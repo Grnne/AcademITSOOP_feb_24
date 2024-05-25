@@ -2,10 +2,7 @@
 using MinesweeperTask.Presenter;
 using MinesweeperTask.View;
 using System;
-using System.ComponentModel;
 using System.Drawing;
-using System.Reflection.Emit;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MinesweeperTask
